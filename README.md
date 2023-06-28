@@ -18,7 +18,7 @@ This repository contains packages to integrate ChirpStack components into
 * [libloragw-sx1301](https://github.com/brocaar/lora_gateway/)
 * [libloragw-sx1302](https://github.com/brocaar/sx1302_hal/)
 
-### '/theme`
+### `/theme`
 
 * Customized [Argon theme](https://github.com/jerrykuku/luci-theme-argon)
 
