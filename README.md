@@ -1,7 +1,8 @@
 # ChirpStack OpenWrt feed
 
 This repository contains packages to integrate ChirpStack components into
-[OpenWrt](https://openwrt.org/).
+[OpenWrt](https://openwrt.org/). This repository is tested against the 
+[OpenWrt 23.05](https://github.com/openwrt/openwrt/tree/openwrt-23.05) branch.
 
 ## Content
 
