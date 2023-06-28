@@ -1,0 +1,10 @@
+{
+    "admin/chirpstack/concentratord": {
+        "title": "Concentratord",
+        "order": 1,
+        "action": {
+            "type": "view",
+            "path": "chirpstack/concentratord"
+        }
+    }
+}

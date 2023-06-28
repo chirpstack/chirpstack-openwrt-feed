@@ -1,0 +1,130 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=99
+
+USE_PROCD=1
+CHIPSET=
+
+conf_rule_global() {
+	local cfg="$1"
+	local chipset
+
+	config_get chipset $cfg chipset
+	CHIPSET=$chipset
+
+	cp /etc/chirpstack-concentratord/$chipset/examples/concentratord.toml /var/etc/chirpstack-concentratord/concentratord.toml
+
+	if [ "$chipset" = "sx1301" ]; then
+		config_foreach conf_rule_sx1301 "sx1301"
+	fi
+
+	if [ "$chipset" = "sx1302" ]; then
+		config_foreach conf_rule_sx1302 "sx1302"
+	fi
+
+	if [ "$chipset" = "2g4" ]; then
+		config_foreach conf_rule_2g4 "2g4"
+	fi
+}
+
+conf_rule_sx1301() {
+	local cfg="$1"
+	local model region channel_plan gnss
+	local model_flags
+
+	config_get model $cfg model
+	config_get region $cfg region
+	config_get channel_plan $cfg channel_plan
+	config_get gnss $cfg gnss
+
+	local region_config=$(echo "$region" | awk '{print tolower($0)}')
+
+	if [ "$gnss" = 1 ]; then
+		model_flags="$model_flags\"GNSS\","
+	fi
+
+	cp /etc/chirpstack-concentratord/sx1301/examples/channels_$channel_plan.toml /var/etc/chirpstack-concentratord/channels.toml
+	cp /etc/chirpstack-concentratord/sx1301/examples/region_$region_config.toml /var/etc/chirpstack-concentratord/region.toml
+
+	# set model
+	sed -i "s/model=.*/model=\"${model}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
+
+	# set region
+	sed -i "s/region=.*/region=\"${region}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
+
+	# set flags
+	sed -i "s/model_flags=.*/model_flags=[$model_flags]/" /var/etc/chirpstack-concentratord/concentratord.toml
+}
+
+conf_rule_sx1302() {
+	local cfg="$1"
+	local model region channel_plan gnss usb
+	local model_flags
+
+	config_get model $cfg model
+	config_get region $cfg region
+	config_get channel_plan $cfg channel_plan
+	config_get gnss $cfg gnss
+	config_get usb $cfg usb
+
+	local region_config=$(echo "$region" | awk '{print tolower($0)}')
+
+	if [ "$usb" = 1 ]; then
+		model_flags="$model_flags\"USB\","
+	fi
+
+	if [ "$gnss" = 1 ]; then
+		model_flags="$model_flags\"GNSS\","
+	fi
+
+	cp /etc/chirpstack-concentratord/sx1302/examples/channels_$channel_plan.toml /var/etc/chirpstack-concentratord/channels.toml
+	cp /etc/chirpstack-concentratord/sx1302/examples/region_$region_config.toml /var/etc/chirpstack-concentratord/region.toml
+
+	# set model
+	sed -i "s/model=.*/model=\"${model}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
+
+	# set region
+	sed -i "s/region=.*/region=\"${region}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
+
+	# set flags
+	sed -i "s/model_flags=.*/model_flags=[$model_flags]/" /var/etc/chirpstack-concentratord/concentratord.toml
+}
+
+conf_rule_2g4() {
+	local cfg="$1"
+	local model
+
+	config_get model $cfg model
+
+	cp /etc/chirpstack-concentratord/2g4/examples/channels_ism2400.toml /var/etc/chirpstack-concentratord/channels.toml
+	cp /etc/chirpstack-concentratord/2g4/examples/region_ism2400.toml /var/etc/chirpstack-concentratord/region.toml
+
+	# set model
+	sed -i "s/model=.*/model=\"${model}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
+}
+
+configuration() {
+	mkdir -p /var/etc/chirpstack-concentratord
+	config_load "chirpstack-concentratord"
+	config_foreach conf_rule_global "global"
+}
+
+start_service() {
+	configuration
+
+	procd_open_instance 
+	procd_set_param command /usr/bin/chirpstack-concentratord-$CHIPSET -c /var/etc/chirpstack-concentratord/concentratord.toml -c /var/etc/chirpstack-concentratord/region.toml -c /var/etc/chirpstack-concentratord/channels.toml
+	procd_set_param respawn
+	procd_set_param file /etc/config/chirpstack-concentratord
+	procd_close_instance
+}
+
+service_triggers() {
+	procd_add_reload_trigger "chirpstack-concentratord"
+}
+
+reload_service() {
+	stop
+	start
+}

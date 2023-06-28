@@ -1,0 +1,10 @@
+{
+    "admin/chirpstack/mqtt-forwarder": {
+        "title": "MQTT Forwarder",
+        "order": 2,
+        "action": {
+            "type": "view",
+            "path": "chirpstack/mqtt-forwarder"
+        }
+    }
+}

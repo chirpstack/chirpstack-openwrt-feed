@@ -1,0 +1,15 @@
+{
+    "admin/chirpstack": {
+        "title": "ChirpStack",
+        "order": 11,
+        "action": {
+            "type": "firstchild",
+            "recurse": true
+        },
+        "depends": {
+            "acl": [
+                "luci-app-chirpstack"
+            ]
+        }
+    }
+}

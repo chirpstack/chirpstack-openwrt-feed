@@ -1,0 +1,32 @@
+{
+    "luci-app-chirpstack": {
+        "description": "Grant UCI access to ChirpStack configuration",
+        "read": {
+            "ubus": {
+                "uci": [
+                    "get"
+                ]
+            },
+            "uci": [
+                "chirpstack-concentratord",
+                "chirpstack-mqtt-forwarder",
+                "chirpstack-udp-forwarder",
+                "chirpstack"
+            ]
+        },
+        "write": {
+            "ubus": {
+                "uci": [
+                    "set",
+                    "commit"
+                ]
+            },
+            "uci": [
+                "chirpstack-concentratord",
+                "chirpstack-mqtt-forwarder",
+                "chirpstack-udp-forwarder",
+                "chirpstack"
+            ]
+        }
+    }
+}

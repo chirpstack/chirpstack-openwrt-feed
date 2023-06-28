@@ -1,0 +1,125 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=99
+
+USE_PROCD=1
+PACKAGE_NAME=chirpstack
+
+init_db() {
+	mkdir -p /srv/postgresql
+	chown postgres:postgres /srv/postgresql
+
+	while ! sudo -u postgres /usr/bin/pg_isready -h localhost; do
+		echo "Waiting for PostgreSQL"
+		sleep 1
+	done
+
+	uci set postgresql.config.PGDATA=/srv/postgresql/data
+	uci commit
+
+	while ! sudo -u postgres /usr/bin/pg_isready -h localhost; do
+		echo "Waiting for PostgreSQL"
+		sleep 1
+	done
+
+	while ! sudo -u postgres /usr/bin/psql -h localhost -c '' chirpstack; do
+		echo "Init database"
+		sudo -u postgres /usr/bin/psql -h localhost -c "create role chirpstack with login password 'chirpstack';"
+		sudo -u postgres /usr/bin/psql -h localhost -c "create database chirpstack with owner chirpstack";
+		sudo -u postgres /usr/bin/psql -h localhost -c "create extension pg_trgm;" chirpstack
+		sudo -u postgres /usr/bin/psql -h localhost -c "create extension hstore;" chirpstack
+		sleep 1
+	done
+}
+
+add_gateway() {
+	local gateway_id=$(/usr/bin/gateway-id)
+	local create_sql="
+		insert into gateway (
+			gateway_id,
+			tenant_id,
+			created_at,
+			updated_at,
+			name,
+			description,
+			latitude,
+			longitude,
+			altitude,
+			stats_interval_secs,
+			tags,
+			properties
+		) values (
+			decode('$gateway_id', 'hex'),
+			'52f14cd4-c6f1-4fbd-8f87-4025e1d49242',
+			now(),
+			now(),
+			'Gateway',
+			'',
+			0,
+			0,
+			0,
+			30,
+			'{}',
+			'{}'
+		)
+		on conflict do nothing		
+	"
+
+	PGPASSWORD=chirpstack psql -h localhost -U chirpstack chirpstack -c "$create_sql"
+}
+
+conf_rule_network() {
+	local cfg="$1"
+	local net_id
+
+	config_get net_id $cfg net_id
+
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+		[network]
+		net_id="$net_id"
+		enabled_regions=[]
+	EOF
+
+	config_list_foreach $cfg enabled_regions config_rule_network_enabled_regions
+}
+
+config_rule_network_enabled_regions() {
+	local region="$1"
+	sed -i "s/enabled_regions=\[\(.*\)\]/enabled_regions=\[\1\"$region\",\]/" /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml
+	cp /etc/$PACKAGE_NAME/region_$region.toml /var/etc/$PACKAGE_NAME
+
+	sed -i "s/\$MQTT_BROKER_HOST/localhost/" /var/etc/$PACKAGE_NAME/*.toml
+	sed -i "s/\$POSTGRESQL_HOST/localhost/" /var/etc/$PACKAGE_NAME/*.toml
+	sed -i "s/\$REDIS_HOST/localhost/" /var/etc/$PACKAGE_NAME/*.toml
+}
+
+configuration() {
+	mkdir -p /var/etc/$PACKAGE_NAME
+	rm -rf /var/etc/$PACKAGE_NAME/*.toml
+	echo "" > /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml
+
+	config_load "$PACKAGE_NAME"
+	config_foreach conf_rule_network "network"
+}
+
+start_service() {
+	init_db
+	configuration
+
+	procd_open_instance
+	procd_set_param command /usr/bin/$PACKAGE_NAME -c /var/etc/$PACKAGE_NAME
+	procd_set_param respawn
+	procd_set_param file /etc/config/$PACKAGE_NAME /etc/config/chirpstack-concentratord
+	procd_close_instance
+}
+
+service_triggers() {
+	procd_add_reload_trigger "$PACKAGE_NAME" "/etc/config/chirpstack-concentratord"
+}
+
+reload_service() {
+	stop
+	add_gateway
+	start
+}
