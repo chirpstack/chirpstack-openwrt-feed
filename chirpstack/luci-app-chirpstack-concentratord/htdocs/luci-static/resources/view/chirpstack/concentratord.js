@@ -293,7 +293,7 @@ return view.extend({
         var m, s, o, ro, as;
 
         m = new form.Map('chirpstack-concentratord', _('ChirpStack Concentratord'),
-            _('Configure the Concentratord for the correct LoRa(R) shield. Please refer to the <a target="_blank" href="https://www.chirpstack.io/docs/chirpstack-concentratord/hardware-support.html">ChirpStack Concentratord Hardware</a> page for supported configuration options.'));
+            _('ChirpStack Concentratord provides an unified API interface to LoRa(R) concentrator hardware. Please refer to the <a target="_blank" href="https://www.chirpstack.io/docs/chirpstack-concentratord/hardware-support.html">ChirpStack Concentratord Hardware</a> page for supported hardware and configuration options.'));
         m.chain('chirpstack-mqtt-forwarder');
         m.chain('chirpstack');
 

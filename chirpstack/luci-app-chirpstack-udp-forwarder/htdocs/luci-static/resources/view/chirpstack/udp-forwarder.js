@@ -7,7 +7,7 @@ return view.extend({
     render: function () {
         var m, s, o, ro, as;
 
-        m = new form.Map('chirpstack-udp-forwarder', _('ChirpStack UDP Forwarder'), _('The ChirpStack UDP Forwarder is a Semtech UDP Packet Forwarder protocol compatible forwarder, which can be used to connect this gateway to other network-servers.'));
+        m = new form.Map('chirpstack-udp-forwarder', _('ChirpStack UDP Forwarder'), _('ChirpStack UDP Forwarder forwards data received by the ChirpStack Concentratord to one or multiple UDP endpoints (Semtech UDP Packet Forwarder compatible).'));
         m.tabbed = true;
 
         s = m.section(form.TypedSection, 'server', _('Servers'));

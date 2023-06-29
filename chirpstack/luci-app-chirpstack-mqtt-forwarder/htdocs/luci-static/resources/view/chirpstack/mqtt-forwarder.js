@@ -7,7 +7,7 @@ return view.extend({
     render: function () {
         var m, s, o, ro, as;
 
-        m = new form.Map('chirpstack-mqtt-forwarder', _('ChirpStack MQTT Forwarder'));
+        m = new form.Map('chirpstack-mqtt-forwarder', _('ChirpStack MQTT Forwarder'), _('ChirpStack MQTT Forwarder forwards data received by the ChirpStack Concentratord to a MQTT broker.'));
         m.tabbed = true;
 
         s = m.section(form.TypedSection, 'mqtt', _('MQTT configuration'));

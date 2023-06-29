@@ -7,7 +7,7 @@ return view.extend({
     render: function () {
         var m, s, o, ro, as;
 
-        m = new form.Map('chirpstack', _('ChirpStack'), _('ChirpStack Network Server configuration. <a href=":8080" _target="blank">Open the web-interface</a>.'));
+        m = new form.Map('chirpstack', _('ChirpStack'), _('ChirpStack is an open-source LoRaWAN(R) Network Server.'));
         m.tabbed = true;
 
         s = m.section(form.TypedSection, 'network', _('Network'));
