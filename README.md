@@ -6,6 +6,11 @@ This repository contains packages to integrate ChirpStack components into
 
 ## Content
 
+### `/app`
+
+* [Node-RED](https://nodered.org/)
+* [node-red-contrib-chirpstack](https://github.com/chirpstack/node-red-contrib-chirpstack)
+
 ### `/chirpstack`
 
 * [ChirpStack](https://www.chirpstack.io/docs/chirpstack/)
