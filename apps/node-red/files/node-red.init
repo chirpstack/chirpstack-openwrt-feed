@@ -1,0 +1,16 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=99
+
+USE_PROCD=1
+PACKAGE_NAME=node-red
+
+start_service() {
+    mkdir -p /srv/$PACKAGE_NAME
+
+    procd_open_instance
+    procd_set_param command node /usr/lib/node/$PACKAGE_NAME/red.js --userDir /srv/$PACKAGE_NAME
+    procd_set_param respawn
+    procd_close_instance
+}
