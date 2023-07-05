@@ -1,7 +1,7 @@
 {
     "admin/chirpstack": {
         "title": "ChirpStack",
-        "order": 11,
+        "order": 2,
         "action": {
             "type": "firstchild",
             "recurse": true
