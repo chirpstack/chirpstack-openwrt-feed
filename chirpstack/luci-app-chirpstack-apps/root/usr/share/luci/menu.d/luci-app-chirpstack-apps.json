@@ -1,0 +1,10 @@
+{
+    "admin/apps": {
+        "title": "Applications",
+        "order": 1,
+        "action": {
+            "type": "view",
+            "path": "chirpstack/apps"
+        }
+    }
+}
