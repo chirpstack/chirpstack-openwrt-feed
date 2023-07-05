@@ -115,7 +115,7 @@ start_service() {
 
 	procd_open_instance 
 	procd_set_param command /usr/bin/chirpstack-concentratord-$CHIPSET -c /var/etc/chirpstack-concentratord/concentratord.toml -c /var/etc/chirpstack-concentratord/region.toml -c /var/etc/chirpstack-concentratord/channels.toml
-	procd_set_param respawn
+	procd_set_param respawn 3600 5 -1
 	procd_set_param file /etc/config/chirpstack-concentratord
 	procd_close_instance
 }

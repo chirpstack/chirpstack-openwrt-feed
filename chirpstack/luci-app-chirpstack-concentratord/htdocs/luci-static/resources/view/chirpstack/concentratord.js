@@ -338,6 +338,7 @@ return view.extend({
             // channels
             if (chipset.id === "sx1301" || chipset.id === "sx1302") {
                 o = s.option(form.ListValue, 'channel_plan', _('Channel-plan'), _('Select the channel-plan to use. This must be supported by the selected shield.'));
+                o.forcewrite = true;
 
                 for (const region of options.regions) {
                     for (const channelPlan of region.channelPlans) {
