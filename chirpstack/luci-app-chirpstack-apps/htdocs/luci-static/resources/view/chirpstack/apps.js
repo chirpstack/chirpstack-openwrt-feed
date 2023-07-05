@@ -28,7 +28,7 @@ return view.extend({
         var appContainer = E('dev');
 
         for (const app of apps) {
-            appContainer.appendChild(E('a', { 'href': app.url, 'target': '_blank' }, [E('img', { 'src': app.logo, 'style': "width: 320px; height: 135px; margin: 50px; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.03);" })]));
+            appContainer.appendChild(E('a', { 'href': app.url, 'target': '_blank' }, [E('img', { 'src': app.logo, 'style': "width: 320px; height: 135px; margin: 25px; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.03);" })]));
         }
 
         body.appendChild(appContainer);
