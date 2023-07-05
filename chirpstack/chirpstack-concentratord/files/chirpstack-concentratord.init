@@ -105,6 +105,11 @@ conf_rule_2g4() {
 }
 
 configuration() {
+	while ! uci get chirpstack-concentratord.@global[0].chipset; do
+		echo "Waiting for chipset configuration"
+		sleep 1                                                                                                                                                                                                               
+	done
+
 	mkdir -p /var/etc/chirpstack-concentratord
 	config_load "chirpstack-concentratord"
 	config_foreach conf_rule_global "global"
