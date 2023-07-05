@@ -50,6 +50,9 @@ define Package/chirpstack/install
 
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/* $(1)/usr/bin
+
+	$(INSTALL_DIR) $(1)/etc/nginx/conf.d
+	$(INSTALL_DATA) ./files/chirpstack.nginx $(1)/etc/nginx/conf.d/chirpstack.locations
 endef
 
 define Build/Prepare

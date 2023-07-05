@@ -1,0 +1,3 @@
+location /apps/chirpstack {
+    return 302 http://$host:8080;
+}

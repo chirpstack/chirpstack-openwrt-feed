@@ -67,6 +67,9 @@ define Package/node-red/install
 
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/node-red.init $(1)/etc/init.d/node-red
+
+	$(INSTALL_DIR) $(1)/etc/nginx/conf.d
+	$(INSTALL_DATA) ./files/node-red.nginx $(1)/etc/nginx/conf.d/node-red.locations
 endef
 
 $(eval $(call BuildPackage,node-red))
