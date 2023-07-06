@@ -163,6 +163,15 @@ return view.extend({
                                 usb: true,
                             },
                         },
+                        {
+                            id: "waveshare_sx1302_lorawan_gateway_hat",
+                            name: "Waveshare - SX1302 LoRaWAN Gateway HAT",
+                            supportedRegions: ["EU868"],
+                            defaultFlags: {
+                                gnss: false,
+                                usb: false,
+                            },
+                        },
                     ]
                 },
                 {
