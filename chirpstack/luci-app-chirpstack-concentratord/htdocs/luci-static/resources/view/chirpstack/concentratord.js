@@ -45,7 +45,7 @@ return view.extend({
                         },
                         {
                             id: "rak_2247",
-                            name: "RAK - 2247",
+                            name: "RAK - RAK2247",
                             supportedRegions: ["AS923", "AS923_2", "AS923_3", "AS923_4", "AU915", "EU868", "IN865", "KR920", "RU864", "US915", "CN470", "EU433"],
                             defaultFlags: {
                                 gnss: true,
