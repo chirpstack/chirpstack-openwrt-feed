@@ -22,53 +22,6 @@ init_db() {
 	done
 }
 
-add_gateway() {
-	# Test if the schema has already been created
-	if ! sudo -u postgres /usr/bin/psql -h localhost -c 'select count(1) from gateway' chirpstack; then
-		return
-	fi
-
-	# Wait for the gateway-id to return the gateway ID
-	while ! /usr/bin/gateway-id; do
-		echo "Waiting for gateway-id"
-		sleep 1
-	done
-
-	local gateway_id=$(/usr/bin/gateway-id)
-	local create_sql="
-		insert into gateway (
-			gateway_id,
-			tenant_id,
-			created_at,
-			updated_at,
-			name,
-			description,
-			latitude,
-			longitude,
-			altitude,
-			stats_interval_secs,
-			tags,
-			properties
-		) values (
-			decode('$gateway_id', 'hex'),
-			'52f14cd4-c6f1-4fbd-8f87-4025e1d49242',
-			now(),
-			now(),
-			'Gateway',
-			'',
-			0,
-			0,
-			0,
-			30,
-			'{}',
-			'{}'
-		)
-		on conflict do nothing		
-	"
-
-	PGPASSWORD=chirpstack psql -h localhost -U chirpstack chirpstack -c "$create_sql"
-}
-
 conf_rule_network() {
 	local cfg="$1"
 	local net_id
@@ -99,6 +52,11 @@ configuration() {
 	rm -rf /var/etc/$PACKAGE_NAME/*.toml
 	echo "" > /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml
 
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+		[gateway]
+		allow_unknown_gateways=true
+	EOF
+
 	config_load "$PACKAGE_NAME"
 	config_foreach conf_rule_network "network"
 }
@@ -106,7 +64,6 @@ configuration() {
 start_service() {
 	init_db
 	configuration
-	add_gateway
 
 	procd_open_instance
 	procd_set_param command /usr/bin/$PACKAGE_NAME -c /var/etc/$PACKAGE_NAME
@@ -121,6 +78,5 @@ service_triggers() {
 
 reload_service() {
 	stop
-	add_gateway
 	start
 }
