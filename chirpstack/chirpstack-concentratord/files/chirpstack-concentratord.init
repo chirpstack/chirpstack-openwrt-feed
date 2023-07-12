@@ -30,13 +30,14 @@ conf_rule_global() {
 
 conf_rule_sx1301() {
 	local cfg="$1"
-	local model region channel_plan gnss
+	local model region channel_plan gnss gateway_id
 	local model_flags
 
 	config_get model $cfg model
 	config_get region $cfg region
 	config_get channel_plan $cfg channel_plan
 	config_get gnss $cfg gnss
+	config_get gateway_id $cfg gateway_id
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
@@ -52,6 +53,9 @@ conf_rule_sx1301() {
 
 	# set region
 	sed -i "s/region=.*/region=\"${region}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
+
+	# set gateway id
+	sed -i "s/gateway_id=.*/gateway_id=\"${gateway_id}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
 
 	# set flags
 	sed -i "s/model_flags=.*/model_flags=[$model_flags]/" /var/etc/chirpstack-concentratord/concentratord.toml

@@ -396,6 +396,11 @@ return view.extend({
                 };
             }
 
+            // gateway id
+            if (chipset.id === "sx1301") {
+                o = s.option(form.Value, 'gateway_id', _('Gateway ID'), _('Enter the ID of the gateway. Example: 0102030405060708'));
+            }
+
             // flags
             if (chipset.id === 'sx1301' || chipset.id === 'sx1302') {
                 s.option(form.Flag, 'gnss', _('GNSS'), _('Enable this in case the shield has a uBlox GNSS module.'));
