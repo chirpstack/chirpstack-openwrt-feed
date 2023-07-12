@@ -399,6 +399,13 @@ return view.extend({
             // gateway id
             if (chipset.id === "sx1301") {
                 o = s.option(form.Value, 'gateway_id', _('Gateway ID'), _('Enter the ID of the gateway. Example: 0102030405060708'));
+                o.validate = function (section_id, value) {
+                    if (!value.match(/[0-9a-fA-F]{16}/)) {
+                        return "Gateway ID is not valid, example value: 0102030405060708";
+                    }
+
+                    return true;
+                }
             }
 
             // flags
