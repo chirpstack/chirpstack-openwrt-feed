@@ -1,0 +1,6 @@
+rule_name=$(uci add luci command)
+uci batch << EOI
+set luci.$rule_name.name='Upgrade 2g4 concentrator firmware'
+set luci.$rule_name.command='/opt/libloragw-2g4/upgrade_fw.sh'
+EOI
+uci commit

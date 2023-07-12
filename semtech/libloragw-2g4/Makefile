@@ -64,6 +64,7 @@ define Package/libloragw-2g4-utils/install
 	$(INSTALL_DIR) $(1)/opt/libloragw-2g4/utils
 	$(INSTALL_DIR) $(1)/opt/libloragw-2g4/mcu_bin
 
+	$(INSTALL_BIN) ./files/upgrade_fw.sh $(1)/opt/libloragw-2g4/upgrade_fw.sh
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_boot/boot $(1)/opt/libloragw-2g4/utils
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/mcu_bin/rlz_fwm_gtw_2g4_01.00.01.bin $(1)/opt/libloragw-2g4/mcu_bin
 endef
