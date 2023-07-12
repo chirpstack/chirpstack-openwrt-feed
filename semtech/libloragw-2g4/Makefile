@@ -60,7 +60,7 @@ define Package/libloragw-2g4/install
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/libloragw/inc/* $(1)/usr/include/libloragw-2g4
 endef
 
-define Package/libloragw-sx1302-utils/install
+define Package/libloragw-2g4-utils/install
 	$(INSTALL_DIR) $(1)/opt/libloragw-2g4/utils
 	$(INSTALL_DIR) $(1)/opt/libloragw-2g4/mcu_bin
 
