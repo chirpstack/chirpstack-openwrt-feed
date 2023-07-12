@@ -70,6 +70,7 @@ define Package/libloragw-sx1302-utils/install
 	$(INSTALL_DIR) $(1)/opt/libloragw-sx1302/utils
 	$(INSTALL_DIR) $(1)/opt/libloragw-sx1302/mcu_bin
 
+	$(INSTALL_BIN) ./files/upgrade_fw.sh $(1)/opt/libloragw-sx1302/upgrade_fw.sh
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_boot/boot $(1)/opt/libloragw-sx1302/utils
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/mcu_bin/rlz_010000_CoreCell_USB.bin $(1)/opt/libloragw-sx1302/mcu_bin
 endef
