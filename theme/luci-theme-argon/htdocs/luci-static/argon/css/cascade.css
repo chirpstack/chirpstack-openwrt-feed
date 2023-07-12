@@ -5523,3 +5523,8 @@ pre.command-output {
 .login-form {
   background-color: rgb(255, 255, 255) !important;
 }
+
+.commandbox p code {
+  position: relative !important;
+  margin-bottom: 20px !important;
+}
