@@ -7,17 +7,6 @@ USE_PROCD=1
 PACKAGE_NAME=chirpstack
 
 init_db() {
-	mkdir -p /srv/postgresql
-	chown postgres:postgres /srv/postgresql
-
-	while ! sudo -u postgres /usr/bin/pg_isready -h localhost; do
-		echo "Waiting for PostgreSQL"
-		sleep 1
-	done
-
-	uci set postgresql.config.PGDATA=/srv/postgresql/data
-	uci commit
-
 	while ! sudo -u postgres /usr/bin/pg_isready -h localhost; do
 		echo "Waiting for PostgreSQL"
 		sleep 1
