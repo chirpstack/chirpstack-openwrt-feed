@@ -97,12 +97,16 @@ conf_rule_sx1302() {
 
 conf_rule_2g4() {
 	local cfg="$1"
-	local model
+	local model channel_plan
 
 	config_get model $cfg model
+	config_get region $cfg region
+	config_get channel_plan $cfg channel_plan
 
-	cp /etc/chirpstack-concentratord/2g4/examples/channels_ism2400.toml /var/etc/chirpstack-concentratord/channels.toml
-	cp /etc/chirpstack-concentratord/2g4/examples/region_ism2400.toml /var/etc/chirpstack-concentratord/region.toml
+	local region_config=$(echo "$region" | awk '{print tolower($0)}')
+
+	cp /etc/chirpstack-concentratord/2g4/examples/channels_$channel_plan.toml /var/etc/chirpstack-concentratord/channels.toml
+	cp /etc/chirpstack-concentratord/2g4/examples/region_$region_config.toml /var/etc/chirpstack-concentratord/region.toml
 
 	# set model
 	sed -i "s/model=.*/model=\"${model}\"/" /var/etc/chirpstack-concentratord/concentratord.toml

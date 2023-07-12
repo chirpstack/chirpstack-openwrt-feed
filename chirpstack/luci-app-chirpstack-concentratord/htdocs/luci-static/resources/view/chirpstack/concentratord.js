@@ -181,6 +181,7 @@ return view.extend({
                         {
                             id: "semtech_sx1280z3dsfgw1",
                             name: "Semtech - SX1280 LoRa Connect(TM) (2.4 GHz)",
+                            supportedRegions: ["ISM2400"],
                             defaultFlags: {},
                         }
                     ]
@@ -294,7 +295,14 @@ return view.extend({
                         { id: "us915_5", name: "US915 - Channels 40-47 + 69" },
                         { id: "us915_6", name: "US915 - Channels 48-55 + 70" },
                         { id: "us915_7", name: "US915 - Channels 56-63 + 71" },
-                    ]
+                    ],
+                },
+                {
+                    id: "ISM2400",
+                    name: "ISM2400",
+                    channelPlans: [
+                        { id: "ism2400", name: "ISM2400" },
+                    ],
                 },
             ]
         };
@@ -345,56 +353,56 @@ return view.extend({
             }
 
             // channels
-            if (chipset.id === "sx1301" || chipset.id === "sx1302") {
-                o = s.option(form.ListValue, 'channel_plan', _('Channel-plan'), _('Select the channel-plan to use. This must be supported by the selected shield.'));
-                o.forcewrite = true;
+            o = s.option(form.ListValue, 'channel_plan', _('Channel-plan'), _('Select the channel-plan to use. This must be supported by the selected shield.'));
+            o.forcewrite = true;
 
-                for (const region of options.regions) {
+            for (const region of options.regions) {
+                if (chipset.id !== "2g4" || region.id === "ISM2400") {
                     for (const channelPlan of region.channelPlans) {
                         o.value(channelPlan.id, channelPlan.name);
                     }
                 }
+            }
 
-                o.validate = function (section_id, value) {
-                    const shieldId = m.lookupOption('model', section_id)[0].formvalue(section_id);
+            o.validate = function (section_id, value) {
+                const shieldId = m.lookupOption('model', section_id)[0].formvalue(section_id);
 
-                    var regionId;
-                    for (const region of options.regions) {
-                        for (const channelPlan of region.channelPlans) {
-                            if (channelPlan.id === value) {
-                                regionId = region.id;
-                            }
+                var regionId;
+                for (const region of options.regions) {
+                    for (const channelPlan of region.channelPlans) {
+                        if (channelPlan.id === value) {
+                            regionId = region.id;
                         }
                     }
-
-                    for (const chipset of options.chipsets) {
-                        for (const shield of chipset.shields) {
-                            if (shield.id === shieldId && shield.supportedRegions.includes(regionId)) {
-                                return true;
-                            }
-                        }
-                    }
-
-                    return "The selected channel-plan region is not supported by the selected shield\nor Concentratord has not yet implemented this region for this shield.\nIf you believe this region should be supported, then create a feature-request here:\nhttps://github.com/chirpstack/chirpstack-concentratord/issues";
                 }
 
-                o.write = function (section_id, formvalue) {
-                    var regionId;
-                    for (const region of options.regions) {
-                        for (const channelPlan of region.channelPlans) {
-                            if (channelPlan.id === formvalue) {
-                                regionId = region.id;
-                            }
+                for (const chipset of options.chipsets) {
+                    for (const shield of chipset.shields) {
+                        if (shield.id === shieldId && shield.supportedRegions.includes(regionId)) {
+                            return true;
                         }
                     }
+                }
 
-                    uci.set('chirpstack-concentratord', section_id, 'channel_plan', formvalue);
-                    uci.set('chirpstack-concentratord', section_id, 'region', regionId);
-
-                    uci.set('chirpstack-mqtt-forwarder', '@mqtt[0]', 'topic_prefix', formvalue);
-                    uci.set('chirpstack', '@network[0]', 'enabled_regions', [formvalue]);
-                };
+                return "The selected channel-plan region is not supported by the selected shield\nor Concentratord has not yet implemented this region for this shield.\nIf you believe this region should be supported, then create a feature-request here:\nhttps://github.com/chirpstack/chirpstack-concentratord/issues";
             }
+
+            o.write = function (section_id, formvalue) {
+                var regionId;
+                for (const region of options.regions) {
+                    for (const channelPlan of region.channelPlans) {
+                        if (channelPlan.id === formvalue) {
+                            regionId = region.id;
+                        }
+                    }
+                }
+
+                uci.set('chirpstack-concentratord', section_id, 'channel_plan', formvalue);
+                uci.set('chirpstack-concentratord', section_id, 'region', regionId);
+
+                uci.set('chirpstack-mqtt-forwarder', '@mqtt[0]', 'topic_prefix', formvalue);
+                uci.set('chirpstack', '@network[0]', 'enabled_regions', [formvalue]);
+            };
 
             // gateway id
             if (chipset.id === "sx1301") {
