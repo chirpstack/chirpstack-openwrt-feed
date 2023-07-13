@@ -39,6 +39,15 @@ configuration() {
 	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
 		[gateway]
 		allow_unknown_gateways=true
+
+		[integration]
+		enabled = [
+			"mqtt",
+		]
+
+		[integration.mqtt]
+		json=true
+		server="tcp://127.0.0.1:1883/"
 	EOF
 
 	config_load "$PACKAGE_NAME"
