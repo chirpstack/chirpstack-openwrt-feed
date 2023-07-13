@@ -56,11 +56,9 @@ define Package/chirpstack/install
 endef
 
 define Build/Prepare
-	$(PKG_UNPACK)
-	(cd $(PKG_BUILD_DIR) && \
-		rm -rf .cargo \
-	)
-	$(Build/Patch)
+	$(call Build/Prepare/Default)
+	mkdir -p $(PKG_BUILD_DIR)/.cargo
+	cp ./files/cargo.config.toml $(PKG_BUILD_DIR)/.cargo/config
 endef
 
 define Build/Compile
