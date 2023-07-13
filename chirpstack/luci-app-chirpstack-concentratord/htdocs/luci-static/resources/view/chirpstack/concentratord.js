@@ -400,8 +400,11 @@ return view.extend({
                 uci.set('chirpstack-concentratord', section_id, 'channel_plan', formvalue);
                 uci.set('chirpstack-concentratord', section_id, 'region', regionId);
 
-                uci.set('chirpstack-mqtt-forwarder', '@mqtt[0]', 'topic_prefix', formvalue);
-                uci.set('chirpstack', '@network[0]', 'enabled_regions', [formvalue]);
+                const chipset = uci.get('chirpstack-concentratord', '@global[0]', 'chipset');
+                const region = uci.get('chirpstack-concentratord', `@${chipset}[0]`, 'channel_plan');
+
+                uci.set('chirpstack-mqtt-forwarder', '@mqtt[0]', 'topic_prefix', region);
+                uci.set('chirpstack', '@network[0]', 'enabled_regions', [region]);
             };
 
             // gateway id
