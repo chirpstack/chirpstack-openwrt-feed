@@ -14,6 +14,8 @@ PKG_LICENSE_FILES:=LICENSE
 
 include $(INCLUDE_DIR)/package.mk
 
+TAR_OPTIONS+= --strip-components 1
+TAR_CMD=$(HOST_TAR) -C $(1) $(TAR_OPTIONS)
 TARGET_CFLAGS:=-O2 -Wall -Wextra -std=c99 -Iinc -I. -I../libtools/inc -fPIC
 
 define Package/libloragw-sx1302
@@ -36,12 +38,6 @@ endef
 
 define Package/libloragw-sx1302-utils/description
 	Semtech SX1302 HAL utils
-endef
-
-define Build/Prepare
-	$(PKG_UNPACK)
-	(cd $(PKG_BUILD_DIR) && cp -r ../sx1302_hal-$(PKG_VERSION)r$(PKG_RELEASE)/* .)
-	$(Build/Patch)
 endef
 
 define Build/InstallDev

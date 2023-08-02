@@ -14,6 +14,8 @@ PKG_LICENSE_FILES:=LICENSE
 
 include $(INCLUDE_DIR)/package.mk
 
+TAR_OPTIONS+= --strip-components 1
+TAR_CMD=$(HOST_TAR) -C $(1) $(TAR_OPTIONS)
 TARGET_CFLAGS:=-g -O0 -Wall -Wextra -std=c99 -Iinc -I. -I ../libtools/inc -fPIC
 
 define Package/libloragw-2g4
@@ -36,12 +38,6 @@ endef
 
 define Package/libloragw-2g4-utils/description
 	Semtech 2G4 HAL utils
-endef
-
-define Build/Prepare
-	$(PKG_UNPACK)
-	(cd $(PKG_BUILD_DIR) && cp -r ../gateway_2g4_hal-$(PKG_VERSION)/* .)
-	$(Build/Patch)
 endef
 
 define Build/InstallDev
