@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack
 PKG_VERSION:=4.4.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack/tar.gz/v$(PKG_VERSION)?
@@ -18,6 +18,7 @@ include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
 
 export CXX:=$(TARGET_CXX_NOCACHE)
+export BINDGEN_EXTRA_CLANG_ARGS:=--sysroot=$(TOOLCHAIN_DIR)
 
 CARGO_VARS += \
 	PROTOC=$(STAGING_DIR_HOSTPKG)/bin/protoc
@@ -65,7 +66,7 @@ define Build/Compile
 	(cd $(PKG_BUILD_DIR)/ui && \
 		make build \
 	)
-	$(call Build/Compile/Cargo,chirpstack)
+	$(call Build/Compile/Cargo,chirpstack,--locked)
 endef
 
 $(eval $(call RustBinPackage,chirpstack))
