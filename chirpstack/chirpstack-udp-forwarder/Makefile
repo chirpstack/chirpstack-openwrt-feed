@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack-udp-forwarder
 PKG_VERSION:=4.1.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack-udp-forwarder/tar.gz/v$(PKG_VERSION)?
@@ -47,6 +47,10 @@ define Package/chirpstack-udp-forwarder/install
 
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/* $(1)/usr/bin
+endef
+
+define Build/Compile
+	$(call Build/Compile/Cargo,.,--locked)
 endef
 
 $(eval $(call RustBinPackage,chirpstack-udp-forwarder))
