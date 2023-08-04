@@ -18,6 +18,7 @@ include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
 
 export CXX:=$(TARGET_CXX_NOCACHE)
+export BINDGEN_EXTRA_CLANG_ARGS:=--sysroot=$(TOOLCHAIN_DIR)
 
 CARGO_VARS += \
 	PROTOC=$(STAGING_DIR_HOSTPKG)/bin/protoc
@@ -53,6 +54,10 @@ define Build/Prepare
 	$(PKG_UNPACK)
 	(cd $(PKG_BUILD_DIR) && rm -rf .cargo)
 	$(Build/Patch)
+endef
+
+define Build/Compile
+	$(call Build/Compile/Cargo,.,--locked)
 endef
 
 $(eval $(call RustBinPackage,chirpstack-mqtt-forwarder))
