@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack-concentratord
-PKG_VERSION:=4.2.0
+PKG_VERSION:=4.2.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack-concentratord/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=65a0b8a2e44bc9b27bdce5d64fca9286dc6d191cc2700be4ccc44ccc2dc19590
+PKG_HASH:=5b7548ea13166cf678a7c52bc02c0b2c84c7b157b9eed7eccb01fa6c28761058
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
@@ -18,7 +18,7 @@ include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
 
 export CXX:=$(TARGET_CXX_NOCACHE)
-export BINDGEN_EXTRA_CLANG_ARGS:=-I$(STAGING_DIR)/usr/include
+export BINDGEN_EXTRA_CLANG_ARGS:=--sysroot=$(TOOLCHAIN_DIR) -I$(STAGING_DIR)/usr/include
 
 CARGO_VARS += \
 	PROTOC=$(STAGING_DIR_HOSTPKG)/bin/protoc
@@ -69,10 +69,10 @@ define Build/Prepare
 endef
 
 define Build/Compile
-	$(call Build/Compile/Cargo,chirpstack-concentratord-sx1301)
-	$(call Build/Compile/Cargo,chirpstack-concentratord-sx1302)
-	$(call Build/Compile/Cargo,chirpstack-concentratord-2g4)
-	$(call Build/Compile/Cargo,gateway-id)
+	$(call Build/Compile/Cargo,chirpstack-concentratord-sx1301,--locked)
+	$(call Build/Compile/Cargo,chirpstack-concentratord-sx1302,--locked)
+	$(call Build/Compile/Cargo,chirpstack-concentratord-2g4,--locked)
+	$(call Build/Compile/Cargo,gateway-id,--locked)
 endef
 
 $(eval $(call RustBinPackage,chirpstack-concentratord))
