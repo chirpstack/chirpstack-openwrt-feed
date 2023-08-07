@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack
-PKG_VERSION:=4.4.0
-PKG_RELEASE:=2
+PKG_VERSION:=4.4.3
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=d6425c2a90d0a92910dbef8a173853081a03d865f67c07b2b49e28ba2b9199fd
+PKG_HASH:=e296c733dea48ab23a941ea5b94675ae75a1ff0c1b4c0b12820b7f44cb8589e9
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
@@ -19,6 +19,9 @@ include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
 
 export CXX:=$(TARGET_CXX_NOCACHE)
 export BINDGEN_EXTRA_CLANG_ARGS:=--sysroot=$(TOOLCHAIN_DIR)
+
+# This is a workaround for 'Undefined temporary symbol ...' error.
+export RUSTFLAGS:=-C opt-level=3
 
 CARGO_VARS += \
 	PROTOC=$(STAGING_DIR_HOSTPKG)/bin/protoc
