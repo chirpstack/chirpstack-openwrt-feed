@@ -20,8 +20,10 @@ include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
 export CXX:=$(TARGET_CXX_NOCACHE)
 export BINDGEN_EXTRA_CLANG_ARGS:=--sysroot=$(TOOLCHAIN_DIR)
 
-# This is a workaround for 'Undefined temporary symbol ...' error.
-export RUSTFLAGS:=-C opt-level=3
+# Fixes:
+#  opt-level=3   - fixes 'Undefined temporary symbol ...' error
+#  link-arg=...  - fixes link issues
+export RUSTFLAGS:=-C opt-level=3 -C link-arg=-lc -C link-arg=-lgcc -C link-arg=-latomic
 
 CARGO_VARS += \
 	PROTOC=$(STAGING_DIR_HOSTPKG)/bin/protoc
