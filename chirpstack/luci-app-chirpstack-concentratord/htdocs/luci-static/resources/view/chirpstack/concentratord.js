@@ -105,7 +105,7 @@ return view.extend({
                             name: "Seeed - WM1302",
                             supportedRegions: ["EU868", "US915"],
                             defaultFlags: {
-                                gnss: true,
+                                gnss: false,
                                 usb: false,
                             },
                         },
@@ -130,7 +130,7 @@ return view.extend({
                         {
                             id: "semtech_sx1302c915gw1",
                             name: "Semtech - LoRa(R) CoreCell 915MHz (SX1302C915GW1)",
-                            supportedRegions: ["US915"],
+                            supportedRegions: ["AU915", "US915"],
                             defaultFlags: {
                                 gnss: false,
                                 usb: false,
@@ -148,7 +148,7 @@ return view.extend({
                         {
                             id: "semtech_sx1302css915gw1",
                             name: "Semtech - LoRa(R) CoreCell 915MHz (SX1302CSS915GW1)",
-                            supportedRegions: ["US915"],
+                            supportedRegions: ["AU915", "US915"],
                             defaultFlags: {
                                 gnss: false,
                                 usb: true,
