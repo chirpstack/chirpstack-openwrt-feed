@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack
 PKG_VERSION:=4.4.3
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack/tar.gz/v$(PKG_VERSION)?
@@ -20,11 +20,6 @@ include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
 export CXX:=$(TARGET_CXX_NOCACHE)
 export BINDGEN_EXTRA_CLANG_ARGS:=--sysroot=$(TOOLCHAIN_DIR)
 
-# Fixes:
-#  opt-level=3   - fixes 'Undefined temporary symbol ...' error
-#  link-arg=...  - fixes link issues
-export RUSTFLAGS:=-C opt-level=3 -C link-arg=-lc -C link-arg=-lgcc -C link-arg=-latomic
-
 CARGO_VARS += \
 	PROTOC=$(STAGING_DIR_HOSTPKG)/bin/protoc
 
@@ -33,7 +28,7 @@ define Package/chirpstack
 	CATEGORY:=ChirpStack
 	TITLE:=ChirpStack
 	URL:=https://github.com/chirpstack/chirpstack
-	DEPENDS:=+libopenssl +libpq
+	DEPENDS:=+libatomic +libopenssl +libpq
 endef
 
 define Package/chirpstack/description
