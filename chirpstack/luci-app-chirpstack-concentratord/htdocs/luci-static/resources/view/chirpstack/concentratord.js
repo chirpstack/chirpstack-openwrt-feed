@@ -179,11 +179,17 @@ return view.extend({
                     name: "2.4GHz",
                     shields: [
                         {
+                            id: "rak_5148",
+                            name: "RAK - RAK5148",
+                            supportedRegions: ["ISM2400"],
+                            defaultFlags: {},
+                        },
+                        {
                             id: "semtech_sx1280z3dsfgw1",
                             name: "Semtech - SX1280 LoRa Connect(TM) (2.4 GHz)",
                             supportedRegions: ["ISM2400"],
                             defaultFlags: {},
-                        }
+                        },
                     ]
                 }
             ],
