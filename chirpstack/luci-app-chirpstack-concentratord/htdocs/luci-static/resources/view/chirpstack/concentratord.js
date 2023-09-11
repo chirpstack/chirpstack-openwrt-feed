@@ -103,7 +103,7 @@ return view.extend({
                         {
                             id: "seeed_wm1302",
                             name: "Seeed - WM1302",
-                            supportedRegions: ["EU868", "US915"],
+                            supportedRegions: ["AS923", "AS923_2", "AS923_3", "AS923_4", "AU915", "EU868", "IN865", "KR920", "RU864", "US915"],
                             defaultFlags: {
                                 gnss: false,
                                 usb: false,
