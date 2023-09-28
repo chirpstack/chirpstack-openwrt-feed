@@ -13,8 +13,6 @@ conf_rule_global() {
 	config_get chipset $cfg chipset
 	CHIPSET=$chipset
 
-	cp /etc/chirpstack-concentratord/$chipset/examples/concentratord.toml /var/etc/chirpstack-concentratord/concentratord.toml
-
 	if [ "$chipset" = "sx1301" ]; then
 		config_foreach conf_rule_sx1301 "sx1301"
 	fi
@@ -45,32 +43,34 @@ conf_rule_sx1301() {
 		model_flags="$model_flags\"GNSS\","
 	fi
 
+	cat > /var/etc/chirpstack-concentratord.toml <<- EOF
+		[gateway]
+			model="$model"
+			region="$region"
+			gateway_id="$gateway_id"
+			model_flags="$model_flags"
+	EOF
+
+	# Copy channel config
 	cp /etc/chirpstack-concentratord/sx1301/examples/channels_$channel_plan.toml /var/etc/chirpstack-concentratord/channels.toml
 	cp /etc/chirpstack-concentratord/sx1301/examples/region_$region_config.toml /var/etc/chirpstack-concentratord/region.toml
-
-	# set model
-	sed -i "s/model=.*/model=\"${model}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
-
-	# set region
-	sed -i "s/region=.*/region=\"${region}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
-
-	# set gateway id
-	sed -i "s/gateway_id=.*/gateway_id=\"${gateway_id}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
-
-	# set flags
-	sed -i "s/model_flags=.*/model_flags=[$model_flags]/" /var/etc/chirpstack-concentratord/concentratord.toml
 }
 
 conf_rule_sx1302() {
 	local cfg="$1"
 	local model region channel_plan gnss usb
 	local model_flags
+	local sx1302_reset_pin com_dev_path i2c_dev_path
 
 	config_get model $cfg model
 	config_get region $cfg region
 	config_get channel_plan $cfg channel_plan
 	config_get gnss $cfg gnss
 	config_get usb $cfg usb
+
+	config_get sx1302_reset_pin $cfg sx1302_reset_pin
+	config_get com_dev_path $cfg com_dev_path
+	config_get i2c_dev_path $cfg i2c_dev_path 
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
@@ -82,17 +82,28 @@ conf_rule_sx1302() {
 		model_flags="$model_flags\"GNSS\","
 	fi
 
+	cat > /var/etc/chirpstack-concentratord/concentratord.toml <<- EOF
+		[gateway]
+			model="$model"
+			region="$region"
+			model_flags=[$model_flags]
+	EOF
+
+	if [ "$sx1302_reset_pin" != "" ]; then
+		echo "sx1302_reset_pin=$sx1302_reset_pin" >> /var/etc/chirpstack-concentratord/concentratord.toml
+	fi
+
+	if [ "$com_dev_path" != "" ]; then
+		echo "com_dev_path=\"$com_dev_path\"" >> /var/etc/chirpstack-concentratord/concentratord.toml
+	fi
+
+	if [ "$i2c_dev_path" != "" ]; then
+		echo "i2c_dev_path=\"$i2c_dev_path\"" >> /var/etc/chirpstack-concentratord/concentratord.toml
+	fi
+
+	# Copy channel config
 	cp /etc/chirpstack-concentratord/sx1302/examples/channels_$channel_plan.toml /var/etc/chirpstack-concentratord/channels.toml
 	cp /etc/chirpstack-concentratord/sx1302/examples/region_$region_config.toml /var/etc/chirpstack-concentratord/region.toml
-
-	# set model
-	sed -i "s/model=.*/model=\"${model}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
-
-	# set region
-	sed -i "s/region=.*/region=\"${region}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
-
-	# set flags
-	sed -i "s/model_flags=.*/model_flags=[$model_flags]/" /var/etc/chirpstack-concentratord/concentratord.toml
 }
 
 conf_rule_2g4() {
@@ -105,11 +116,14 @@ conf_rule_2g4() {
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
+	cat > /var/etc/chirpstack-concentratord/concentratord.toml <<- EOF
+		[gateway]
+			model="$model"
+	EOF
+
+	# Copy channel config
 	cp /etc/chirpstack-concentratord/2g4/examples/channels_$channel_plan.toml /var/etc/chirpstack-concentratord/channels.toml
 	cp /etc/chirpstack-concentratord/2g4/examples/region_$region_config.toml /var/etc/chirpstack-concentratord/region.toml
-
-	# set model
-	sed -i "s/model=.*/model=\"${model}\"/" /var/etc/chirpstack-concentratord/concentratord.toml
 }
 
 configuration() {
