@@ -1,0 +1,8 @@
+uci batch << EOI
+    set chirpstack-concentratord.@global[0].chipset='sx1302'
+    set chirpstack-concentratord.@sx1302[0].model='rak_2287'
+    set chirpstack-concentratord.@sx1302[0].com_dev_path='/dev/spidev0.1'
+    set chirpstack-concentratord.@sx1302[0].i2c_dev_path='/dev/i2c-0'
+    set chirpstack-concentratord.@sx1302[0].sx1302_reset_pin='11'
+EOI
+uci commit
