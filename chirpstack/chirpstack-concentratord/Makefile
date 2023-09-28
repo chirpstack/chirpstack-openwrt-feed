@@ -28,6 +28,7 @@ define Package/chirpstack-concentratord
 	CATEGORY:=ChirpStack
 	TITLE:=ChirpStack Concentratord
 	URL:=https://github.com/chirpstack/chirpstack-concentratord
+	DEPENDS:=+libstdcpp
 endef
 
 define Package/chirpstack-concentratord-2g4
@@ -80,6 +81,9 @@ define Package/chirpstack-concentratord/install
 
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/chirpstack-concentratord.init $(1)/etc/init.d/chirpstack-concentratord
+
+	$(INSTALL_DIR) $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/gateway-id $(1)/usr/bin/
 endef
 
 define Package/chirpstack-concentratord-2g4/install
