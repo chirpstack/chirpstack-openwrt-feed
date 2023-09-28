@@ -44,6 +44,9 @@ conf_rule_sx1301() {
 	fi
 
 	cat > /var/etc/chirpstack-concentratord.toml <<- EOF
+		[log]
+			log_to_syslog=true
+
 		[gateway]
 			model="$model"
 			region="$region"
@@ -83,6 +86,9 @@ conf_rule_sx1302() {
 	fi
 
 	cat > /var/etc/chirpstack-concentratord/concentratord.toml <<- EOF
+		[log]
+			log_to_syslog=true
+
 		[gateway]
 			model="$model"
 			region="$region"
@@ -117,6 +123,9 @@ conf_rule_2g4() {
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
 	cat > /var/etc/chirpstack-concentratord/concentratord.toml <<- EOF
+		[log]
+			log_to_syslog=true
+
 		[gateway]
 			model="$model"
 	EOF
