@@ -45,7 +45,14 @@ conf_rule_sx1301() {
 
 	cat > /var/etc/chirpstack-concentratord.toml <<- EOF
 		[concentratord]
+			log_level="INFO"
 			log_to_syslog=true
+			stats_interval="30s"
+			disable_crc_filter=false
+
+		[concentratord.api]
+			event_bind="ipc:///tmp/concentratord_event"
+			command_bind="ipc:///tmp/concentratord_command"
 
 		[gateway]
 			lorawan_public=true
@@ -88,7 +95,14 @@ conf_rule_sx1302() {
 
 	cat > /var/etc/chirpstack-concentratord/concentratord.toml <<- EOF
 		[concentratord]
+			log_level="INFO"
 			log_to_syslog=true
+			stats_interval="30s"
+			disable_crc_filter=false
+
+		[concentratord.api]
+			event_bind="ipc:///tmp/concentratord_event"
+			command_bind="ipc:///tmp/concentratord_command"
 
 		[gateway]
 			lorawan_public=true
@@ -126,7 +140,14 @@ conf_rule_2g4() {
 
 	cat > /var/etc/chirpstack-concentratord/concentratord.toml <<- EOF
 		[concentratord]
+			log_level="INFO"
 			log_to_syslog=true
+			stats_interval="30s"
+			disable_crc_filter=false
+
+		[concentratord.api]
+			event_bind="ipc:///tmp/concentratord_event"
+			command_bind="ipc:///tmp/concentratord_command"
 
 		[gateway]
 			lorawan_public=true
