@@ -65,6 +65,43 @@ conf_rule_mqtt() {
 	EOF
 }
 
+conf_rule_filters() {
+	local cfg="$1"
+
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+		[backend.filters]
+			dev_addr_prefixes=[
+	EOF
+
+	config_list_foreach $cfg dev_addr_prefix conf_rule_dev_addr_prefix
+
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+		]
+	EOF
+
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+			join_eui_prefixes=[
+	EOF
+
+	config_list_foreach $cfg join_eui_prefix conf_rule_join_eui_prefix
+
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+		]
+	EOF
+}
+
+conf_rule_dev_addr_prefix() {
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+		"$1",
+	EOF
+}
+
+conf_rule_join_eui_prefix() {
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+		"$1",
+	EOF
+}
+
 configuration() {
 	mkdir -p /var/etc/$PACKAGE_NAME
 	echo "" > /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml
@@ -79,6 +116,7 @@ configuration() {
 
 	config_load "$PACKAGE_NAME"
 	config_foreach conf_rule_mqtt "mqtt"
+	config_foreach conf_rule_filters "filters"
 }
 
 start_service() {

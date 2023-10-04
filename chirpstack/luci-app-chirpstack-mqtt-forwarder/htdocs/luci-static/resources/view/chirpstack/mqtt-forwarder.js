@@ -80,6 +80,15 @@ return view.extend({
             return "Enter a valid Client ID";
         };
 
+        s = m.section(form.TypedSection, 'filters', _('Filter configuration'));
+        s.anonymous = true;
+
+        // DevAddr prefixs
+        o = s.option(form.DynamicList, 'dev_addr_prefix', _('DevAddr prefixes'), _('Filter uplinks based on the configured DevAddr prefixes (e.g. \'0000ff00/24\'). If no filters have been configured, filtering is disabled.'));
+
+        // DevEUI prefixes
+        o = s.option(form.DynamicList, 'join_eui_prefix', _('JoinEUI prefixes'), _('Filter join-requests based on the configured JoinEUI prefixes (e.g. \'0000ff0000000000/24\'). If no filters have been configured, filtering is disabled.'))
+
         return m.render();
     }
 });
