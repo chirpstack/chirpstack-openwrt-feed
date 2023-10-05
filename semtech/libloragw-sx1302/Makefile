@@ -2,11 +2,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libloragw-sx1302
 PKG_VERSION:=2.1.0
-PKG_RELEASE:=6
+PKG_RELEASE:=7
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/brocaar/sx1302_hal/tar.gz/V$(PKG_VERSION)r$(PKG_RELEASE)?
-PKG_HASH:=0966b315714d1b30bce805ef2008dca2522b16390fc7b4497c54fa9c9de05ad9
+PKG_HASH:=c7707cc65eb0a91f3330df0b18e165c751c5bf89095a14fa4da77aa5c157dea4
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=BSD
