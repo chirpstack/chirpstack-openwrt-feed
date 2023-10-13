@@ -335,6 +335,10 @@ return view.extend({
             s = m.section(form.TypedSection, chipset.id, chipset.name, _('Configure the fields below if you have selected the ' + chipset.name + ' chipset.'));
             s.anonymous = true;
 
+            // antenna gain
+            o = s.option(form.Value, 'antenna_gain', _('Antenna gain (dBi)'));
+            o.datatype = 'uinteger';
+
             // shields
             o = s.option(form.ListValue, 'model', _('Shield model'));
 

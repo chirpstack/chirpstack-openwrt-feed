@@ -29,13 +29,14 @@ conf_rule_global() {
 conf_rule_sx1301() {
 	local cfg="$1"
 	local model region channel_plan gnss gateway_id
-	local model_flags
+	local model_flags antenna_gain
 
 	config_get model $cfg model
 	config_get region $cfg region
 	config_get channel_plan $cfg channel_plan
 	config_get gnss $cfg gnss
 	config_get gateway_id $cfg gateway_id
+	config_get antenna_gain $cfg antenna_gain "0"
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
@@ -59,7 +60,8 @@ conf_rule_sx1301() {
 			model="$model"
 			region="$region"
 			gateway_id="$gateway_id"
-			model_flags="$model_flags"
+			model_flags=[$model_flags]
+			antenna_gain=$antenna_gain
 	EOF
 
 	# Copy channel config
@@ -70,7 +72,7 @@ conf_rule_sx1301() {
 conf_rule_sx1302() {
 	local cfg="$1"
 	local model region channel_plan gnss usb
-	local model_flags
+	local model_flags antenna_gain
 	local sx1302_reset_pin com_dev_path i2c_dev_path
 
 	config_get model $cfg model
@@ -81,7 +83,8 @@ conf_rule_sx1302() {
 
 	config_get sx1302_reset_pin $cfg sx1302_reset_pin
 	config_get com_dev_path $cfg com_dev_path
-	config_get i2c_dev_path $cfg i2c_dev_path 
+	config_get i2c_dev_path $cfg i2c_dev_path
+	config_get antenna_gain $cfg antenna_gain "0"
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
@@ -109,6 +112,7 @@ conf_rule_sx1302() {
 			model="$model"
 			region="$region"
 			model_flags=[$model_flags]
+			antenna_gain=$antenna_gain
 	EOF
 
 	if [ "$sx1302_reset_pin" != "" ]; then
@@ -130,11 +134,12 @@ conf_rule_sx1302() {
 
 conf_rule_2g4() {
 	local cfg="$1"
-	local model channel_plan
+	local model channel_plan antenna_gain
 
 	config_get model $cfg model
 	config_get region $cfg region
 	config_get channel_plan $cfg channel_plan
+	config_get antenna_gain $cfg antenna_gain "0"
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
@@ -152,6 +157,7 @@ conf_rule_2g4() {
 		[gateway]
 			lorawan_public=true
 			model="$model"
+			antenna_gain=$antenna_gain
 	EOF
 
 	# Copy channel config
