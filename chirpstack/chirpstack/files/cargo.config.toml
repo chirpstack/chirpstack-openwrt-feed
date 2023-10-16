@@ -1,11 +1,3 @@
-[target.arm-unknown-linux-musleabihf]
-# Fix libatomic.so.1: error adding symbols: DSO missing from command line
-rustflags = ["-C", "link-arg=-latomic"]
-
-[target.armv7-unknown-linux-musleabihf]
-# Fix libatomic.so.1: error adding symbols: DSO missing from command line
-rustflags = ["-C", "link-arg=-latomic"]
-
 [profile.stripped]
 # Fixes 'Undefined temporary symbol ...' error
 opt-level = 3
