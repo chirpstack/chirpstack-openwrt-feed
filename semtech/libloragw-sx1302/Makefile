@@ -12,6 +12,9 @@ PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=BSD
 PKG_LICENSE_FILES:=LICENSE
 
+# This must be defined before package.mk import!
+PATCH_DIR:=./patches-$(CONFIG_TARGET_BOARD)
+
 include $(INCLUDE_DIR)/package.mk
 
 TAR_OPTIONS+= --strip-components 1
