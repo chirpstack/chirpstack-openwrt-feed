@@ -172,6 +172,15 @@ return view.extend({
                                 usb: false,
                             },
                         },
+                        {
+                            id: "emb_raspi_130x_cape_lr1302",
+                            name: "Embit - EMB-RasPI-130x-Cape with LR1302",
+                            supportedRegions: ["EU868"],
+                            defaultFlags: {
+                                gnss: false,
+                                usb: false,
+                            },
+                        },
                     ]
                 },
                 {
