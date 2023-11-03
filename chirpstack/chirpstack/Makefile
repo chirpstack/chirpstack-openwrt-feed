@@ -56,6 +56,10 @@ define Package/chirpstack/install
 
 	$(INSTALL_DIR) $(1)/etc/nginx/conf.d
 	$(INSTALL_DATA) ./files/chirpstack.nginx $(1)/etc/nginx/conf.d/chirpstack.locations
+
+	$(INSTALL_DIR) $(1)/opt/chirpstack
+	$(INSTALL_BIN) ./files/backup.sh $(1)/opt/chirpstack/backup.sh
+	$(INSTALL_BIN) ./files/restore.sh $(1)/opt/chirpstack/restore.sh
 endef
 
 define Build/Prepare

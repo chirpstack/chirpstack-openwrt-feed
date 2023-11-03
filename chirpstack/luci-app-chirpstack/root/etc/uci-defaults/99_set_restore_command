@@ -1,0 +1,11 @@
+EXISTS=$(uci show luci |grep "Restore ChirpStack backup")
+if [ ! -z "$EXISTS" ]; then
+    return
+fi
+
+rule_name=$(uci add luci command)
+uci batch << EOI
+set luci.$rule_name.name='Restore ChirpStack backup'
+set luci.$rule_name.command='/opt/chirpstack/restore.sh'
+EOI
+uci commit
