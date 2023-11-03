@@ -1,3 +1,8 @@
+EXISTS=$(uci show luci |grep SX1302)
+if [ ! -z "$EXISTS" ]; then
+    return
+fi
+
 rule_name=$(uci add luci command)
 uci batch << EOI
 set luci.$rule_name.name='Upgrade SX1302/3 concentrator firmware'
