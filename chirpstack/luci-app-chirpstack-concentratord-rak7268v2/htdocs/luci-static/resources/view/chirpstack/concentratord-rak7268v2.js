@@ -128,6 +128,10 @@ return view.extend({
         s = m.section(form.TypedSection, 'sx1302', _('Configuration'));
         s.anonymous = true;
 
+        // antenna gain
+        o = s.option(form.Value, 'antenna_gain', _('Antenna gain (dBi)'));
+        o.datatype = 'uinteger';
+
         // channels
         o = s.option(form.ListValue, 'channel_plan', _('Channel-plan'), _('Select the channel-plan to use. The selected channel-plan must be supported by your gateway.'));
         o.forcewrite = true;
