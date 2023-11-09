@@ -55,33 +55,29 @@
 	-- Brand name
 	local brand_name = boardinfo.hostname or "?"
 -%>
-			<!DOCTYPE html>
-			<html lang="<%=luci.i18n.context.lang%>">
+<!DOCTYPE html>
+<html lang="<%=luci.i18n.context.lang%>">
 
-			<head>
-				<meta charset="utf-8">
-				<title>
-					<%=striptags( (boardinfo.hostname or "?" ) .. ( (node and node.title) and ' - ' ..
-						translate(node.title) or '' )) %>
-						- LuCI
-				</title>
-				<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-					name="viewport" />
-				<meta name="format-detection" content="telephone=no, email=no" />
-				<meta name="apple-mobile-web-app-capable" content="yes">
-				<meta name="mobile-web-app-capable" content="yes">
-				<meta name="x5-fullscreen" content="true">
-				<meta name="full-screen" content="yes">
-				<meta name="x5-page-mode" content="app">
-				<meta name="browsermode" content="application">
-				<meta name="msapplication-tap-highlight" content="no">
-				<meta name="msapplication-TileColor" content="<%=bar_color%>">
-				<meta name="application-name" content="<%=striptags( (boardinfo.hostname or " ?") ) %> - LuCI">
-				<meta name="apple-mobile-web-app-title" content="<%=striptags( (boardinfo.hostname or " ?") ) %> -
-				LuCI">
-				<link rel="icon" href="<%=media%>/icon/favicon.png">
-				<meta name="theme-color" content="<%=bar_color%>">
-				<link rel="stylesheet" href="<%=media%>/css/cascade.css<%# ?v=PKG_VERSION %>">
+<head>
+	<meta charset="utf-8">
+	<title>
+		<%=striptags( (boardinfo.hostname or "?") .. ( (node and node.title) and ' - ' .. translate(node.title) or '')) %>
+		- LuCI</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<meta name="format-detection" content="telephone=no, email=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="x5-fullscreen" content="true">
+	<meta name="full-screen" content="yes">
+	<meta name="x5-page-mode" content="app">
+	<meta name="browsermode" content="application">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="msapplication-TileColor" content="<%=bar_color%>">
+	<meta name="application-name" content="<%=striptags( (boardinfo.hostname or "?") ) %> - LuCI">
+	<meta name="apple-mobile-web-app-title" content="<%=striptags( (boardinfo.hostname or "?") ) %> - LuCI">
+	<link rel="icon" href="<%=media%>/icon/favicon.png">
+	<meta name="theme-color" content="<%=bar_color%>">
+	<link rel="stylesheet" href="<%=media%>/css/cascade.css<%# ?v=PKG_VERSION %>">
 				<style title="text/css">
 					<% if mode~='dark' then %>@media (prefers-color-scheme: dark) {
 						<%=dark_css%>
@@ -109,90 +105,76 @@
 
 					<% end -%><% end -%>
 				</style>
-				<% if node and node.css then %>
-					<link rel="stylesheet" href="<%=resource%>/<%=node.css%>">
-					<% end -%>
-						<% if css then %>
-							<style title="text/css">
-								<%=css %>
-							</style>
-							<% end -%>
-								<script src="<%=media%>/js/polyfill.min.js"></script>
-								<script
-									src="<%=url('admin/translations', luci.i18n.context.lang)%>?v=<%=ver.luciversion%>"></script>
-								<script src="<%=resource%>/cbi.js?v=<%=ver.luciversion%>"></script>
-								<script src="<%=resource%>/luci.js?v=<%=ver.luciversion%>"></script>
-								<script src="<%=media%>/js/jquery.min.js?v=3.5.1"></script>
-			</head>
+	<% if node and node.css then %>
+	<link rel="stylesheet" href="<%=resource%>/<%=node.css%>">
+	<% end -%>
+	<% if css then %>
+	<style title="text/css">
+		<%=css %>
+	</style>
+	<% end -%>
+	<script src="<%=media%>/js/polyfill.min.js"></script>
+	<script src="<%=url('admin/translations', luci.i18n.context.lang)%>?v=<%=ver.luciversion%>"></script>
+	<script src="<%=resource%>/cbi.js?v=<%=ver.luciversion%>"></script>
+	<script src="<%=resource%>/luci.js?v=<%=ver.luciversion%>"></script>
+	<script src="<%=media%>/js/jquery.min.js?v=3.5.1"></script>
+</head>
 
-			<body
-				class="lang_<%=luci.i18n.context.lang%> <% if node then %><%= striptags( node.title ) %><% end %> <% if luci.dispatcher.context.authsession then %>logged-in<% end %>"
-				data-page="<%= table.concat(disp.context.requestpath, " -") %>">
+<body
+	class="lang_<%=luci.i18n.context.lang%> <% if node then %><%= striptags( node.title ) %><% end %> <% if luci.dispatcher.context.authsession then %>logged-in<% end %>"
+	data-page="<%= table.concat(disp.context.requestpath, "-") %>">
 
-				<div class="main">
-					<div class="main-left" id="mainmenu" style="display:none">
-						<div class="sidenav-header d-flex align-items-center">
-							<a class="brand" href="#">
-								<img src="<%=media%>/icon/logo.png" />
-							</a>
-							<div class="ml-auto">
-								<!-- Sidenav toggler -->
-								<div class="sidenav-toggler d-none d-xl-block active" data-action="sidenav-unpin"
-									data-target="#sidenav-main">
-									<div class="sidenav-toggler-inner">
-										<i class="sidenav-toggler-line"></i>
-										<i class="sidenav-toggler-line"></i>
-										<i class="sidenav-toggler-line"></i>
-									</div>
-								</div>
-							</div>
+	<div class="main">
+		<div class="main-left" id="mainmenu" style="display:none">
+			<div class="sidenav-header d-flex align-items-center">
+				<a class="brand" href="#">
+					<img src="<%=media%>/icon/logo.png" />
+				</a>
+				<div class="ml-auto">
+					<!-- Sidenav toggler -->
+					<div class="sidenav-toggler d-none d-xl-block active" data-action="sidenav-unpin"
+						data-target="#sidenav-main">
+						<div class="sidenav-toggler-inner">
+							<i class="sidenav-toggler-line"></i>
+							<i class="sidenav-toggler-line"></i>
+							<i class="sidenav-toggler-line"></i>
 						</div>
 					</div>
-					<div class="main-right">
-						<header class="bg-primary">
-							<div class="fill">
-								<div class="container">
-									<div class="flex1">
-										<a class="showSide"></a>
-										<a class="brand" href="#">
-											<%=brand_name%>
-										</a>
-									</div>
-									<div class="status" id="indicators"></div>
-								</div>
-							</div>
-						</header>
-						<div class="darkMask"></div>
-						<div id="maincontent">
-							<div class="container">
-								<%- if luci.sys.process.info("uid")==0 and luci.sys.user.getuser("root") and not
-									luci.sys.user.getpasswd("root") then -%>
-									<div class="alert-message error">
-										<h4>
-											<%:No password set!%>
-										</h4>
-										<p>
-											<%:There is no password set on this router. Please configure a root password
-												to protect the web interface.%>
-										</p>
-										<% if disp.lookup("admin/system/admin") then %>
-											<div class="right"><a class="btn" href="<%=url(" admin/system/admin")%>">
-													<%:Go to password configuration...%>
-												</a></div>
-											<% end %>
-									</div>
-									<%- end -%>
+				</div>
+			</div>
+		</div>
+		<div class="main-right">
+			<header class="bg-primary">
+				<div class="fill">
+					<div class="container">
+						<div class="flex1">
+							<a class="showSide"></a>
+							<a class="brand" href="#"><%=brand_name%></a>
+						</div>
+						<div class="status" id="indicators"></div>
+					</div>
+				</div>
+			</header>
+			<div class="darkMask"></div>
+			<div id="maincontent">
+				<div class="container">
+					<%- if luci.sys.process.info("uid") == 0 and luci.sys.user.getuser("root") and not luci.sys.user.getpasswd("root") then -%>
+					<div class="alert-message error">
+						<h4><%:No password set!%></h4>
+						<p><%:There is no password set on this router. Please configure a root password to protect the web interface.%>
+						</p>
+						<% if disp.lookup("admin/system/admin") then %>
+						<div class="right"><a class="btn"
+								href="<%=url("admin/system/admin")%>"><%:Go to password configuration...%></a></div>
+						<% end %>
+					</div>
+					<%- end -%>
 
-										<noscript>
-											<div class="alert-message error">
-												<h4>
-													<%:JavaScript required!%>
-												</h4>
-												<p>
-													<%:You must enable JavaScript in your browser or LuCI will not work
-														properly.%>
-												</p>
-											</div>
-										</noscript>
+					<noscript>
+						<div class="alert-message error">
+							<h4><%:JavaScript required!%></h4>
+							<p><%:You must enable JavaScript in your browser or LuCI will not work properly.%></p>
+						</div>
+					</noscript>
 
-										<div id="tabmenu" style="display:none"></div>
+					<div id="tabmenu" style="display:none"></div>
