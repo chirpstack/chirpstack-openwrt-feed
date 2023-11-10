@@ -83,6 +83,15 @@ return view.extend({
                             },
                         },
                         {
+                            id: "embit_emb_lr1302_mpcie",
+                            name: "Embit - EMB-LR1302-mPCIe",
+                            supportedRegions: ["AU915", "EU868", "IN865", "KR920", "RU864", "US915"],
+                            defaultFlags: {
+                                gnss: false,
+                                usb: false,
+                            },
+                        },
+                        {
                             id: "rak_2287",
                             name: "RAK - RAK2287",
                             supportedRegions: ["AS923", "AS923_2", "AS923_3", "AS923_4", "AU915", "CN470", "EU433", "EU868", "IN865", "KR920", "RU864", "US915"],
