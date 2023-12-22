@@ -3,10 +3,10 @@ Index: chirpstack-udp-forwarder-4.1.4/Cargo.toml
 --- chirpstack-udp-forwarder-4.1.4.orig/Cargo.toml
 +++ chirpstack-udp-forwarder-4.1.4/Cargo.toml
 @@ -30,6 +30,6 @@ chrono = "0.4"
- base64 = "0.21"
- prost = "0.12"
- prost-types = "0.12"
--prometheus-client = "0.22"
-+prometheus-client = { git = "https://github.com/brocaar/client_rust.git", branch = "fix_issue_172" }
- lazy_static = "1.4"
- anyhow = "1.0"
+   base64 = "0.21"
+   prost = "0.12"
+   prost-types = "0.12"
+-  prometheus-client = "0.22"
++  prometheus-client = { git = "https://github.com/brocaar/client_rust.git", branch = "fix_issue_172" }
+   lazy_static = "1.4"
+   anyhow = "1.0"
