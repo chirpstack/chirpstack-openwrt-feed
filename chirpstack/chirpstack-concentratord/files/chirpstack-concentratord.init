@@ -44,7 +44,7 @@ conf_rule_sx1301() {
 		model_flags="$model_flags\"GNSS\","
 	fi
 
-	cat > /var/etc/chirpstack-concentratord.toml <<- EOF
+	cat > /var/etc/chirpstack-concentratord/concentratord.toml <<- EOF
 		[concentratord]
 			log_level="INFO"
 			log_to_syslog=true
