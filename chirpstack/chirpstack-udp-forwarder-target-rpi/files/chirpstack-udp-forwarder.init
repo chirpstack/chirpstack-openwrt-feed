@@ -1,0 +1,31 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=99
+
+USE_PROCD=1
+PACKAGE_NAME=chirpstack-udp-forwarder
+
+configuration() {
+	. /lib/functions/chirpstack-udp-forwarder.sh
+	configure "chirpstack-udp-forwarder"
+}
+
+start_service() {
+	configuration
+
+	procd_open_instance
+	procd_set_param command /usr/bin/$PACKAGE_NAME -c /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml
+	procd_set_param respawn 3600 5 -1
+	procd_set_param file /etc/config/$PACKAGE_NAME
+	procd_close_instance
+}
+ 
+service_triggers() {
+	procd_add_reload_trigger "$PACKAGE_NAME"
+}
+
+reload_service() {
+	stop
+	start
+}

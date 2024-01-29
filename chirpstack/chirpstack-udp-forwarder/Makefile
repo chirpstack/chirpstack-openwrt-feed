@@ -34,17 +34,7 @@ define Package/chirpstack-udp-forwarder/description
 	ChirpStack UDP Forwarder
 endef
 
-define Package/chirpstack-udp-forwarder/conffiles
-	/etc/config/chirpstack-udp-forwarder
-endef
-
 define Package/chirpstack-udp-forwarder/install
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_CONF) ./files/chirpstack-udp-forwarder.config $(1)/etc/config/chirpstack-udp-forwarder
-
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/chirpstack-udp-forwarder.init $(1)/etc/init.d/chirpstack-udp-forwarder
-
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/* $(1)/usr/bin
 endef
