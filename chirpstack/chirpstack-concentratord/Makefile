@@ -71,16 +71,9 @@ define Package/chirpstack-concentratord-sx1302/description
 	ChirpStack Concentratord (SX1302/3)
 endef
 
-define Package/chirpstack-concentratord/conffiles
-	/etc/config/chirpstack-concentratord
-endef
-
 define Package/chirpstack-concentratord/install
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_CONF) ./files/chirpstack-concentratord.config $(1)/etc/config/chirpstack-concentratord
-
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/chirpstack-concentratord.init $(1)/etc/init.d/chirpstack-concentratord
+	$(INSTALL_DIR) $(1)/lib/functions
+	$(INSTALL_BIN) ./files/chirpstack.sh $(1)/lib/functions
 
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/gateway-id $(1)/usr/bin/
