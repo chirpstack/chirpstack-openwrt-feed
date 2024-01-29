@@ -35,16 +35,9 @@ define Package/chirpstack-mqtt-forwarder/description
 	ChirpStack MQTT Forwarder
 endef
 
-define Package/chirpstack-mqtt-forwarder/conffiles
-	/etc/config/chirpstack-mqtt-forwarder
-endef
-
 define Package/chirpstack-mqtt-forwarder/install
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_CONF) ./files/chirpstack-mqtt-forwarder.config $(1)/etc/config/chirpstack-mqtt-forwarder
-
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/chirpstack-mqtt-forwarder.init $(1)/etc/init.d/chirpstack-mqtt-forwarder
+	$(INSTALL_DIR) $(1)/lib/functions
+	$(INSTALL_BIN) ./files/chirpstack-mqtt-forwarder.sh $(1)/lib/functions
 
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/* $(1)/usr/bin/

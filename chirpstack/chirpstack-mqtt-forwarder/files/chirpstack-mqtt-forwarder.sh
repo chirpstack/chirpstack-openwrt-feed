@@ -1,0 +1,120 @@
+. /lib/functions.sh
+
+configure() {
+    local config_name="$1"
+
+    mkdir -p /var/etc/$config_name
+    echo "" > /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		[logging]
+			log_to_syslog=true
+		
+		[backend]
+			enabled="concentratord"
+	EOF
+
+	config_load "$config_name"
+	config_foreach conf_rule_mqtt "mqtt" "$config_name"
+	config_foreach conf_rule_filters "filters" "$config_name"
+}
+
+conf_rule_mqtt() {
+	local cfg="$1"
+    local config_name="$2"
+	local topic_prefix json server username password qos clean_session client_id ca_cert tls_cert tls_key
+
+	config_get topic_prefix $cfg topic_prefix
+	config_get json $cfg json
+	config_get server $cfg server
+	config_get username $cfg username
+	config_get password $cfg password
+	config_get qos $cfg qos
+	config_get_bool clean_session $cfg clean_session
+	config_get client_id $cfg client_id
+	config_get ca_cert $cfg ca_cert
+	config_get tls_cert $cfg tls_cert
+	config_get tls_key $cfg tls_key
+
+	if [ "$json" = "1" ]; then
+		json="true"
+	else
+		json="false"
+	fi
+
+	if [ "$clean_session" = "1" ]; then
+		clean_session="true"
+	else
+		clean_session="false"
+	fi
+
+	if [ "$ca_cert" != "" ]; then
+		echo "$ca_cert" > /var/etc/$config_name/ca.pem
+		ca_cert="/var/etc/$config_name/ca.pem"
+	fi
+
+	if [ "$tls_cert" != "" ]; then
+		echo "$tls_cert" > /var/etc/$config_name/cert.pem
+		tls_cert="/var/etc/$config_name/cert.pem"
+	fi
+
+	if [ "$tls_key" != "" ]; then
+		echo "$tls_key" > /var/etc/$config_name/key.pem
+		tls_key="/var/etc/$config_name/key.pem"
+	fi
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		[mqtt]
+			topic_prefix="$topic_prefix"
+			json=$json
+			server="$server"
+			username="$username"
+			password="$password"
+			qos=$qos
+			clean_session=$clean_session
+			client_id="$client_id"
+			ca_cert="$ca_cert"
+			tls_cert="$tls_cert"
+			tls_key="$tls_key"
+	EOF
+}
+
+conf_rule_filters() {
+	local cfg="$1"
+    local config_name="$2"
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		[backend.filters]
+			dev_addr_prefixes=[
+	EOF
+
+	config_list_foreach $cfg dev_addr_prefix conf_rule_dev_addr_prefix "$config_name"
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		]
+	EOF
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+			join_eui_prefixes=[
+	EOF
+
+	config_list_foreach $cfg join_eui_prefix conf_rule_join_eui_prefix "$config_name"
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		]
+	EOF
+}
+
+conf_rule_dev_addr_prefix() {
+    local config_name="$2"
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		"$1",
+	EOF
+}
+
+conf_rule_join_eui_prefix() {
+    local config_name="$2"
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		"$1",
+	EOF
+}
