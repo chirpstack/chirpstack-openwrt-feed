@@ -12,7 +12,7 @@ configuration() {
 		sleep 1                                                                                                                                                                                                               
 	done
 
-	. /lib/functions/chirpstack.sh
+	. /lib/functions/chirpstack-concentratord.sh
 	configure "chirpstack-concentratord"
 }
 

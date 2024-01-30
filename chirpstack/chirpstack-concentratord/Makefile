@@ -73,7 +73,7 @@ endef
 
 define Package/chirpstack-concentratord/install
 	$(INSTALL_DIR) $(1)/lib/functions
-	$(INSTALL_BIN) ./files/chirpstack.sh $(1)/lib/functions
+	$(INSTALL_BIN) ./files/chirpstack-concentratord.sh $(1)/lib/functions
 
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/gateway-id $(1)/usr/bin/
