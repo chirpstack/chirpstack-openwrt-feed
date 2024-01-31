@@ -1,13 +1,17 @@
 'use strict';
-'require view';
+'require baseclass';
 'require form';
 'require uci';
 
-return view.extend({
-    render: function () {
+return baseclass.extend({
+    /*
+        This renders the ChirpStack MQTT Forwarder configuration form
+        using the provided options.
+    */
+    renderForm: function (mqttForwarderConfig) {
         var m, s, o, ro, as;
 
-        m = new form.Map('chirpstack-mqtt-forwarder', _('ChirpStack MQTT Forwarder'), _('ChirpStack MQTT Forwarder forwards data received by the ChirpStack Concentratord to a MQTT broker.'));
+        m = new form.Map(mqttForwarderConfig, _('ChirpStack MQTT Forwarder'), _('ChirpStack MQTT Forwarder forwards data received by the ChirpStack Concentratord to a MQTT broker.'));
         m.tabbed = true;
 
         s = m.section(form.TypedSection, 'mqtt', _('MQTT configuration'));
@@ -90,5 +94,5 @@ return view.extend({
         o = s.option(form.DynamicList, 'join_eui_prefix', _('JoinEUI prefixes'), _('Filter join-requests based on the configured JoinEUI prefixes (e.g. \'0000ff0000000000/24\'). If no filters have been configured, filtering is disabled.'))
 
         return m.render();
-    }
+    },
 });
