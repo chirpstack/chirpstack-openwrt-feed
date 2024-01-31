@@ -1,13 +1,17 @@
 'use strict';
-'require view';
+'require baseclass';
 'require form';
 'require uci';
 
-return view.extend({
-    render: function () {
+return baseclass.extend({
+    /*
+        This renders the Chirpstack UDP Forwarder configuration form
+        using the provided options.
+    */
+    renderForm: function (udpForwarderConfig) {
         var m, s, o, ro, as;
 
-        m = new form.Map('chirpstack-udp-forwarder', _('ChirpStack UDP Forwarder'), _('ChirpStack UDP Forwarder forwards data received by the ChirpStack Concentratord to one or multiple UDP endpoints (Semtech UDP Packet Forwarder compatible).'));
+        m = new form.Map(udpForwarderConfig, _('ChirpStack UDP Forwarder'), _('ChirpStack UDP Forwarder forwards data received by the ChirpStack Concentratord to one or multiple UDP endpoints (Semtech UDP Packet Forwarder compatible).'));
         m.tabbed = true;
 
         s = m.section(form.TypedSection, 'server', _('Servers'));
