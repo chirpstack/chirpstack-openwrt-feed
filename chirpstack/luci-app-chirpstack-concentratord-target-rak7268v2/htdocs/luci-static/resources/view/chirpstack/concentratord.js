@@ -1,11 +1,27 @@
 'use strict';
 'require view';
-'require form';
-'require uci';
+'require chirpstack-concentratord as concentratord';
 
 return view.extend({
     render: function () {
         const options = {
+            chipsets: [
+                {
+                    id: "sx1302",
+                    name: "SX1302 / SX1303",
+                    shields: [
+                        {
+                            id: "rak_2287",
+                            name: "RAK - RAK2287",
+                            supportedRegions: ["AS923", "AS923_2", "AS923_3", "AS923_4", "AU915", "CN470", "EU433", "EU868", "IN865", "KR920", "RU864", "US915"],
+                            defaultFlags: {
+                                gnss: false,
+                                usb: false,
+                            },
+                        },
+                    ]
+                },
+            ],
             regions: [
                 {
                     id: "AS923",
@@ -119,44 +135,6 @@ return view.extend({
             ],
         };
 
-        var m, s, o, ro, as;
-
-        m = new form.Map('chirpstack-concentratord', _('ChirpStack Concentratord'),
-            _('ChirpStack Concentratord provides an unified API interface to LoRa(R) concentrator hardware. Please refer to the <a target="_blank" href="https://www.chirpstack.io/docs/chirpstack-concentratord/hardware-support.html">ChirpStack Concentratord Hardware</a> page for supported hardware and configuration options.'));
-        m.chain('chirpstack-mqtt-forwarder');
-
-        s = m.section(form.TypedSection, 'sx1302', _('Configuration'));
-        s.anonymous = true;
-
-        // antenna gain
-        o = s.option(form.Value, 'antenna_gain', _('Antenna gain (dBi)'));
-        o.datatype = 'uinteger';
-
-        // channels
-        o = s.option(form.ListValue, 'channel_plan', _('Channel-plan'), _('Select the channel-plan to use. The selected channel-plan must be supported by your gateway.'));
-        o.forcewrite = true;
-
-        for (const region of options.regions) {
-            for (const channelPlan of region.channelPlans) {
-                o.value(channelPlan.id, channelPlan.name);
-            }
-        }
-
-        o.write = function (section_id, formValue) {
-            var regionId;
-            for (const region of options.regions) {
-                for (const channelPlan of region.channelPlans) {
-                    if (channelPlan.id === formValue) {
-                        regionId = region.id;
-                    }
-                }
-            }
-
-            uci.set('chirpstack-concentratord', section_id, 'channel_plan', formValue);
-            uci.set('chirpstack-concentratord', section_id, 'region', regionId);
-            uci.set('chirpstack-mqtt-forwarder', '@mqtt[0]', 'topic_prefix', formValue);
-        }
-
-        return m.render();
+        return concentratord.renderForm('chirpstack-concentratord', 'chirpstack-mqtt-forwarder', options);
     },
 });
