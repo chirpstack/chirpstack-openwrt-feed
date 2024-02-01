@@ -1,27 +1,27 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=chirpstack-mqtt-forwarder-target-rpi
+PKG_NAME:=chirpstack-mqtt-forwarder-single
 PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/chirpstack-mqtt-forwarder-target-rpi
+define Package/chirpstack-mqtt-forwarder-single
 	SECTION:=chirpstack
 	CATEGORY:=ChirpStack
-	TITLE:=ChirpStack MQTT Forwarder (RPi target)
+	TITLE:=ChirpStack MQTT Forwarder (single instance)
 	URL:=https://github.com/chirpstack/chirpstack-mqtt-forwarder
 	DEPENDS:=+chirpstack-mqtt-forwarder
 endef
 
-define Package/chirpstack-mqtt-forwarder-target-rpi/description
-	ChirpStack MQTT Forwarder (RPi target)
+define Package/chirpstack-mqtt-forwarder-single/description
+	ChirpStack MQTT Forwarder (single instance)
 endef
 
-define Package/chirpstack-mqtt-forwarder-target-rpi/conffiles
+define Package/chirpstack-mqtt-forwarder-single/conffiles
 	/etc/config/chirpstack-mqtt-forwarder
 endef
 
-define Package/chirpstack-mqtt-forwarder-target-rpi/install
+define Package/chirpstack-mqtt-forwarder-single/install
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_CONF) ./files/chirpstack-mqtt-forwarder.config $(1)/etc/config/chirpstack-mqtt-forwarder
 
@@ -33,4 +33,4 @@ define Build/Compile
 	# Nothing to do
 endef
 
-$(eval $(call BuildPackage,chirpstack-mqtt-forwarder-target-rpi))
+$(eval $(call BuildPackage,chirpstack-mqtt-forwarder-single))

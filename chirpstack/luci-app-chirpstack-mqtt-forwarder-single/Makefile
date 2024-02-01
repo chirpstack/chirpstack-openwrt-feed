@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-LUCI_TITLE:=ChirpStack MQTT Forwarder (RPi target)
+LUCI_TITLE:=ChirpStack MQTT Forwarder (single instance)
 LUCI_DEPENDS:=+luci-base +luci-app-chirpstack-mqtt-forwarder
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 

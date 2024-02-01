@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-LUCI_TITLE:=ChirpStack UDP Forwarder (RPi target)
+LUCI_TITLE:=ChirpStack UDP Forwarder (single instance)
 LUCI_DEPENDS:=+luci-base +luci-app-chirpstack-udp-forwarder
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 
