@@ -69,7 +69,7 @@ conf_rule_sx1301() {
 
 	# Copy channel config
 	cp /etc/chirpstack-concentratord/sx1301/examples/channels_$channel_plan.toml /var/etc/$config_name/channels.toml
-	cp /etc/chirpstack-concentratord/sx1301/examples/region_$region_config.toml /var/etc/$config_name/chirpstack-concentratord/region.toml
+	cp /etc/chirpstack-concentratord/sx1301/examples/region_$region_config.toml /var/etc/$config_name/region.toml
 }
 
 conf_rule_sx1302() {
