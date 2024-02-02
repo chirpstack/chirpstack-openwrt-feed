@@ -35,6 +35,9 @@ define Package/chirpstack-udp-forwarder/description
 endef
 
 define Package/chirpstack-udp-forwarder/install
+	$(INSTALL_DIR) $(1)/lib/functions
+	$(INSTALL_BIN) ./files/chirpstack-udp-forwarder.sh $(1)/lib/functions
+
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/* $(1)/usr/bin
 endef
