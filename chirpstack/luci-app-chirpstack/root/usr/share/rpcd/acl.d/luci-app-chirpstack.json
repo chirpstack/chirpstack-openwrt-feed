@@ -9,8 +9,14 @@
             },
             "uci": [
                 "chirpstack-concentratord",
+                "chirpstack-concentratord-slot1",
+                "chirpstack-concentratord-slot2",
                 "chirpstack-mqtt-forwarder",
+                "chirpstack-mqtt-forwarder-slot1",
+                "chirpstack-mqtt-forwarder-slot2",
                 "chirpstack-udp-forwarder",
+                "chirpstack-udp-forwarder-slot1",
+                "chirpstack-udp-forwarder-slot2",
                 "chirpstack"
             ]
         },
@@ -23,8 +29,14 @@
             },
             "uci": [
                 "chirpstack-concentratord",
+                "chirpstack-concentratord-slot1",
+                "chirpstack-concentratord-slot2",
                 "chirpstack-mqtt-forwarder",
+                "chirpstack-mqtt-forwarder-slot1",
+                "chirpstack-mqtt-forwarder-slot2",
                 "chirpstack-udp-forwarder",
+                "chirpstack-udp-forwarder-slot1",
+                "chirpstack-udp-forwarder-slot2",
                 "chirpstack"
             ]
         }

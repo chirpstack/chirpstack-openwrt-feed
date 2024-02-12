@@ -21,6 +21,8 @@ return baseclass.extend({
         s.anonymous = true;
 
         // global options
+        s.option(form.Flag, 'enabled', _('Enabled'), _('Enable ChirpStack Concentratord'));
+
         o = s.option(form.ListValue, 'chipset', _('Enabled chipset'), _('This value must match the chipset of your LoRa(R) shield. You must also configure the chipset specific options.'));
         for (const chipset of options.chipsets) {
             o.value(chipset.id, chipset.name);
@@ -132,6 +134,58 @@ return baseclass.extend({
 
             if (chipset.id === 'sx1302') {
                 s.option(form.Flag, 'usb', _('USB'), _('Enable this in case the shield is connected over USB rather than SPI.'));
+            }
+
+            if (chipset.com_dev_paths !== undefined) {
+                o = s.option(form.ListValue, 'com_dev_path', _('Comm. device path'), _('Select the communication device path of the device'));
+                for (const com_dev_path of chipset.com_dev_paths) {
+                    o.value(com_dev_path.path, com_dev_path.name);
+                }
+
+                o.validate = function (section_id, value) {
+                    if (chipset.id === 'sx1302') {
+                        const usb = m.lookupOption('usb', section_id)[0].formvalue(section_id) === '1';
+
+                        for (const com_dev_path of chipset.com_dev_paths) {
+                            if (com_dev_path.path == value) {
+                                if (com_dev_path.usb !== usb) {
+                                    if (usb) {
+                                        return "The device path is not supported for USB";
+                                    } else {
+                                        return "The device path is not supported for SPI";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    return true;
+                }
+            }
+
+            if (chipset.i2c_dev_paths !== undefined) {
+                o = s.option(form.ListValue, 'i2c_dev_path', _('I2C device path'), _('Select the I2C device path of the device'));
+                for (const i2c_dev_path of chipset.i2c_dev_paths) {
+                    o.value(i2c_dev_path.path, i2c_dev_path.name);
+                }
+
+                o.validate = function (section_id, value) {
+                    const usb = m.lookupOption('usb', section_id)[0].formvalue(section_id) === '1';
+
+                    for (const i2c_dev_path of chipset.i2c_dev_paths) {
+                        if (i2c_dev_path.path == value) {
+                            if (i2c_dev_path.usb !== usb) {
+                                if (usb) {
+                                    return "The device path is not supported for USB";
+                                } else {
+                                    return "The device path is not supported for SPI";
+                                }
+                            }
+                        }
+                    }
+
+                    return true;
+                }
             }
         }
 
