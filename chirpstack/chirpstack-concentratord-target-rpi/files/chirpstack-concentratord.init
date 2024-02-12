@@ -17,6 +17,8 @@ configuration() {
 }
 
 start_service() {
+	[ "$(uci get chirpstack-concentratord.@global[0].enabled)" != "1" ] && return 1
+
 	configuration
 
 	procd_open_instance 
