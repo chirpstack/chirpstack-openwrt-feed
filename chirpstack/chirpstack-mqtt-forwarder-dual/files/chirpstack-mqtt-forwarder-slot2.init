@@ -4,7 +4,7 @@ START=99
 STOP=99
 
 USE_PROCD=1
-PACKAGE_NAME=chirpstack-mqtt-forwarder
+PACKAGE_NAME=chirpstack-mqtt-forwarder-slot2
 
 configuration() {
 	. /lib/functions/chirpstack-mqtt-forwarder.sh
