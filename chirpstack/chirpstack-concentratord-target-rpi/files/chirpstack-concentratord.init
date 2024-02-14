@@ -7,11 +7,6 @@ USE_PROCD=1
 CHIPSET=
 
 configuration() {
-	while ! uci get chirpstack-concentratord.@global[0].chipset; do
-		echo "Waiting for chipset configuration"
-		sleep 1                                                                                                                                                                                                               
-	done
-
 	. /lib/functions/chirpstack-concentratord.sh
 	configure "chirpstack-concentratord"
 }
