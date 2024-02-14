@@ -162,6 +162,6 @@ return view.extend({
             ],
         };
 
-        return concentratord.renderForm('chirpstack-concentratord-slot1', 'chirpstack-mqtt-forwarder', options);
+        return concentratord.renderForm('chirpstack-concentratord-slot1', 'chirpstack-mqtt-forwarder-slot1', options);
     },
 });
