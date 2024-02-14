@@ -28,16 +28,16 @@ conf_rule_concentratord() {
 	config_get event_url $cfg event_url
 	config_get command_url $cfg command_url
 
-	cat > /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
 		[backend.concentratord]
 	EOF
 
 	if [ "$event_url" != "" ]; then
-		echo "event_url=\"$event_url\"" > /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+		echo "event_url=\"$event_url\"" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
 	fi
 
 	if [ "$command_url" != "" ]; then
-		echo "command_url=\"$command_url\"" > /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+		echo "command_url=\"$command_url\"" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
 	fi
 }
 
