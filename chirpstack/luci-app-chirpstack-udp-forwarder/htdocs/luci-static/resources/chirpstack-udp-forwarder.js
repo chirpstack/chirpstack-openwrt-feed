@@ -14,6 +14,12 @@ return baseclass.extend({
         m = new form.Map(udpForwarderConfig, _('ChirpStack UDP Forwarder'), _('ChirpStack UDP Forwarder forwards data received by the ChirpStack Concentratord to one or multiple UDP endpoints (Semtech UDP Packet Forwarder compatible).'));
         m.tabbed = true;
 
+        s = m.section(form.TypedSection, 'global', _('Global configuration'));
+        s.anonymous = true;
+
+        // Is enabled
+        s.option(form.Flag, 'enabled', _('Enabled'), _('Enable ChirpStack UDP Forwarder'));
+
         s = m.section(form.TypedSection, 'server', _('Servers'));
         s.anonymous = true;
         s.addremove = true;
