@@ -46,6 +46,9 @@ define Package/chirpstack-gateway-relay/install
 
 	$(INSTALL_DIR) $(1)/etc/chirpstack-gateway-relay
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/configuration/region_*.toml $(1)/etc/chirpstack-gateway-relay
+
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_CONF) ./files/chirpstack-gateway-relay.config $(1)/etc/config/chirpstack-gateway-relay
 endef
 
 define Build/Compile
