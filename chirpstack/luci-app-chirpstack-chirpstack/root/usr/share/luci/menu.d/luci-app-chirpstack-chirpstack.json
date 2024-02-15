@@ -1,7 +1,7 @@
 {
     "admin/chirpstack/chirpstack": {
         "title": "ChirpStack",
-        "order": 4,
+        "order": 5,
         "action": {
             "type": "view",
             "path": "chirpstack/chirpstack"

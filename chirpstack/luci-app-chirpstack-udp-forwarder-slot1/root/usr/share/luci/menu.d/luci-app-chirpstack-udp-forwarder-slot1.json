@@ -1,0 +1,18 @@
+{
+    "admin/chirpstack/udp-forwarder": {
+        "title": "UDP Forwarder",
+        "order": 3,
+        "action": {
+            "type": "alias",
+            "path": "admin/chirpstack/udp-forwarder/slot1"
+        }
+    },
+    "admin/chirpstack/udp-forwarder/slot1": {
+        "title": "Slot 1",
+        "order": 1,
+        "action": {
+            "type": "view",
+            "path": "chirpstack/udp-forwarder-slot1"
+        }
+    }
+}

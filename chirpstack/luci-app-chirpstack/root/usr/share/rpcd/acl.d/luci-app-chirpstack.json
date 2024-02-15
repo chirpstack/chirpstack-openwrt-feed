@@ -17,7 +17,8 @@
                 "chirpstack-udp-forwarder",
                 "chirpstack-udp-forwarder-slot1",
                 "chirpstack-udp-forwarder-slot2",
-                "chirpstack"
+                "chirpstack",
+                "chirpstack-gateway-relay"
             ]
         },
         "write": {
@@ -37,7 +38,8 @@
                 "chirpstack-udp-forwarder",
                 "chirpstack-udp-forwarder-slot1",
                 "chirpstack-udp-forwarder-slot2",
-                "chirpstack"
+                "chirpstack",
+                "chirpstack-gateway-relay"
             ]
         }
     }
