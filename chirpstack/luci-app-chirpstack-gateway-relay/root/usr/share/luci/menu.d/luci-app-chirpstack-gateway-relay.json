@@ -1,0 +1,10 @@
+{
+    "admin/chirpstack/chirpstack-gateway-relay": {
+        "title": "Gateway Relay",
+        "order": 4,
+        "action": {
+            "type": "view",
+            "path": "chirpstack/chirpstack-gateway-relay"
+        }
+    }
+}
