@@ -30,6 +30,10 @@ return view.extend({
         o = s.option(form.DynamicList, 'frequency', _('Frequency'), _('The ChirpStack Gateway Relay will randomly use one of the configured frequencies'));
         o.datatype = 'integer'
 
+        // Tx Power
+        o = s.option(form.Value, 'tx_power', _('Tx Power (EIRP)'));
+        o.datatype = 'integer';
+
         s = m.section(form.TypedSection, 'relay_data_rate', _('Relay data-rate configuration'));
         s.anonymous = true;
 
