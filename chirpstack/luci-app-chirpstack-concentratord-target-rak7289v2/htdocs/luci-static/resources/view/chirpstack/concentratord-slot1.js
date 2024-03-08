@@ -20,10 +20,6 @@ return view.extend({
                             },
                         },
                     ],
-                    com_dev_paths: [
-                        { path: "/dev/ttyACM0", usb: true },
-                        { path: "/dev/ttyACM1", usb: true },
-                    ],
                 },
                 {
                     id: "2g4",
@@ -35,10 +31,6 @@ return view.extend({
                             supportedRegions: ["ISM2400"],
                             defaultFlags: {},
                         },
-                    ],
-                    com_dev_paths: [
-                        { path: "/dev/ttyACM0", usb: true },
-                        { path: "/dev/ttyACM1", usb: true },
                     ],
                 }
             ],
