@@ -30,9 +30,10 @@ conf_rule_global() {
 conf_rule_relay() {
 	local cfg="$1"
 	local config_name="$2"
-	local border_gateway tx_power
+	local border_gateway border_gateway_ignore_direct_uplinks tx_power
 
 	config_get_bool border_gateway $cfg border_gateway
+	config_get_bool border_gateway_ignore_direct_uplinks $cfg border_gateway_ignore_direct_uplinks
 	config_get tx_power $cfg tx_power
 
 	if [ "$border_gateway" = "1" ]; then
@@ -41,9 +42,16 @@ conf_rule_relay() {
 		border_gateway="false"
 	fi
 
+	if [ "$border_gateway_ignore_direct_uplinks" = "1" ]; then
+		border_gateway_ignore_direct_uplinks="true"
+	else
+		border_gateway_ignore_direct_uplinks="false"
+	fi
+
 	cat >> /var/etc/$config_name/chirpstack-gateway-relay.toml <<- EOF
 		[relay]
 			border_gateway=$border_gateway
+			border_gateway_ignore_direct_uplinks=$border_gateway_ignore_direct_uplinks
 			tx_power=$tx_power
 			frequencies=[
 	EOF

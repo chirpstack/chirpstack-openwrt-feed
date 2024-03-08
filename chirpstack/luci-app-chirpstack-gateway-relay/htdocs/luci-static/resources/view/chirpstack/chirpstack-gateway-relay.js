@@ -24,7 +24,10 @@ return view.extend({
         s.anonymous = true;
 
         // Is border gateway
-        s.option(form.Flag, 'border_gateway', _('Border gateway'), _('Is Border Gateway'), _('A Border Gateway is connected to the internet and forwards received data to ChirpStack'));
+        s.option(form.Flag, 'border_gateway', _('Border gateway'), _('A Border Gateway is connected to the internet and forwards received data to ChirpStack'));
+
+        // Ignore direct uplinks
+        s.option(form.Flag, 'border_gateway_ignore_direct_uplinks', _('Ignore direct uplinks'), _('Enable this to ignore direct uplinks. This is especially useful when testing the Gateway Relay and the end device is both close to the Relay and Border Gateway. Only applies to Border Gateways.'));
 
         // Frequencies
         o = s.option(form.DynamicList, 'frequency', _('Frequency'), _('The ChirpStack Gateway Relay will randomly use one of the configured frequencies'));
