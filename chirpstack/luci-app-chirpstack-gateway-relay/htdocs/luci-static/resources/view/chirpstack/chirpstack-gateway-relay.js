@@ -19,6 +19,7 @@ return view.extend({
         // Region
         o = s.option(form.ListValue, 'region', _('Region'));
         o.value('eu868', 'EU868');
+        o.value('us915', 'US915');
 
         s = m.section(form.TypedSection, 'relay', _('Relay configuration'));
         s.anonymous = true;
@@ -62,35 +63,31 @@ return view.extend({
         o = s.option(form.Value, 'bitrate', _('Bitrate (FSK)'));
         o.datatype = 'integer';
 
-        s = m.section(form.TypedSection, 'backend_concentratord', _('Backend configuration'));
+        s = m.section(form.TypedSection, 'backend_concentratord', _('Backend configuration'), _('This configures the slot that is used for communication with the end-devices.'));
         s.anonymous = true;
 
-        // Event url
-        o = s.option(form.ListValue, 'event_url', _('Event URL'));
-        o.value('ipc:///tmp/concentratord_event', 'ipc:///tmp/concentratord_event');
-        o.value('ipc:///tmp/concentratord_slot1_event', 'ipc:///tmp/concentratord_slot1_event');
-        o.value('ipc:///tmp/concentratord_slot2_event', 'ipc:///tmp/concentratord_slot2_event');
+        // Event url + Command url
+        o = s.option(form.ListValue, 'event_url', _('Slot'));
+        o.value('ipc:///tmp/concentratord_event', 'Concentratord (single slot gateway)');
+        o.value('ipc:///tmp/concentratord_slot1_event', 'Concentratord - Slot 1');
+        o.value('ipc:///tmp/concentratord_slot2_event', 'Concentratord - Slot 2');
 
-        // Command url
-        o = s.option(form.ListValue, 'command_url', _('Command URL'));
-        o.value('ipc:///tmp/concentratord_command', 'ipc:///tmp/concentratord_command');
-        o.value('ipc:///tmp/concentratord_slot1_command', 'ipc:///tmp/concentratord_slot1_command');
-        o.value('ipc:///tmp/concentratord_slot2_command', 'ipc:///tmp/concentratord_slot2_command');
+        o.onchange = function (target, section_id, value) {
+            uci.set('chirpstack-gateway-relay', section_id, 'command_url', value.replace("_event", "_command"));
+        }
 
-        s = m.section(form.TypedSection, 'backend_relay_concentratord', _('Relay Backend configuration'));
+        s = m.section(form.TypedSection, 'backend_relay_concentratord', _('Relay Backend configuration'), _('This configures the slot that is used for Relay Gateway and Border Gateway communication.'));
         s.anonymous = true;
 
-        // Event url
-        o = s.option(form.ListValue, 'event_url', _('Event URL'));
-        o.value('ipc:///tmp/concentratord_event', 'ipc:///tmp/concentratord_event');
-        o.value('ipc:///tmp/concentratord_slot1_event', 'ipc:///tmp/concentratord_slot1_event');
-        o.value('ipc:///tmp/concentratord_slot2_event', 'ipc:///tmp/concentratord_slot2_event');
+        // Event url + Command url
+        o = s.option(form.ListValue, 'event_url', _('Slot'));
+        o.value('ipc:///tmp/concentratord_event', 'Concentratord (single slot gateway)');
+        o.value('ipc:///tmp/concentratord_slot1_event', 'Concentratord - Slot 1');
+        o.value('ipc:///tmp/concentratord_slot2_event', 'Concentratord - Slot 2');
 
-        // Command url
-        o = s.option(form.ListValue, 'command_url', _('Command URL'));
-        o.value('ipc:///tmp/concentratord_command', 'ipc:///tmp/concentratord_command');
-        o.value('ipc:///tmp/concentratord_slot1_command', 'ipc:///tmp/concentratord_slot1_command');
-        o.value('ipc:///tmp/concentratord_slot2_command', 'ipc:///tmp/concentratord_slot2_command');
+        o.onchange = function (target, section_id, value) {
+            uci.set('chirpstack-gateway-relay', section_id, 'command_url', value.replace("_event", "_command"));
+        }
 
 
         return m.render();
