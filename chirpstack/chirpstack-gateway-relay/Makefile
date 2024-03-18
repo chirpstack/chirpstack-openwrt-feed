@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack-gateway-relay
-PKG_VERSION:=4.0.0-test.6
+PKG_VERSION:=4.0.0-test.8
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack-gateway-relay/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=9b88f85a27e1535db1544ca244add7ff36418f4a93397272a1a1e96b91ddb109
+PKG_HASH:=edbecd5d6352fa3d882fcf1ad02226118640f2b10d2396f9d78fad46328ce6b3
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
