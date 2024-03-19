@@ -1,18 +1,18 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack
-PKG_VERSION:=4.6.0
+PKG_VERSION:=4.7.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=cac0175e63f321198e1b7924eb1f5d1b9366fc2476be6e4c6a3b8ea17138bf5f
+PKG_HASH:=1985286a562d98da1b80464d0dbebf0496dd14791f695f8b8bee711bfac0ec70
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
 
-PKG_BUILD_DEPENDS:=rust/host protobuf/host node-yarn/host postgresql openssl
+PKG_BUILD_DEPENDS:=rust/host protobuf/host node-yarn/host
 
 include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
@@ -23,14 +23,11 @@ export BINDGEN_EXTRA_CLANG_ARGS:=--sysroot=$(TOOLCHAIN_DIR)
 CARGO_VARS += \
 	PROTOC=$(STAGING_DIR_HOSTPKG)/bin/protoc
 
-RUSTC_LDFLAGS +=-latomic
-
 define Package/chirpstack
 	SECTION:=chirpstack
 	CATEGORY:=ChirpStack
 	TITLE:=ChirpStack
 	URL:=https://github.com/chirpstack/chirpstack
-	DEPENDS:=+libatomic +libopenssl +libpq
 endef
 
 define Package/chirpstack/description
