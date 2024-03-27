@@ -33,6 +33,7 @@ conf_rule_sx1301() {
     local config_name="$2"
 	local model region channel_plan gnss gateway_id
 	local model_flags antenna_gain
+	local sx1301_reset_pin
 
 	config_get model $cfg model
 	config_get region $cfg region
@@ -40,6 +41,8 @@ conf_rule_sx1301() {
 	config_get gnss $cfg gnss
 	config_get gateway_id $cfg gateway_id
 	config_get antenna_gain $cfg antenna_gain "0"
+
+	config_get sx1301_reset_pin $cfg sx1301_reset_pin
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
@@ -66,6 +69,10 @@ conf_rule_sx1301() {
 			model_flags=[$model_flags]
 			antenna_gain=$antenna_gain
 	EOF
+
+	if [ "$sx1301_reset_pin" != "" ]; then
+		echo "sx1301_reset_pin=$sx1301_reset_pin" >> /var/etc/$config_name/concentratord.toml
+	fi
 
 	# Copy channel config
 	cp /etc/chirpstack-concentratord/sx1301/examples/channels_$channel_plan.toml /var/etc/$config_name/channels.toml
