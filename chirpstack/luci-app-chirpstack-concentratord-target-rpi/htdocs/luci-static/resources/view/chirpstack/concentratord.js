@@ -120,7 +120,7 @@ return view.extend({
                         {
                             id: "semtech_sx1302c490gw1",
                             name: "Semtech - LoRa(R) CoreCell 490MHz (SX1302C490GW1)",
-                            supportedRegions: ["CN470"],
+                            supportedRegions: ["CN470", "EU433"],
                             defaultFlags: {
                                 gnss: false,
                                 usb: false,
@@ -129,7 +129,7 @@ return view.extend({
                         {
                             id: "semtech_sx1302c868gw1",
                             name: "Semtech - LoRa(R) CoreCell 868MHz (SX1302C868GW1)",
-                            supportedRegions: ["EU868"],
+                            supportedRegions: ["EU868", "IN865", "RU864"],
                             defaultFlags: {
                                 gnss: false,
                                 usb: false,
@@ -147,7 +147,7 @@ return view.extend({
                         {
                             id: "semtech_sx1302css868gw1",
                             name: "Semtech - LoRa(R) CoreCell 868MHz (SX1302CSS868GW1)",
-                            supportedRegions: ["EU868"],
+                            supportedRegions: ["EU868", "IN865", "RU864"],
                             defaultFlags: {
                                 gnss: false,
                                 usb: true,
