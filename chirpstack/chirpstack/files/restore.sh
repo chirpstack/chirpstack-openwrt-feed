@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Restore PostgreSQL database"
-sudo -u postgres /usr/bin/pg_restore -h localhost -d chirpstack /srv/backup/chirpstack.pg
+sudo -u postgres /usr/bin/pg_restore -c -h localhost -d chirpstack /srv/backup/chirpstack.pg
 service chirpstack restart
 
 echo "Restore Redis database"
