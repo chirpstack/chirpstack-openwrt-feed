@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack
-PKG_VERSION:=4.7.0
+PKG_VERSION:=4.8.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=1985286a562d98da1b80464d0dbebf0496dd14791f695f8b8bee711bfac0ec70
+PKG_HASH:=40a1a9229ab0c490c3dda1cce797abce7c586bdd6cf5c44528136837c7d72deb
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
@@ -67,7 +67,9 @@ endef
 
 define Build/Compile
 	(cd $(PKG_BUILD_DIR)/ui && \
-		make build \
+		yarn install && \
+		yarn add @chirpstack/chirpstack-api-grpc-web@$(PKG_VERSION) && \
+		yarn build \
 	)
 	$(call Build/Compile/Cargo,chirpstack,--locked)
 endef
