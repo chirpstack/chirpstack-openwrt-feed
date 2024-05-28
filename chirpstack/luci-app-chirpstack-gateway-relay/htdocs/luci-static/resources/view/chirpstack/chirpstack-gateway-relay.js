@@ -89,6 +89,10 @@ return view.extend({
         // Ignore direct uplinks
         s.option(form.Flag, 'border_gateway_ignore_direct_uplinks', _('Ignore direct uplinks'), _('Enable this to ignore direct uplinks. This is especially useful when testing the Gateway Relay and the end device is both close to the Relay and Border Gateway. Only applies to Border Gateways.'));
 
+        // Max hop count
+        o = s.option(form.Value, 'max_hop_count', _('Max. hop count'), _('The maximum number of times a frame will be repeated (valid options: 1 - 8)'));
+        o.datatype = 'integer';
+
         // Frequencies
         o = s.option(form.DynamicList, 'frequency', _('Frequencies'), _('The ChirpStack Gateway Relay will randomly use one of the configured frequencies for Relay Gateway / Border Gateway communication.'));
         o.datatype = 'integer'
