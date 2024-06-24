@@ -3,6 +3,14 @@
         "title": "Concentratord",
         "order": 1,
         "action": {
+            "type": "alias",
+            "path": "admin/chirpstack/concentratord/slot1"
+        }
+    },
+    "admin/chirpstack/concentratord/slot1": {
+        "title": "Slot 1",
+        "order": 1,
+        "action": {
             "type": "view",
             "path": "chirpstack/concentratord"
         }

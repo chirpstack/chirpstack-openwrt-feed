@@ -1,0 +1,10 @@
+{
+    "admin/chirpstack/chirpstack-gateway-mesh": {
+        "title": "Gateway Mesh",
+        "order": 4,
+        "action": {
+            "type": "view",
+            "path": "chirpstack/chirpstack-gateway-mesh"
+        }
+    }
+}

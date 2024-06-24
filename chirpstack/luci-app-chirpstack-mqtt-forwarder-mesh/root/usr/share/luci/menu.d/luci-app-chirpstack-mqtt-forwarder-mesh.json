@@ -1,0 +1,10 @@
+{
+    "admin/chirpstack/mqtt-forwarder/mesh": {
+        "title": "Mesh",
+        "order": 3,
+        "action": {
+            "type": "view",
+            "path": "chirpstack/mqtt-forwarder-mesh"
+        }
+    }
+}

@@ -14,12 +14,12 @@
                 "chirpstack-mqtt-forwarder",
                 "chirpstack-mqtt-forwarder-slot1",
                 "chirpstack-mqtt-forwarder-slot2",
-                "chirpstack-mqtt-forwarder-relay",
+                "chirpstack-mqtt-forwarder-mesh",
                 "chirpstack-udp-forwarder",
                 "chirpstack-udp-forwarder-slot1",
                 "chirpstack-udp-forwarder-slot2",
                 "chirpstack",
-                "chirpstack-gateway-relay"
+                "chirpstack-gateway-mesh"
             ]
         },
         "write": {
@@ -36,12 +36,12 @@
                 "chirpstack-mqtt-forwarder",
                 "chirpstack-mqtt-forwarder-slot1",
                 "chirpstack-mqtt-forwarder-slot2",
-                "chirpstack-mqtt-forwarder-relay",
+                "chirpstack-mqtt-forwarder-mesh",
                 "chirpstack-udp-forwarder",
                 "chirpstack-udp-forwarder-slot1",
                 "chirpstack-udp-forwarder-slot2",
                 "chirpstack",
-                "chirpstack-gateway-relay"
+                "chirpstack-gateway-mesh"
             ]
         }
     }
