@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack-gateway-mesh
-PKG_VERSION:=4.0.0-test.11
+PKG_VERSION:=4.0.0-test.12
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack-gateway-mesh/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=3d8455cc28febbff63e26d90359515c127c7af83e7d40db6ffd94929e1037e30
+PKG_HASH:=c87ace78887c1365f9401b2d6af44c68929f46d680fc5d638b65dcd27d2b72ef
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
