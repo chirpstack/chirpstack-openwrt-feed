@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack
-PKG_VERSION:=4.8.1
-PKG_RELEASE:=2
+PKG_VERSION:=4.9.0-test.3
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=40a1a9229ab0c490c3dda1cce797abce7c586bdd6cf5c44528136837c7d72deb
+PKG_HASH:=2953e192d7a1ef96dce3ebbec546ee557ed9df3741015eefc92687681a2a4f30
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
