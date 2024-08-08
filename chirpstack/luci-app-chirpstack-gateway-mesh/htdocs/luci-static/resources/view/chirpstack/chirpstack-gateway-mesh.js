@@ -83,6 +83,17 @@ return view.extend({
       }
     }
 
+    // Signing key
+    o = s.option(form.Value, 'signing_key', _('Signing key'), _('Signing key used to sign and validate mesh payloads. The same key must be configured for all Border / Relay Gateways. The format of the key is an 128 bit HEX string (e.g. 00000000000000000000000000000000).'));
+    o.password = true;
+    o.validate = function(section_id, value) {
+      if (value.match(/[0-9a-fA-F]{32}/g)) {
+        return true;
+      } else {
+        return "A 128 bit HEX string is expected, e.g. 00000000000000000000000000000000";
+      }
+    }
+
     // Is border gateway
     s.option(form.Flag, 'border_gateway', _('Border gateway'), _('A Border Gateway is connected to the internet and forwards received data to ChirpStack. In case this option is enabled, then the ChirpStack Gateway Mesh will act as a proxy between the ChirpStack Concentratord and the ChirpStack MQTT Forwarder. In this case you must configure the ChirpStack MQTT Forwarder in the \'Mesh\' tab.'));
 
