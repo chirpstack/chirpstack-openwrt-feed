@@ -1,16 +1,16 @@
 . /lib/functions.sh
 
 configure() {
-    local config_name="$1"
-    mkdir -p /var/etc/$config_name
-    config_load "$config_name"
-    config_foreach conf_rule_global "global" "$config_name"
+	local config_name="$1"
+	mkdir -p /var/etc/$config_name
+	config_load "$config_name"
+	config_foreach conf_rule_global "global" "$config_name"
 }
 
 conf_rule_global() {
-    local cfg="$1"
-    local config_name="$2"
-    local chipset
+	local cfg="$1"
+	local config_name="$2"
+	local chipset
 
 	config_get chipset $cfg chipset
 	CHIPSET="$chipset"
@@ -30,7 +30,7 @@ conf_rule_global() {
 
 conf_rule_sx1301() {
 	local cfg="$1"
-    local config_name="$2"
+	local config_name="$2"
 	local model region channel_plan gnss gateway_id
 	local model_flags antenna_gain
 	local sx1301_reset_pin
@@ -81,11 +81,12 @@ conf_rule_sx1301() {
 
 conf_rule_sx1302() {
 	local cfg="$1"
-    local config_name="$2"
+	local config_name="$2"
 	local model region channel_plan gnss usb
 	local model_flags antenna_gain
 	local sx1302_reset_pin com_dev_path i2c_dev_path
 	local event_bind command_bind
+	local gnss_dev_path
 
 	config_get model $cfg model
 	config_get region $cfg region
@@ -99,6 +100,7 @@ conf_rule_sx1302() {
 	config_get sx1302_reset_pin $cfg sx1302_reset_pin
 	config_get com_dev_path $cfg com_dev_path
 	config_get i2c_dev_path $cfg i2c_dev_path
+	config_get gnss_dev_path $cfg gnss_dev_path
 	config_get antenna_gain $cfg antenna_gain "0"
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
@@ -150,6 +152,10 @@ conf_rule_sx1302() {
 		echo "i2c_dev_path=\"$i2c_dev_path\"" >> /var/etc/$config_name/concentratord.toml
 	fi
 
+	if [ "$gnss_dev_path" != "" ]; then
+		echo "gnss_dev_path=\"$gnss_dev_path\"" >> /var/etc/$config_name/concentratord.toml
+	fi
+
 	# Copy channel config
 	cp /etc/chirpstack-concentratord/sx1302/examples/channels_$channel_plan.toml /var/etc/$config_name/channels.toml
 	cp /etc/chirpstack-concentratord/sx1302/examples/region_$region_config.toml /var/etc/$config_name/region.toml
@@ -157,7 +163,7 @@ conf_rule_sx1302() {
 
 conf_rule_2g4() {
 	local cfg="$1"
-    local config_name="$2"
+	local config_name="$2"
 	local model channel_plan antenna_gain
 	local event_bind command_bind
 	local com_dev_path
