@@ -28,6 +28,8 @@ return baseclass.extend({
             o.value(chipset.id, chipset.name);
         }
 
+        const allowSelectInterface = (options.allowSelectInterface === undefined) || (options.allowSelectInterface);
+
         // chipset options
         for (const chipset of options.chipsets) {
             s = m.section(form.TypedSection, chipset.id, chipset.name, _('Configure the fields below if you have selected the ' + chipset.name + ' chipset.'));
@@ -131,9 +133,10 @@ return baseclass.extend({
             if (chipset.id === 'sx1301' || chipset.id === 'sx1302') {
                 s.option(form.Flag, 'gnss', _('GNSS'), _('Enable this in case the shield has a uBlox GNSS module.'));
             }
-
+            if (allowSelectInterface) {
             if (chipset.id === 'sx1302') {
                 s.option(form.Flag, 'usb', _('USB'), _('Enable this in case the shield is connected over USB rather than SPI.'));
+                }
             }
 
             if (chipset.com_dev_paths !== undefined) {
