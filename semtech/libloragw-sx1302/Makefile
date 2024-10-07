@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libloragw-sx1302
 PKG_VERSION:=2.1.0
-PKG_RELEASE:=7
+PKG_RELEASE:=8
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/brocaar/sx1302_hal/tar.gz/V$(PKG_VERSION)r$(PKG_RELEASE)?
