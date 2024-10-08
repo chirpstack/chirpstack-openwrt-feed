@@ -21,6 +21,7 @@ return view.extend({
                         },
                     ],
                     com_dev_paths: [
+                        { path: "/dev/spidev0.0", usb: false },
                         { path: "/dev/ttyACM0", usb: true },
                         { path: "/dev/ttyACM1", usb: true },
                     ],
