@@ -26,6 +26,6 @@ done
 
 IFS=$oldIFS
 
-[ "$OUTPUT" = "" ] && OUTPUT="could not read gateway_id"
+[ "$OUTPUT" = "" ] && OUTPUT="Could not read Gateway ID"
 
 echo "$OUTPUT"
