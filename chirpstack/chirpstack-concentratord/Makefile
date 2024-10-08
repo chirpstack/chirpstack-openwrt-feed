@@ -77,6 +77,7 @@ define Package/chirpstack-concentratord/install
 
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/gateway-id $(1)/usr/bin/
+	$(INSTALL_BIN) ./files/gateway-id.sh $(1)/usr/bin
 endef
 
 define Package/chirpstack-concentratord-2g4/install

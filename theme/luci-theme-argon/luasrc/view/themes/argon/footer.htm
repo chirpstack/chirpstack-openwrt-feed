@@ -17,7 +17,7 @@
 -%>
 
 <%
-	local handle = io.popen("/usr/bin/gateway-id")
+	local handle = io.popen("sh /usr/bin/gateway-id.sh")
 	local gateway_id = handle:read("*a")                                                                                      
 	handle:close()
 -%>
