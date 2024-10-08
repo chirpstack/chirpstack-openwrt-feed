@@ -5,6 +5,10 @@
 return view.extend({
     render: function () {
         const options = {
+            hideFields: {
+                usb: true,
+                gnss: false
+            },
             chipsets: [
                 {
                     id: "sx1302",
@@ -135,6 +139,6 @@ return view.extend({
             ],
         };
 
-        return concentratord.renderForm('chirpstack-concentratord', 'chirpstack-mqtt-forwarder', options);
+        return concentratord.renderForm('chirpstack-concentratord-slot1', 'chirpstack-mqtt-forwarder-slot1', options);
     },
 });
