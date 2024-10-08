@@ -11,6 +11,10 @@ return baseclass.extend({
     renderForm: function (concentratordConfig, mqttForwarderConfig, options) {
         var m, s, o, ro, as;
 
+        function isVisible(fieldName) {
+            return (options.hideFields === undefined) || (options.hideFields[fieldName] === undefined) || (options.hideFields[fieldName]);
+        };
+
         m = new form.Map(concentratordConfig, _('ChirpStack Concentratord'),
             _('ChirpStack Concentratord provides an unified API interface to LoRa(R) concentrator hardware. Please refer to the <a target="_blank" href="https://www.chirpstack.io/docs/chirpstack-concentratord/hardware-support.html">ChirpStack Concentratord Hardware</a> page for supported hardware and configuration options.'));
         m.chain(mqttForwarderConfig);
@@ -27,8 +31,6 @@ return baseclass.extend({
         for (const chipset of options.chipsets) {
             o.value(chipset.id, chipset.name);
         }
-
-        const allowSelectInterface = (options.allowSelectInterface === undefined) || (options.allowSelectInterface);
 
         // chipset options
         for (const chipset of options.chipsets) {
@@ -130,12 +132,14 @@ return baseclass.extend({
             }
 
             // flags
-            if (chipset.id === 'sx1301' || chipset.id === 'sx1302') {
-                s.option(form.Flag, 'gnss', _('GNSS'), _('Enable this in case the shield has a uBlox GNSS module.'));
+            if (isVisible('gnss')) {
+                if (chipset.id === 'sx1301' || chipset.id === 'sx1302') {
+                    s.option(form.Flag, 'gnss', _('GNSS'), _('Enable this in case the shield has a uBlox GNSS module.'));
+                }
             }
-            if (allowSelectInterface) {
-            if (chipset.id === 'sx1302') {
-                s.option(form.Flag, 'usb', _('USB'), _('Enable this in case the shield is connected over USB rather than SPI.'));
+            if (isVisible('usb')) {
+                if (chipset.id === 'sx1302') {
+                    s.option(form.Flag, 'usb', _('USB'), _('Enable this in case the shield is connected over USB rather than SPI.'));
                 }
             }
 

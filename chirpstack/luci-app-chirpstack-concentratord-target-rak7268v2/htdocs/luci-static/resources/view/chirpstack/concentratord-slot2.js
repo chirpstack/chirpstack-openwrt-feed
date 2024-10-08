@@ -5,7 +5,10 @@
 return view.extend({
     render: function () {
         const options = {
-            allowSelectInterface: false,
+            hideFields: {
+                usb: true,
+                gnss: false
+            },
             chipsets: [
                 {
                     id: "sx1302",
