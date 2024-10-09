@@ -6,7 +6,7 @@ PKG_RELEASE:=3
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/brocaar/lora_gateway/tar.gz/v$(PKG_VERSION)r$(PKG_RELEASE)?
-PKG_HASH:=c51ca197ef61d7bc387e560288077f164858aa37b0ed483d314da658d7e361e1
+PKG_HASH:=a9db52b26715dfbccfb564e62967df1b489f0dd274acc38411b7ae0a6693b5bd
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=BSD
