@@ -12,7 +12,7 @@ return baseclass.extend({
         var m, s, o, ro, as;
 
         function isVisible(fieldName) {
-            return (options.hideFields === undefined) || (options.hideFields[fieldName] === undefined) || (options.hideFields[fieldName]);
+            return (options.hideFields === undefined) || (options.hideFields[fieldName] === undefined) || (!options.hideFields[fieldName]);
         };
 
         m = new form.Map(concentratordConfig, _('ChirpStack Concentratord'),
