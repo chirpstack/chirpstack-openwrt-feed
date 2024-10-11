@@ -2,11 +2,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libloragw-sx1301
 PKG_VERSION:=5.0.1
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_RELEASE).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/brocaar/lora_gateway/tar.gz/v$(PKG_VERSION)r$(PKG_RELEASE)?
-PKG_HASH:=a9db52b26715dfbccfb564e62967df1b489f0dd274acc38411b7ae0a6693b5bd
+PKG_HASH:=eaada52118381fb059dfa1d5c3ad1b03c49952961e3ced6322e6d6ae94b1ed2d
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=BSD

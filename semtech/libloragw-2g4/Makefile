@@ -4,7 +4,7 @@ PKG_NAME:=libloragw-2g4
 PKG_VERSION:=1.1.0
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_RELEASE).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/Lora-net/gateway_2g4_hal/tar.gz/V$(PKG_VERSION)?
 PKG_HASH:=905a7d5e6e503c9aca49350a3fcebf94d797bd7cab8c7803d4f77549cb886013
 
