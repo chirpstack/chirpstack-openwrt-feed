@@ -7,10 +7,6 @@ configure() {
     echo "" > /var/etc/$config_name/chirpstack-udp-forwarder.toml
 
 	cat >> /var/etc/$config_name/chirpstack-udp-forwarder.toml <<- EOF
-		[concentratord]
-		event_url="ipc:///tmp/concentratord_event"
-		command_url="ipc:///tmp/concentratord_command"
-
 		[udp_server]
 		log_to_syslog=true
 	EOF
