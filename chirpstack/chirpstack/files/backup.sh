@@ -1,9 +1,9 @@
 #!/bin/sh
 
-echo "Backup PostgreSQL database"
-mkdir -p /srv/backup
-chmod 777 /srv/backup
-sudo -u postgres /usr/bin/pg_dump -h localhost -d chirpstack -F c -f /srv/backup/chirpstack.pg
+echo "SQLite database"
+service chirpstack stop
+cp /srv/chirpstack/chirpstack.sqlite /srv/backup/chirpstack.sqlite
+service chirpstack start
 
 echo "Backup Redis database"
 service redis stop

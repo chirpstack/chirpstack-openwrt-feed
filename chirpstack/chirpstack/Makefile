@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack
-PKG_VERSION:=4.9.0
+PKG_VERSION:=4.10.0-test.7
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=f25b06d4779fe6e4d834155281f39266eefb3de4a9b280baf6e0bc6121a97ea7
+PKG_HASH:=697de76a41e9d9b2fb9feff403f71b28cbe2bd2d2959d9be274a32e67309ff5d
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
@@ -23,14 +23,12 @@ export BINDGEN_EXTRA_CLANG_ARGS:=--sysroot=$(TOOLCHAIN_DIR)
 CARGO_VARS += \
 	PROTOC=$(STAGING_DIR_HOSTPKG)/bin/protoc
 
-RUSTC_LDFLAGS +=-latomic
-
 define Package/chirpstack
 	SECTION:=chirpstack
 	CATEGORY:=ChirpStack
 	TITLE:=ChirpStack
 	URL:=https://github.com/chirpstack/chirpstack
-	DEPENDS:=+libatomic
+	DEPENDS:=+libsqlite3
 endef
 
 define Package/chirpstack/description
@@ -74,7 +72,7 @@ define Build/Compile
 		yarn add @chirpstack/chirpstack-api-grpc-web@$(PKG_VERSION) && \
 		yarn build \
 	)
-	$(call Build/Compile/Cargo,chirpstack,--locked)
+	$(call Build/Compile/Cargo,chirpstack,--locked --no-default-features --features sqlite)
 endef
 
 $(eval $(call RustBinPackage,chirpstack))
