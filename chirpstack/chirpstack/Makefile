@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack
-PKG_VERSION:=4.10.0-test.7
+PKG_VERSION:=4.10.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=697de76a41e9d9b2fb9feff403f71b28cbe2bd2d2959d9be274a32e67309ff5d
+PKG_HASH:=0ffa2305c3c77f9d5102c5dee8de248381b56fdf3d610f61a99ffd73d804289e
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
@@ -23,12 +23,14 @@ export BINDGEN_EXTRA_CLANG_ARGS:=--sysroot=$(TOOLCHAIN_DIR)
 CARGO_VARS += \
 	PROTOC=$(STAGING_DIR_HOSTPKG)/bin/protoc
 
+RUSTC_LDFLAGS +=-latomic
+
 define Package/chirpstack
 	SECTION:=chirpstack
 	CATEGORY:=ChirpStack
 	TITLE:=ChirpStack
 	URL:=https://github.com/chirpstack/chirpstack
-	DEPENDS:=+libsqlite3
+	DEPENDS:=+libatomic +libsqlite3
 endef
 
 define Package/chirpstack/description
