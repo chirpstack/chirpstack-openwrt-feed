@@ -139,8 +139,11 @@ conf_rule_sx1302() {
 			region="$region"
 			model_flags=[$model_flags]
 			antenna_gain=$antenna_gain
-			gateway_id="$gateway_id"
 	EOF
+
+	if [ "$gateway_id" != "" ]; then
+	   	echo "gateway_id=\"$gateway_id\"" >> /var/etc/$config_name/concentratord.toml
+	fi
 
 	if [ "$sx1302_reset_pin" != "" ]; then
 		echo "sx1302_reset_pin=$sx1302_reset_pin" >> /var/etc/$config_name/concentratord.toml
