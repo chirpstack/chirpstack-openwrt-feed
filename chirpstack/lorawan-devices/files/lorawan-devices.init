@@ -1,0 +1,19 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+
+start() {
+	OUT=$(cmp /opt/lorawan-devices/SRCREV /opt/lorawan-devices/SRCREV.lastimport)
+	RET=$?
+	if [ $RET -eq 0 ]; then
+		return 0;
+	fi
+
+  chirpstack -c /var/etc/chirpstack import-legacy-lorawan-devices-repository -d /opt/lorawan-devices
+	RET=$?
+	if [ $RET -eq 0 ]; then
+		cp /opt/lorawan-devices/SRCREV /opt/lorawan-devices/SRCREV.lastimport
+	fi
+
+  return 0;
+}

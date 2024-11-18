@@ -34,6 +34,10 @@ define Package/lorawan-devices/install
 
 	echo "" > $(1)/opt/lorawan-devices/SRCREV.lastimport
 	echo "$(PKG_SOURCE_VERSION)" > $(1)/opt/lorawan-devices/SRCREV
+
+	# The zzz prefix is intentional to make sure it is the last service that gets started.
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/lorawan-devices.init $(1)/etc/init.d/zzz-lorawan-devices.init
 endef
 
 define Build/Compile
