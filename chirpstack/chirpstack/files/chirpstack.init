@@ -55,7 +55,7 @@ configuration() {
 
 start_service() {
 	configuration
-	pmkdir -p /srv/chirpstack
+	mkdir -p /srv/chirpstack
 
 	procd_open_instance
 	procd_set_param command /usr/bin/$PACKAGE_NAME -c /var/etc/$PACKAGE_NAME
