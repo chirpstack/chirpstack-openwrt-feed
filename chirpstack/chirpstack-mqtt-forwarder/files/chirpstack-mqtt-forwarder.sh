@@ -18,6 +18,8 @@ configure() {
 	config_foreach conf_rule_concentratord "concentratord" "$config_name"
 	config_foreach conf_rule_mqtt "mqtt" "$config_name"
 	config_foreach conf_rule_filters "filters" "$config_name"
+
+	conf_rule_commands "$config_name"
 }
 
 conf_rule_concentratord() {
@@ -139,4 +141,25 @@ conf_rule_join_eui_prefix() {
 	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
 		"$1",
 	EOF
+}
+
+conf_rule_commands() {
+	local config_name="$1"
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		[commands]
+	EOF
+
+	config_foreach conf_command "commands" "$config_name"
+}
+
+conf_command() {
+        local cfg="$1"
+        local config_name="$2"
+
+        local command
+
+        config_get command $cfg command
+
+        echo "$cfg=$command" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
 }
