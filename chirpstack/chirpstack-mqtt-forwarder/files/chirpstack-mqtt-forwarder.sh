@@ -20,6 +20,7 @@ configure() {
 	config_foreach conf_rule_filters "filters" "$config_name"
 
 	conf_rule_commands "$config_name"
+	conf_rule_metadata "$config_name"
 }
 
 conf_rule_concentratord() {
@@ -162,4 +163,77 @@ conf_command() {
         config_get command $cfg command
 
         echo "$cfg=$command" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+}
+
+# Convert uci config metadata to chirpstack-mqtt-forwarder.toml
+# config metadata 'datetime'
+#         option command 'datetime=["date", "-R"]'
+#
+# config metadata 'serial_number'
+#         option static '1234'
+conf_rule_metadata() {
+	local config_name="$1"
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		[metadata]
+	EOF
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		[metadata.static]
+	EOF
+
+	config_foreach conf_metadata_static "metadata" "$config_name"
+
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		[metadata.commands]
+	EOF
+
+	config_foreach conf_command "metadata" "$config_name"
+
+}
+
+# Foreach config 'type' 'key'
+# Find option static and generate key=value
+conf_metadata_static() {
+        local cfg="$1"
+        local config_name="$2"
+
+        local static
+
+        config_get static $cfg static
+		if [ "$static" != "" ]; then
+        	echo "$cfg=$static" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+		fi
+}
+
+# Convert uci config commands to chirpstack-mqtt-forwarder.toml
+# config commands 'reboot'
+#         option command '["/usr/bin/reboot"]'
+#
+# config commands 'shutdown'
+#         option command '["/usr/bin/shutdown"]'
+conf_rule_commands() {
+	local config_name="$1"
+
+	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
+		[commands]
+	EOF
+
+	config_foreach conf_command "commands" "$config_name"
+}
+
+# Foreach config 'type' 'key'
+# Find option command and generate key=value
+conf_command() {
+        local cfg="$1"
+        local config_name="$2"
+
+        local command
+
+        config_get command $cfg command
+
+        if [ "$command" != "" ]; then
+			echo "$cfg=$command" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+		fi
 }
