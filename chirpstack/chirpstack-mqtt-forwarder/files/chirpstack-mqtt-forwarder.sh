@@ -24,8 +24,8 @@ configure() {
 	config_foreach conf_rule_mqtt "mqtt" "$config_name"
 	config_foreach conf_rule_filters "filters" "$config_name"
 
-	conf_rule_commands "$config_name"
 	conf_rule_metadata "$config_name"
+	conf_rule_commands "$config_name"
 }
 
 conf_rule_concentratord() {
