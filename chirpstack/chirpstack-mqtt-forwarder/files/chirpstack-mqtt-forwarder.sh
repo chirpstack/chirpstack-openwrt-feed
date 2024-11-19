@@ -1,5 +1,10 @@
 . /lib/functions.sh
 
+# check if is valid toml array
+toml_array_validator() {
+	[[ '^(\[\s*(("([^\"\\]|\\"|\\\\)*")(\s*,\s*("([^\"\\]|\\"|\\\\)*"))*)?\s*\])$' =~ "$1" ]]
+}
+
 configure() {
 	local config_name="$1"
 
@@ -202,6 +207,7 @@ conf_metadata_static() {
 	local static
 
 	config_get static $cfg static
+
 	if [ "$static" != "" ]; then
 		echo "$cfg=$static" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
 	fi
@@ -224,7 +230,8 @@ conf_rule_commands() {
 }
 
 # Foreach config 'type' 'key'
-# Find option command and generate key=value
+# Find option command and generate key=array
+# example datetime=["date", "-R"]
 conf_command() {
 	local cfg="$1"
 	local config_name="$2"
@@ -233,7 +240,7 @@ conf_command() {
 
 	config_get command $cfg command
 
-	if [ "$command" != "" ]; then
+	if toml_array_validator "$command"; then
 		echo "$cfg=$command" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
 	fi
 }
