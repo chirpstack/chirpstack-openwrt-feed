@@ -1,10 +1,10 @@
 . /lib/functions.sh
 
 configure() {
-    local config_name="$1"
+	local config_name="$1"
 
-    mkdir -p /var/etc/$config_name
-    echo "" > /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+	mkdir -p /var/etc/$config_name
+	echo "" > /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
 
 	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
 		[logging]
@@ -46,7 +46,7 @@ conf_rule_concentratord() {
 
 conf_rule_mqtt() {
 	local cfg="$1"
-    local config_name="$2"
+	local config_name="$2"
 	local topic_prefix json server username password qos clean_session client_id ca_cert tls_cert tls_key
 
 	config_get topic_prefix $cfg topic_prefix
@@ -106,7 +106,7 @@ conf_rule_mqtt() {
 
 conf_rule_filters() {
 	local cfg="$1"
-    local config_name="$2"
+	local config_name="$2"
 
 	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
 		[backend.filters]
@@ -131,14 +131,14 @@ conf_rule_filters() {
 }
 
 conf_rule_dev_addr_prefix() {
-    local config_name="$2"
+	local config_name="$2"
 	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
 		"$1",
 	EOF
 }
 
 conf_rule_join_eui_prefix() {
-    local config_name="$2"
+	local config_name="$2"
 	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
 		"$1",
 	EOF
@@ -155,22 +155,22 @@ conf_rule_commands() {
 }
 
 conf_command() {
-        local cfg="$1"
-        local config_name="$2"
+	local cfg="$1"
+	local config_name="$2"
 
-        local command
+	local command
 
-        config_get command $cfg command
+	config_get command $cfg command
 
-        echo "$cfg=$command" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+	echo "$cfg=$command" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
 }
 
 # Convert uci config metadata to chirpstack-mqtt-forwarder.toml
 # config metadata 'datetime'
-#         option command 'datetime=["date", "-R"]'
+#		 option command 'datetime=["date", "-R"]'
 #
 # config metadata 'serial_number'
-#         option static '1234'
+#		 option static '1234'
 conf_rule_metadata() {
 	local config_name="$1"
 
@@ -196,23 +196,23 @@ conf_rule_metadata() {
 # Foreach config 'type' 'key'
 # Find option static and generate key=value
 conf_metadata_static() {
-        local cfg="$1"
-        local config_name="$2"
+	local cfg="$1"
+	local config_name="$2"
 
-        local static
+	local static
 
-        config_get static $cfg static
-		if [ "$static" != "" ]; then
-        	echo "$cfg=$static" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
-		fi
+	config_get static $cfg static
+	if [ "$static" != "" ]; then
+		echo "$cfg=$static" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+	fi
 }
 
 # Convert uci config commands to chirpstack-mqtt-forwarder.toml
 # config commands 'reboot'
-#         option command '["/usr/bin/reboot"]'
+#		 option command '["/usr/bin/reboot"]'
 #
 # config commands 'shutdown'
-#         option command '["/usr/bin/shutdown"]'
+#		 option command '["/usr/bin/shutdown"]'
 conf_rule_commands() {
 	local config_name="$1"
 
@@ -226,14 +226,14 @@ conf_rule_commands() {
 # Foreach config 'type' 'key'
 # Find option command and generate key=value
 conf_command() {
-        local cfg="$1"
-        local config_name="$2"
+	local cfg="$1"
+	local config_name="$2"
 
-        local command
+	local command
 
-        config_get command $cfg command
+	config_get command $cfg command
 
-        if [ "$command" != "" ]; then
-			echo "$cfg=$command" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
-		fi
+	if [ "$command" != "" ]; then
+		echo "$cfg=$command" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+	fi
 }
