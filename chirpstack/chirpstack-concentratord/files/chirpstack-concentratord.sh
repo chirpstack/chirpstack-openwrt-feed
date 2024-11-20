@@ -82,7 +82,7 @@ conf_rule_sx1301() {
 conf_rule_sx1302() {
 	local cfg="$1"
 	local config_name="$2"
-	local model region channel_plan gnss usb
+	local model region channel_plan gnss usb gateway_id
 	local model_flags antenna_gain
 	local sx1302_reset_pin com_dev_path i2c_dev_path
 	local event_bind command_bind
@@ -93,6 +93,7 @@ conf_rule_sx1302() {
 	config_get channel_plan $cfg channel_plan
 	config_get gnss $cfg gnss
 	config_get usb $cfg usb
+	config_get gateway_id $cfg gateway_id
 
 	config_get event_bind $cfg event_bind
 	config_get command_bind $cfg command_bind
@@ -139,6 +140,10 @@ conf_rule_sx1302() {
 			model_flags=[$model_flags]
 			antenna_gain=$antenna_gain
 	EOF
+
+	if [ "$gateway_id" != "" ]; then
+	   	echo "gateway_id=\"$gateway_id\"" >> /var/etc/$config_name/concentratord.toml
+	fi
 
 	if [ "$sx1302_reset_pin" != "" ]; then
 		echo "sx1302_reset_pin=$sx1302_reset_pin" >> /var/etc/$config_name/concentratord.toml
