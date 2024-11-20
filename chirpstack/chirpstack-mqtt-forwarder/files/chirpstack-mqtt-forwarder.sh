@@ -149,27 +149,6 @@ conf_rule_join_eui_prefix() {
 	EOF
 }
 
-conf_rule_commands() {
-	local config_name="$1"
-
-	cat >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<- EOF
-		[commands]
-	EOF
-
-	config_foreach conf_command "commands" "$config_name"
-}
-
-conf_command() {
-	local cfg="$1"
-	local config_name="$2"
-
-	local command
-
-	config_get command $cfg command
-
-	echo "$cfg=$command" >> /var/etc/$config_name/chirpstack-mqtt-forwarder.toml
-}
-
 # Convert uci config metadata to chirpstack-mqtt-forwarder.toml
 # config metadata 'datetime'
 #		 option command 'datetime=["date", "-R"]'
