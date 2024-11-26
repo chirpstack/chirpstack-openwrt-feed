@@ -19,8 +19,8 @@ configure() {
   config_foreach conf_rule_mqtt "mqtt" "$config_name"
   config_foreach conf_rule_filters "filters" "$config_name"
 
-  conf_rule_metadata "$config_name"
   conf_rule_commands "$config_name"
+  conf_rule_metadata "$config_name"
 }
 
 conf_rule_concentratord() {
@@ -154,10 +154,6 @@ conf_rule_metadata() {
   local config_name="$1"
 
   cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
-		[metadata]
-	EOF
-
-  cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
 		[metadata.static]
 	EOF
 
@@ -182,7 +178,7 @@ conf_metadata_static() {
   config_get static $cfg static
 
   if [ "$static" != "" ]; then
-    echo "$cfg=$static" >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+    echo "$cfg=\"$static\"" >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml
   fi
 }
 
