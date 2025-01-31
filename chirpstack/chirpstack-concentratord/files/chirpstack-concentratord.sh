@@ -99,6 +99,8 @@ conf_rule_sx1302() {
 	config_get command_bind $cfg command_bind
 
 	config_get sx1302_reset_pin $cfg sx1302_reset_pin
+	config_get sx1302_power_en_pin $cfg sx1302_power_en_pin
+	config_get sx1261_reset_pin $cfg sx1261_reset_pin
 	config_get com_dev_path $cfg com_dev_path
 	config_get i2c_dev_path $cfg i2c_dev_path
 	config_get gnss_dev_path $cfg gnss_dev_path
@@ -147,6 +149,14 @@ conf_rule_sx1302() {
 
 	if [ "$sx1302_reset_pin" != "" ]; then
 		echo "sx1302_reset_pin=$sx1302_reset_pin" >> /var/etc/$config_name/concentratord.toml
+	fi
+
+	if [ "$sx1302_power_en_pin" != "" ]; then
+		echo "sx1302_power_en_pin=$sx1302_power_en_pin" >> /var/etc/$config_name/concentratord.toml
+	fi
+
+	if [ "$sx1261_reset_pin" != "" ]; then
+		echo "sx1261_reset_pin=$sx1261_reset_pin" >> /var/etc/$config_name/concentratord.toml
 	fi
 
 	if [ "$com_dev_path" != "" ]; then
