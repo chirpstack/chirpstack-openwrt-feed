@@ -69,6 +69,22 @@ return view.extend({
         spreadingFactor.setValue(10);
         bandwidth.setValue(125000);
         codeRate.setValue('4/5');
+      } else if (value === 'as923') {
+        frequencies.setValue([
+          923200000,
+          923400000,
+          923600000,
+          923800000,
+          924000000,
+          924200000,
+          924400000,
+          924600000,
+        ]);
+        txPower.setValue(16);
+        modulation.setValue('LORA');
+        spreadingFactor.setValue(10);
+        bandwidth.setValue(125000);
+        codeRate.setValue('4/5');  
       } else if (value === 'ism2400') {
         frequencies.setValue([
           2403000000,
