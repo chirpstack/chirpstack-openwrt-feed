@@ -6,7 +6,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack-gateway-mesh/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=2e875dc554c4c5a34d582083fb6e1b291070feb3b0d8cbcb44a2fc3d93ee5dad
+PKG_HASH:=cbf3318e7e7fb91f37e463b10d5bd1322c4a9484c33ed8b941ceba71077afc53
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
