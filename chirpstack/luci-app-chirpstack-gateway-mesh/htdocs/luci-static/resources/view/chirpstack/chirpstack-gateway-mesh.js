@@ -18,6 +18,10 @@ return view.extend({
 
     // Region
     o = s.option(form.ListValue, 'region', _('Region'), _('This is the region used for the Relay Gateway to end-devices communication.'));
+    o.value('as923', 'AS923');
+    o.value('as923_2', 'AS923-2');
+    o.value('as923_3', 'AS923-3');
+    o.value('as923_4', 'AS923-4');
     o.value('eu868', 'EU868');
     o.value('us915', 'US915');
 
@@ -26,6 +30,10 @@ return view.extend({
 
     // Region
     o = s.option(form.ListValue, 'region', _('Region'), _('This is the region used for Relay Gateway / Border Gateway communication. Changing this will update the Frequencies, Tx Power and Mesh data-rate configuration to sane defaults. Please note that you might need to change the frequencies in case the region supports multiple sub-bands or if you have customized the channel configuration for that region.'));
+    o.value('as923', 'AS923');
+    o.value('as923_2', 'AS923-2');
+    o.value('as923_3', 'AS923-3');
+    o.value('as923_4', 'AS923-4');
     o.value('eu868', 'EU868');
     o.value('us915', 'US915');
     o.value('ism2400', 'ISM2400');
@@ -38,49 +46,104 @@ return view.extend({
       var bandwidth = m.lookupOption('bandwidth', 'mesh_data_rate')[0].getUIElement('mesh_data_rate');
       var codeRate = m.lookupOption('code_rate', 'mesh_data_rate')[0].getUIElement('mesh_data_rate');
 
-      if (value === 'eu868') {
-        frequencies.setValue([
-          868100000,
-          868300000,
-          868500000,
-          867100000,
-          867300000,
-          867500000,
-          867900000,
-        ]);
-        txPower.setValue(16);
-        modulation.setValue('LORA');
-        spreadingFactor.setValue(10);
-        bandwidth.setValue(125000);
-        codeRate.setValue('4/5');
-      } else if (value === 'us915') {
-        frequencies.setValue([
-          902300000,
-          902500000,
-          902700000,
-          902900000,
-          903100000,
-          903300000,
-          903500000,
-          903700000,
-        ]);
-        txPower.setValue(21);
-        modulation.setValue('LORA');
-        spreadingFactor.setValue(10);
-        bandwidth.setValue(125000);
-        codeRate.setValue('4/5');
-      } else if (value === 'ism2400') {
-        frequencies.setValue([
-          2403000000,
-          2479000000,
-          2425000000,
-        ]);
-        txPower.setValue(10);
-        modulation.setValue('LORA');
-        spreadingFactor.setValue(12);
-        bandwidth.setValue(812000);
-        codeRate.setValue('4/8');
-      }
+      const presets = {
+        'as923': {
+          frequencies: [
+            923200000,
+            923400000,
+          ],
+          txPower: 16,
+          modulation: 'LORA',
+          spreadingFactor: 10,
+          bandwidth: 125000,
+          codeRate: '4/5',
+        },
+        'as923_2': {
+          frequencies: [
+            921400000,
+            921600000,
+          ],
+          txPower: 16,
+          modulation: 'LORA',
+          spreadingFactor: 10,
+          bandwidth: 125000,
+          codeRate: '4/5',
+        },
+        'as923_3': {
+          frequencies: [
+            916600000,
+            916800000,
+          ],
+          txPower: 16,
+          modulation: 'LORA',
+          spreadingFactor: 10,
+          bandwidth: 125000,
+          codeRate: '4/5',
+        },
+        'as923_4': {
+          frequencies: [
+            917300000,
+            917500000,
+          ],
+          txPower: 16,
+          modulation: 'LORA',
+          spreadingFactor: 10,
+          bandwidth: 125000,
+          codeRate: '4/5',
+        },
+        'eu868': {
+          frequencies: [
+            868100000,
+            868300000,
+            868500000,
+            867100000,
+            867300000,
+            867500000,
+            867900000,
+          ],
+          txPower: 16,
+          modulation: 'LORA',
+          spreadingFactor: 10,
+          bandwidth: 125000,
+          codeRate: '4/5',
+        },
+        'us915': {
+          frequencies: [
+            902300000,
+            902500000,
+            902700000,
+            902900000,
+            903100000,
+            903300000,
+            903500000,
+            903700000,
+          ],
+          txPower: 21,
+          modulation: 'LORA',
+          spreadingFactor: 10,
+          bandwidth: 125000,
+          codeRate: '4/5',
+        },
+        'ism2400': {
+          frequencies: [
+            2403000000,
+            2479000000,
+            2425000000,
+          ],
+          txPower: 10,
+          modulation: 'LORA',
+          spreadingFactor: 12,
+          bandwidth: 812000,
+          codeRate: '4/8',
+        },
+      };
+
+      frequencies.setValue(presets[value].frequencies);
+      txPower.setValue(presets[value].txPower);
+      modulation.setValue(presets[value].modulation);
+      spreadingFactor.setValue(presets[value].spreadingFactor);
+      bandwidth.setValue(presets[value].bandwidth);
+      codeRate.setValue(presets[value].codeRate);
     }
 
     // Signing key
