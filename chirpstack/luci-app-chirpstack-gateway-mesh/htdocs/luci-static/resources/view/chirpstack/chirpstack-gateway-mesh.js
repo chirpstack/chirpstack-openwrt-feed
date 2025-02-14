@@ -23,6 +23,7 @@ return view.extend({
     o.value('as923_3', 'AS923-3');
     o.value('as923_4', 'AS923-4');
     o.value('eu868', 'EU868');
+    o.value('in865', 'IN865');
     o.value('us915', 'US915');
 
     s = m.section(form.TypedSection, 'mesh', _('Mesh configuration'));
@@ -35,6 +36,7 @@ return view.extend({
     o.value('as923_3', 'AS923-3');
     o.value('as923_4', 'AS923-4');
     o.value('eu868', 'EU868');
+    o.value('in865', 'IN865');
     o.value('us915', 'US915');
     o.value('ism2400', 'ISM2400');
 
@@ -102,6 +104,18 @@ return view.extend({
             867900000,
           ],
           txPower: 16,
+          modulation: 'LORA',
+          spreadingFactor: 10,
+          bandwidth: 125000,
+          codeRate: '4/5',
+        },
+        'in865': {
+          frequencies: [
+            865062500,
+            865402500,
+            865985000,
+          ],
+          txPower: 30,
           modulation: 'LORA',
           spreadingFactor: 10,
           bandwidth: 125000,
