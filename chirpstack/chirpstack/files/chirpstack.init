@@ -41,9 +41,6 @@ conf_rule_integration_mqtt() {
 	config_get clean_session "$cfg" clean_session
 	config_get client_id "$cfg" client_id
 	config_get keep_alive_interval "$cfg" keep_alive_interval
-	config_get ca_cert "$cfg" ca_cert
-	config_get tls_cert "$cfg" tls_cert
-	config_get tls_key "$cfg" tls_key
 
 	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
 
@@ -58,9 +55,6 @@ conf_rule_integration_mqtt() {
 		clean_session=${clean_session}
 		client_id="${client_id}"
 		keep_alive_interval="${keep_alive_interval}"
-		ca_cert="${ca_cert}"
-		tls_cert="${tls_cert}"
-		tls_key="${tls_key}"
 EOF
 }
 
