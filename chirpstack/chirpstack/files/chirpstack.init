@@ -7,68 +7,92 @@ USE_PROCD=1
 PACKAGE_NAME=chirpstack
 
 conf_rule_network() {
-	local cfg="$1"
-	local net_id
+    local cfg="$1"
+    local net_id
 
-	config_get net_id $cfg net_id
+    config_get net_id $cfg net_id
 
-	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
-		[network]
-		net_id="$net_id"
-		enabled_regions=[]
-	EOF
-
-	config_list_foreach $cfg enabled_regions config_rule_network_enabled_regions
+    cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+        [network]
+        net_id="$net_id"
+EOF
 }
 
-config_rule_network_enabled_regions() {
-	local region="$1"
-	sed -i "s/enabled_regions=\[\(.*\)\]/enabled_regions=\[\1\"$region\",\]/" /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml
-	cp /etc/$PACKAGE_NAME/region_$region.toml /var/etc/$PACKAGE_NAME
+conf_rule_integration_mqtt() {
+    local cfg="$1"
+    local event_topic command_topic json server username password qos clean_session client_id keep_alive_interval ca_cert tls_cert tls_key
+    config_get event_topic "$cfg" event_topic
+    config_get command_topic "$cfg" command_topic
+    config_get json "$cfg" json
+    config_get server "$cfg" server
+    config_get username "$cfg" username
+    config_get password "$cfg" password
+    config_get qos "$cfg" qos
+    config_get clean_session "$cfg" clean_session
+    config_get client_id "$cfg" client_id
+    config_get keep_alive_interval "$cfg" keep_alive_interval
+    config_get ca_cert "$cfg" ca_cert
+    config_get tls_cert "$cfg" tls_cert
+    config_get tls_key "$cfg" tls_key
+
+    cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+
+        [integration.mqtt]
+        event_topic="${event_topic}"
+        command_topic="${command_topic}"
+        json=${json}
+        server="${server}"
+        username="${username}"
+        password="${password}"
+        qos=${qos}
+        clean_session=${clean_session}
+        client_id="${client_id}"
+        keep_alive_interval="${keep_alive_interval}"
+        ca_cert="${ca_cert}"
+        tls_cert="${tls_cert}"
+        tls_key="${tls_key}"
+EOF
 }
 
 configuration() {
-	mkdir -p /var/etc/$PACKAGE_NAME
-	rm -rf /var/etc/$PACKAGE_NAME/*.toml
-	echo "" > /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml
+    mkdir -p /var/etc/$PACKAGE_NAME
+    rm -rf /var/etc/$PACKAGE_NAME/*.toml
+    echo "" > /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml
 
-	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
-		[sqlite]
-		path="/srv/chirpstack/chirpstack.sqlite"
+    cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+        [sqlite]
+        path="/srv/chirpstack/chirpstack.sqlite"
 
-		[gateway]
-		allow_unknown_gateways=true
+        [gateway]
+        allow_unknown_gateways=true
 
-		[integration]
-		enabled = [
-				"mqtt",
-		]
+        [integration]
+        enabled = [
+            "mqtt"
+        ]
+EOF
 
-		[integration.mqtt]
-		json=true
-		server="tcp://127.0.0.1:1883/"
-	EOF
-
-	config_load "$PACKAGE_NAME"
-	config_foreach conf_rule_network "network"
+    config_load "$PACKAGE_NAME"
+    config_foreach conf_rule_network "network"
+    config_foreach conf_rule_integration_mqtt "integration_mqtt"
 }
 
 start_service() {
-	configuration
-	mkdir -p /srv/chirpstack
+    configuration
+    mkdir -p /srv/chirpstack
 
-	procd_open_instance
-	procd_set_param command /usr/bin/$PACKAGE_NAME -c /var/etc/$PACKAGE_NAME
-	procd_set_param respawn 3600 5 -1
-	procd_set_param file /etc/config/$PACKAGE_NAME /etc/config/chirpstack-concentratord
-	procd_close_instance
+    procd_open_instance
+    procd_set_param command /usr/bin/$PACKAGE_NAME -c /var/etc/$PACKAGE_NAME
+    procd_set_param respawn 3600 5 -1
+    procd_set_param file /etc/config/$PACKAGE_NAME /etc/config/chirpstack-concentratord
+    procd_close_instance
 }
 
 service_triggers() {
-	procd_add_reload_trigger "$PACKAGE_NAME" "/etc/config/chirpstack-concentratord"
+    procd_add_reload_trigger "$PACKAGE_NAME" "/etc/config/chirpstack-concentratord"
 }
 
 reload_service() {
-	stop
-	start
+    stop
+    start
 }
