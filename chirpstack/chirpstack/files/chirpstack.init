@@ -27,6 +27,37 @@ config_rule_network_enabled_regions() {
 	cp /etc/$PACKAGE_NAME/region_$region.toml /var/etc/$PACKAGE_NAME
 }
 
+conf_rule_integration_mqtt() {
+	local cfg="$1"
+	local event_topic command_topic json server username password qos clean_session client_id keep_alive_interval
+
+	config_get event_topic "$cfg" event_topic
+	config_get command_topic "$cfg" command_topic
+	config_get json "$cfg" json
+	config_get server "$cfg" server
+	config_get username "$cfg" username
+	config_get password "$cfg" password
+	config_get qos "$cfg" qos
+	config_get clean_session "$cfg" clean_session
+	config_get client_id "$cfg" client_id
+	config_get keep_alive_interval "$cfg" keep_alive_interval
+
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+
+		[integration.mqtt]
+		event_topic="${event_topic}"
+		command_topic="${command_topic}"
+		json=${json}
+		server="${server}"
+		username="${username}"
+		password="${password}"
+		qos=${qos}
+		clean_session=${clean_session}
+		client_id="${client_id}"
+		keep_alive_interval="${keep_alive_interval}"
+EOF
+}
+
 configuration() {
 	mkdir -p /var/etc/$PACKAGE_NAME
 	rm -rf /var/etc/$PACKAGE_NAME/*.toml
@@ -43,14 +74,11 @@ configuration() {
 		enabled = [
 				"mqtt",
 		]
-
-		[integration.mqtt]
-		json=true
-		server="tcp://127.0.0.1:1883/"
-	EOF
+EOF
 
 	config_load "$PACKAGE_NAME"
 	config_foreach conf_rule_network "network"
+	config_foreach conf_rule_integration_mqtt "integration_mqtt"
 }
 
 start_service() {
