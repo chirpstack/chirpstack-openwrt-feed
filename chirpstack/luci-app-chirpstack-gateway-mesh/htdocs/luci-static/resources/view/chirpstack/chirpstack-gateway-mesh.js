@@ -22,6 +22,7 @@ return view.extend({
     o.value('as923_2', 'AS923-2');
     o.value('as923_3', 'AS923-3');
     o.value('as923_4', 'AS923-4');
+    o.value('au915', 'AU915');
     o.value('eu868', 'EU868');
     o.value('in865', 'IN865');
     o.value('us915', 'US915');
@@ -35,6 +36,7 @@ return view.extend({
     o.value('as923_2', 'AS923-2');
     o.value('as923_3', 'AS923-3');
     o.value('as923_4', 'AS923-4');
+    o.value('au915', 'AU915');
     o.value('eu868', 'EU868');
     o.value('in865', 'IN865');
     o.value('us915', 'US915');
@@ -88,6 +90,23 @@ return view.extend({
             917500000,
           ],
           txPower: 16,
+          modulation: 'LORA',
+          spreadingFactor: 10,
+          bandwidth: 125000,
+          codeRate: '4/5',
+        },
+        'au915': {
+          frequencies: [
+            915200000,
+            915400000,
+            915600000,
+            915800000,
+            916000000,
+            916200000,
+            916400000,
+            916600000,
+          ],
+          txPower: 21,
           modulation: 'LORA',
           spreadingFactor: 10,
           bandwidth: 125000,
