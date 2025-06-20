@@ -179,8 +179,8 @@ return view.extend({
       codeRate.setValue(presets[value].codeRate);
     }
 
-    // Signing key
-    o = s.option(form.Value, 'signing_key', _('Signing key'), _('Signing key used to sign and validate mesh payloads. The same key must be configured for all Border / Relay Gateways. The format of the key is an 128 bit HEX string (e.g. 00000000000000000000000000000000).'));
+    // Root key
+    o = s.option(form.Value, 'root_key', _('Root key'), _('Root key used to sign, validate and encrypt mesh payloads. The same key must be configured for all Border / Relay Gateways. The format of the key is an 128 bit HEX string (e.g. 00000000000000000000000000000000).'));
     o.password = true;
     o.validate = function(section_id, value) {
       if (value.match(/[0-9a-fA-F]{32}/g)) {
@@ -262,6 +262,30 @@ return view.extend({
       uci.set('chirpstack-gateway-mesh', section_id, 'command_url', value.replace("_event", "_command"));
     }
 
+    // Event commands
+    s = m.section(form.TypedSection, 'events_commands', _('Event commands'));
+    s.addremove = true;
+    s.addbtntitle = _('Add type');
+
+    s.option(form.DynamicList, 'command', _('Command + arguments'), _('The first item must contain the path to the binary, the other items must be used to pass arguments (one item per argument).'));
+
+    // Event sets
+    s = m.section(form.TypedSection, 'events_sets', _('Event sets'));
+    s.anonymous = true;
+    s.addremove = true;
+
+    o = s.option(form.Value, 'interval_sec', _('Interval (seconds)'));
+    o.datatype = 'integer';
+
+    o = s.option(form.DynamicList, 'event', _('Event type'), _('Each item must map to the (numeric) event type as defined in the event commands configuration.'));
+    o.datatype = 'integer';
+
+    // Commands
+    s = m.section(form.TypedSection, 'commands_commands', _('Commands'));
+    s.addremove = true;
+    s.addbtntitle = _('Add type');
+
+    s.option(form.DynamicList, 'command', _('Command + arguments'), _('The first item must contain the path to the binary, the other items must be used to pass arguments (one item per argument).'));
 
     return m.render();
   }
