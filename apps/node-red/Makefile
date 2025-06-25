@@ -2,12 +2,12 @@ include $(TOPDIR)/rules.mk
 
 PKG_NPM_NAME:=node-red
 PKG_NAME:=$(PKG_NPM_NAME)
-PKG_VERSION:=3.1.15
+PKG_VERSION:=4.0.9
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NPM_NAME)-$(PKG_VERSION).tgz
 PKG_SOURCE_URL:=https://registry.npmjs.org/$(PKG_NPM_NAME)/-/
-PKG_HASH:=a93c606f3620b4acc4900a428ad76f389508b9113d1ccd13d6c908b6c95741a6
+PKG_HASH:=d8548204752c8ed7c1c5648e6fe2843342797ff5f0214647bdd1078366811cba
 
 PKG_BUILD_DEPENDS:=node/host
 
@@ -51,8 +51,8 @@ NPM_FLAGS:= \
 	npm_config_tmp=$(TMP_DIR)/npm-tmp-$(TMPNPM)
 
 define Build/Compile
-	$(NPM_FLAGS) npm i -g --production $(PKG_BUILD_DIR)
-	$(NPM_FLAGS) npm i --production --prefix=$(PKG_BUILD_DIR) --target_arch=$(NODEJS_CPU) --prefer-dedupe
+	cd $(PKG_BUILD_DIR); \
+	$(NPM_FLAGS) npm install --omit=dev --prefer-dedupe --no-optional
 	rm -rf $(TMP_DIR)/npm-tmp-$(TMPNPM)
 	rm -rf $(TMP_DIR)/npm-cache-$(TMPNPM)
 endef
@@ -61,9 +61,9 @@ endef
 define Package/node-red/install
 	$(INSTALL_DIR) $(1)/usr/lib/node/$(PKG_NPM_NAME)
 
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules/$(PKG_NPM_NAME)/{*.js,*.json,*.md} 	$(1)/usr/lib/node/$(PKG_NPM_NAME)/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules/$(PKG_NPM_NAME)/{node_modules,lib} 	$(1)/usr/lib/node/$(PKG_NPM_NAME)/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules/$(PKG_NPM_NAME)/{LICENSE,bin} 		$(1)/usr/lib/node/$(PKG_NPM_NAME)/
+	$(CP) $(PKG_BUILD_DIR)/{*.js,*.json,*.md} $(1)/usr/lib/node/$(PKG_NPM_NAME)/
+	$(CP) $(PKG_BUILD_DIR)/{node_modules,lib} $(1)/usr/lib/node/$(PKG_NPM_NAME)/
+	$(CP) $(PKG_BUILD_DIR)/{LICENSE,bin}      $(1)/usr/lib/node/$(PKG_NPM_NAME)/
 
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/node-red.init $(1)/etc/init.d/node-red
