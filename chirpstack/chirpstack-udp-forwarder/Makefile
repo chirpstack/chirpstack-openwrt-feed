@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack-udp-forwarder
-PKG_VERSION:=4.2.0
+PKG_VERSION:=4.2.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack-udp-forwarder/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=300b2cbe91c0d2af8f0d0fba0e4df5be8a8b4338ddd8ceea66694997b47a8043
+PKG_HASH:=4fcd834790c5773467cd33c204bd8e7dfdd70c114020a206225901109fcf6fac
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
