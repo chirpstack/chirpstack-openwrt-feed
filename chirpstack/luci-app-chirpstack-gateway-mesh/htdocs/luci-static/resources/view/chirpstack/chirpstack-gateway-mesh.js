@@ -30,6 +30,17 @@ return view.extend({
     s = m.section(form.TypedSection, 'mesh', _('Mesh configuration'));
     s.anonymous = true;
 
+    // Relay ID.
+    o = s.option(form.Value, 'relay_id', _('Relay ID (optional)'), _('By default, the Relay ID will be derived automatically from the Gateway ID. If you wish to override this value, you can define a custom Relay ID. THe format of the Relay ID is a 4 byte HEX string (e.g. 01020304)'));
+    o.optional = true;
+    o.validate = function(section_id, value) {
+      if (value.length === 0 || value.match(/[0-9a-fA-F]{8}/g)) {
+        return true;
+      } else {
+        return "A 4 byte HEX string is expected, e.g. 01020304";
+      }
+    }
+
     // Region
     o = s.option(form.ListValue, 'region', _('Region'), _('This is the region used for Relay Gateway / Border Gateway communication. Changing this will update the Frequencies, Tx Power and Mesh data-rate configuration to sane defaults. Please note that you might need to change the frequencies in case the region supports multiple sub-bands or if you have customized the channel configuration for that region.'));
     o.value('as923', 'AS923');

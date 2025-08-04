@@ -34,13 +34,14 @@ conf_rule_global() {
 conf_rule_mesh() {
 	local cfg="$1"
 	local config_name="$2"
-	local border_gateway border_gateway_ignore_direct_uplinks tx_power max_hop_count root_key
+	local relay_id border_gateway border_gateway_ignore_direct_uplinks tx_power max_hop_count root_key
 
 	config_get_bool border_gateway $cfg border_gateway
 	config_get_bool border_gateway_ignore_direct_uplinks $cfg border_gateway_ignore_direct_uplinks
 	config_get tx_power $cfg tx_power
 	config_get max_hop_count $cfg max_hop_count
   config_get root_key $cfg root_key
+  config_get relay_id $cfg relay_id
 
 	if [ "$border_gateway" = "1" ]; then
 		border_gateway="true"
@@ -56,6 +57,7 @@ conf_rule_mesh() {
 
 	cat >> /var/etc/$config_name/chirpstack-gateway-mesh.toml <<- EOF
 		[mesh]
+			relay_id="$relay_id"
 			root_key="$root_key"
 			border_gateway=$border_gateway
 			max_hop_count=$max_hop_count
