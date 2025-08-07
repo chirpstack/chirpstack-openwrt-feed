@@ -182,6 +182,7 @@ conf_rule_2g4() {
 	local model channel_plan antenna_gain
 	local event_bind command_bind
 	local com_dev_path
+	local gateway_id
 
 	config_get model $cfg model
 	config_get region $cfg region
@@ -190,6 +191,7 @@ conf_rule_2g4() {
 	config_get event_bind $cfg event_bind
 	config_get command_bind $cfg command_bind
 	config_get com_dev_path $cfg com_dev_path
+	config_get gateway_id $cfg gateway_id
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
@@ -217,6 +219,10 @@ conf_rule_2g4() {
 			model="$model"
 			antenna_gain=$antenna_gain
 	EOF
+
+	if [ "$gateway_id" != "" ]; then
+		echo "gateway_id=\"$gateway_id\"" >> /var/etc/$config_name/concentratord.toml
+	fi
 
 	if [ "$com_dev_path" != "" ]; then
 		echo "com_dev_path=\"$com_dev_path\"" >> /var/etc/$config_name/concentratord.toml

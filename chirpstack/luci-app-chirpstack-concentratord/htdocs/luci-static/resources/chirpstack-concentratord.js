@@ -123,11 +123,21 @@ return baseclass.extend({
             if (chipset.id === "sx1301") {
                 o = s.option(form.Value, 'gateway_id', _('Gateway ID'), _('Enter the ID of the gateway. Example: 0102030405060708'));
                 o.validate = function (section_id, value) {
-                    if (!value.match(/[0-9a-fA-F]{16}/)) {
+                    if (value.match(/[0-9a-fA-F]{16}/)) {
+                        return true;
+                    } else {
                         return "Gateway ID is not valid, example value: 0102030405060708";
                     }
-
-                    return true;
+                }
+            } else {
+                o = s.option(form.Value, 'gateway_id', _('Gateway ID (optional)'), _('Enter the ID of the gateway if you would like to override the Gateway ID provided by the concentrator chipset. Example: 0102030405060708'));
+                o.optional = true;
+                o.validate = function (section_id, value) {
+                    if (value.length === 0 || value.match(/[0-9a-fA-F]{16}/)) {
+                        return true;
+                    } else {
+                        return "Gateway ID is not valid, example value: 0102030405060708";
+                    }
                 }
             }
 
