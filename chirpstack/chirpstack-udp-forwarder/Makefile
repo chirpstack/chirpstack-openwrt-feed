@@ -43,7 +43,7 @@ define Package/chirpstack-udp-forwarder/install
 endef
 
 define Build/Compile
-	$(call Build/Compile/Cargo,.,--locked)
+	$(call Build/Compile/Cargo,.)
 endef
 
 $(eval $(call RustBinPackage,chirpstack-udp-forwarder))

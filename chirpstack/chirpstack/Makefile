@@ -74,7 +74,7 @@ define Build/Compile
 		yarn add @chirpstack/chirpstack-api-grpc-web@$(PKG_VERSION) && \
 		yarn build \
 	)
-	$(call Build/Compile/Cargo,chirpstack,--locked --no-default-features --features sqlite)
+	$(call Build/Compile/Cargo,chirpstack --no-default-features --features sqlite)
 endef
 
 $(eval $(call RustBinPackage,chirpstack))

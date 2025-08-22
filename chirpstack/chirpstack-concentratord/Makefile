@@ -116,10 +116,10 @@ define Build/Prepare
 endef
 
 define Build/Compile
-	$(call Build/Compile/Cargo,chirpstack-concentratord-sx1301,--locked)
-	$(call Build/Compile/Cargo,chirpstack-concentratord-sx1302,--locked)
-	$(call Build/Compile/Cargo,chirpstack-concentratord-2g4,--locked)
-	$(call Build/Compile/Cargo,gateway-id,--locked)
+	$(call Build/Compile/Cargo,chirpstack-concentratord-sx1301)
+	$(call Build/Compile/Cargo,chirpstack-concentratord-sx1302)
+	$(call Build/Compile/Cargo,chirpstack-concentratord-2g4)
+	$(call Build/Compile/Cargo,gateway-id)
 endef
 
 $(eval $(call RustBinPackage,chirpstack-concentratord))
