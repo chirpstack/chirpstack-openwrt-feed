@@ -24,6 +24,7 @@ return view.extend({
                         { path: "/dev/spidev0.1", usb: false },
                         { path: "/dev/ttyACM0", usb: true },
                         { path: "/dev/ttyACM1", usb: true },
+                        { path: "/dev/ttyACM2", usb: true },
                     ],
                 },
                 {
@@ -40,6 +41,7 @@ return view.extend({
                     com_dev_paths: [
                         { path: "/dev/ttyACM0", usb: true },
                         { path: "/dev/ttyACM1", usb: true },
+                        { path: "/dev/ttyACM2", usb: true },
                     ],
                 }
             ],
