@@ -30,7 +30,7 @@ define Package/chirpstack
 	CATEGORY:=ChirpStack
 	TITLE:=ChirpStack
 	URL:=https://github.com/chirpstack/chirpstack
-	DEPENDS:=+libatomic +libsqlite3
+	DEPENDS:=+libatomic +libsqlite3 +openssl-util
 endef
 
 define Package/chirpstack/description
@@ -56,6 +56,9 @@ define Package/chirpstack/install
 
 	$(INSTALL_DIR) $(1)/etc/nginx/conf.d
 	$(INSTALL_DATA) ./files/chirpstack.nginx $(1)/etc/nginx/conf.d/chirpstack.locations
+
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_DATA) ./files/uci-defaults/90_set_random_api_key $(1)/etc/uci-defaults/90_set_random_api_key
 
 	$(INSTALL_DIR) $(1)/opt/chirpstack
 	$(INSTALL_BIN) ./files/backup.sh $(1)/opt/chirpstack/backup.sh
