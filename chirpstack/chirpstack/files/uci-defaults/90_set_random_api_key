@@ -1,0 +1,15 @@
+uci get chirpstack.@api[0].secret
+if [ $? -eq 0 ]; then
+  exit
+fi
+
+SECRET=$(openssl rand -base64 32)
+
+uci set chirpstack.@api[0].secret="${SECRET}"
+
+if [ $? -ne 0 ]; then
+  uci add chirpstack api
+  uci set chirpstack.@api[0].secret="${SECRET}"
+fi
+
+uci commit chirpstack

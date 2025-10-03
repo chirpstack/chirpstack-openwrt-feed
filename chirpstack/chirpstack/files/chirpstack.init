@@ -21,6 +21,18 @@ conf_rule_network() {
 	config_list_foreach $cfg enabled_regions config_rule_network_enabled_regions
 }
 
+conf_rule_api() {
+	local cfg="$1"
+	local secret
+
+	config_get secret $cfg secret
+
+	cat >> /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml <<- EOF
+		[api]
+		secret="$secret"
+	EOF
+}
+
 config_rule_network_enabled_regions() {
 	local region="$1"
 	sed -i "s/enabled_regions=\[\(.*\)\]/enabled_regions=\[\1\"$region\",\]/" /var/etc/$PACKAGE_NAME/$PACKAGE_NAME.toml
@@ -51,6 +63,7 @@ configuration() {
 
 	config_load "$PACKAGE_NAME"
 	config_foreach conf_rule_network "network"
+	config_foreach conf_rule_api "api"
 }
 
 start_service() {
