@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack-concentratord
-PKG_VERSION:=4.5.1
+PKG_VERSION:=4.5.2
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack-concentratord/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=58547ee7d3e1a099569a9d7435dd862cec288e6d99c0800d16fb111cdd56ce2e
+PKG_HASH:=cb2806a58e629075c4d19619dccfda09bdc04749c624db30094e4ad90a0e1df9
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
