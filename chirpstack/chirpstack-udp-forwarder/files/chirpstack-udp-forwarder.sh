@@ -7,7 +7,7 @@ configure() {
     echo "" > /var/etc/$config_name/chirpstack-udp-forwarder.toml
 
 	cat >> /var/etc/$config_name/chirpstack-udp-forwarder.toml <<- EOF
-		[udp_server]
+		[udp_forwarder]
 		log_to_syslog=true
 	EOF
 
