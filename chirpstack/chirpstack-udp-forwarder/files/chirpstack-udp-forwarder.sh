@@ -8,6 +8,7 @@ configure() {
 
 	cat >> /var/etc/$config_name/chirpstack-udp-forwarder.toml <<- EOF
 		[udp_forwarder]
+		log_level="INFO"
 		log_to_syslog=true
 	EOF
 
