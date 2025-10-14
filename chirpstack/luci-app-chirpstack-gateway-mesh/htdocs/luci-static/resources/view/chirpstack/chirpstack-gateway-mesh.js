@@ -247,6 +247,16 @@ return view.extend({
     o = s.option(form.Value, 'bitrate', _('Bitrate (FSK)'));
     o.datatype = 'integer';
 
+    // Mesh filter configuration
+    s = m.section(form.TypedSection, 'mesh_filters', _('Mesh filter configuration'));
+    s.anonymous = true;
+
+    // DevAddr prefixs
+    o = s.option(form.DynamicList, 'dev_addr_prefix', _('DevAddr prefixes'), _('Filter uplinks based on the configured DevAddr prefixes (e.g. \'0000ff00/24\'). If no filters have been configured, filtering is disabled.'));
+
+    // DevEUI prefixes
+    o = s.option(form.DynamicList, 'join_eui_prefix', _('JoinEUI prefixes'), _('Filter join-requests based on the configured JoinEUI prefixes (e.g. \'0000ff0000000000/24\'). If no filters have been configured, filtering is disabled.'))
+
     s = m.section(form.TypedSection, 'backend_concentratord', _('Backend configuration'), _('This configures the slot that is used for communication with the end-devices.'));
     s.anonymous = true;
 

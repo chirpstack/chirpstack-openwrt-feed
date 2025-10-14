@@ -1,0 +1,7 @@
+uci get chirpstack-gateway-mesh.mesh_filters
+if [ $? -eq 0 ]; then
+  exit
+fi
+
+uci set chirpstack-gateway-mesh.mesh_filters='mesh_filters'
+uci commit

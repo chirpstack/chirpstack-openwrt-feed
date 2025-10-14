@@ -49,6 +49,9 @@ define Package/chirpstack-gateway-mesh/install
 
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_CONF) ./files/chirpstack-gateway-mesh.config $(1)/etc/config/chirpstack-gateway-mesh
+
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	$(INSTALL_DATA) ./files/uci-defaults/90_add_mesh_filters $(1)/etc/uci-defaults/90_add_mesh_filters
 endef
 
 define Build/Compile
