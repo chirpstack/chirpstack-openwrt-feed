@@ -8,6 +8,7 @@ configure() {
 	config_foreach conf_rule_global "global" "$config_name"
 	config_foreach conf_rule_mesh "mesh" "$config_name"
 	config_foreach conf_rule_mesh_data_rate "mesh_data_rate" "$config_name"
+	config_foreach conf_rule_mesh_filters "mesh_filters" "$config_name"
 	config_foreach conf_rule_backend_concentratord "backend_concentratord" "$config_name"
 	config_foreach conf_rule_backend_mesh_concentratord "backend_mesh_concentratord" "$config_name"
 
@@ -24,7 +25,7 @@ conf_rule_global() {
 	config_get region $cfg region
 
 	cp /etc/chirpstack-gateway-mesh/region_$region.toml /var/etc/$config_name/region.toml
-  cat > /var/etc/$config_name/chirpstack-gateway-mesh.toml <<- EOF
+	cat > /var/etc/$config_name/chirpstack-gateway-mesh.toml <<- EOF
 		[logging]
 			log_level="INFO"
 			log_to_syslog=true
@@ -40,8 +41,8 @@ conf_rule_mesh() {
 	config_get_bool border_gateway_ignore_direct_uplinks $cfg border_gateway_ignore_direct_uplinks
 	config_get tx_power $cfg tx_power
 	config_get max_hop_count $cfg max_hop_count
-  config_get root_key $cfg root_key
-  config_get relay_id $cfg relay_id
+	config_get root_key $cfg root_key
+	config_get relay_id $cfg relay_id
 
 	if [ "$border_gateway" = "1" ]; then
 		border_gateway="true"
@@ -94,6 +95,46 @@ conf_rule_mesh_data_rate() {
 	EOF
 }
 
+conf_rule_mesh_filters() {
+	local cfg="$1"
+	local config_name="$2"
+
+	cat >> /var/etc/$config_name/chirpstack-gateway-mesh.toml <<- EOF
+		[mesh.filters]
+		dev_addr_prefixes=[
+	EOF
+
+	config_list_foreach $cfg dev_addr_prefix conf_rule_dev_addr_prefix "$config_name"
+
+	cat >> /var/etc/$config_name/chirpstack-gateway-mesh.toml <<- EOF
+		]
+	EOF
+
+	cat >>/var/etc/$config_name/chirpstack-gateway-mesh.toml <<-EOF
+			join_eui_prefixes=[
+	EOF
+
+	config_list_foreach $cfg join_eui_prefix conf_rule_join_eui_prefix "$config_name"
+
+	cat >>/var/etc/$config_name/chirpstack-gateway-mesh.toml <<-EOF
+		]
+	EOF
+}
+
+conf_rule_dev_addr_prefix() {
+	local config_name="$2"
+	cat >>/var/etc/$config_name/chirpstack-gateway-mesh.toml <<-EOF
+		"$1",
+	EOF
+}
+
+conf_rule_join_eui_prefix() {
+	local config_name="$2"
+	cat >>/var/etc/$config_name/chirpstack-gateway-mesh.toml <<-EOF
+		"$1",
+	EOF
+}
+
 conf_rule_backend_concentratord() {
 	local cfg="$1"
 	local config_name="$2"
@@ -136,11 +177,11 @@ conf_rule_events_commands_command() {
 
 	# Get number of command arguments.
 	config_get len $cfg command_LENGTH
-  [ -z "$len" ] && return 0
+	[ -z "$len" ] && return 0
 
-  echo -n "$cfg=[" >> /var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
+	echo -n "$cfg=[" >> /var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
 	config_list_foreach $cfg command conf_arg_str "$config_name"
-  echo "]" >> /var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
+	echo "]" >> /var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
 }
 
 conf_rule_events_set() {
@@ -151,7 +192,7 @@ conf_rule_events_set() {
 
 	# Get number of events in the set.
 	config_get len $cfg event_LENGTH
-  [ -z "$len" ] && return 0
+	[ -z "$len" ] && return 0
 
 	config_get interval_sec $cfg interval_sec
 
@@ -178,17 +219,17 @@ conf_rule_commands_commands_command() {
 
 	# Get number of command args.
 	config_get len $cfg command_LENGTH
-  [ -z "$len" ] && return 0
+	[ -z "$len" ] && return 0
 
-  echo -n "$cfg=[" >> /var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
+	echo -n "$cfg=[" >> /var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
 	config_list_foreach $cfg command conf_arg_str "$config_name"
-  echo "]" >> /var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
+	echo "]" >> /var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
 }
 
 conf_arg_str() {
-  echo -n "\"$1\"", >>/var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
+	echo -n "\"$1\"", >>/var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
 }
 
 conf_arg_int() {
-  echo -n "$1", >>/var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
+	echo -n "$1", >>/var/etc/chirpstack-gateway-mesh/chirpstack-gateway-mesh.toml
 }
