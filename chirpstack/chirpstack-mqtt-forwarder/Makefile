@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=chirpstack-mqtt-forwarder
-PKG_VERSION:=4.4.0
+PKG_VERSION:=4.4.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/chirpstack/chirpstack-mqtt-forwarder/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=534cba7e1fe5ce6a94184b8b10cd27b25ca55fa07abd15e5dbde0899cea0f642
+PKG_HASH:=f60c06aa7bfa7aad755415a71f74eee0cf2977cdf37c81a47f49fa98d48b4e39
 
 PKG_MAINTAINER:=Orne Brocaar <info@brocaar.com>
 PKG_LICENSE:=MIT
