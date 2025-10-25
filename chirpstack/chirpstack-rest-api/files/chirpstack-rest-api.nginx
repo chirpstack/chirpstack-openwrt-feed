@@ -1,0 +1,3 @@
+location /apps/chirpstack-rest-api {
+    return 302 http://$host:8090;
+}

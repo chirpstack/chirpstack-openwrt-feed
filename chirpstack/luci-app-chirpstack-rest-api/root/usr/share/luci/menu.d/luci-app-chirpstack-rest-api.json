@@ -1,0 +1,10 @@
+{
+    "admin/chirpstack/chirpstack-rest-api": {
+        "title": "ChirpStack API",
+        "order": 6,
+        "action": {
+            "type": "view",
+            "path": "chirpstack/chirpstack-rest-api"
+        }
+    }
+}
