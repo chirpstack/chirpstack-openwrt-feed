@@ -91,6 +91,24 @@ return view.extend({
                             },
                         },
                         {
+                            id: "miromico_gwc_02_lw_868",
+                            name: "Miromico - GWC-02-LW-868",
+                            supportedRegions: ["EU868", "IN865", "RU864"],
+                            defaultFlags: {
+                                gnss: false,
+                                usb: true,
+                            },
+                        },
+                        {
+                            id: "miromico_gwc_02_lw_915",
+                            name: "Miromico - GWC-02-LW-915",
+                            supportedRegions: ["AS923", "AS923_2", "AS923_3", "AS923_4", "AU915", "US915"],
+                            defaultFlags: {
+                                gnss: false,
+                                usb: true,
+                            },
+                        },
+                        {
                             id: "rak_2287",
                             name: "RAK - RAK2287",
                             supportedRegions: ["AS923", "AS923_2", "AS923_3", "AS923_4", "AU915", "CN470", "EU433", "EU868", "IN865", "KR920", "RU864", "US915"],
