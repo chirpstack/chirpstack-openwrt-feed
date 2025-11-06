@@ -33,7 +33,7 @@ conf_rule_sx1301() {
 	local config_name="$2"
 	local model region channel_plan gnss gateway_id
 	local model_flags antenna_gain
-	local sx1301_reset_pin
+	local sx1301_reset_pin sx1301_reset_chip
 
 	config_get model $cfg model
 	config_get region $cfg region
@@ -43,6 +43,7 @@ conf_rule_sx1301() {
 	config_get antenna_gain $cfg antenna_gain "0"
 
 	config_get sx1301_reset_pin $cfg sx1301_reset_pin
+	config_get sx1301_reset_chip $cfg sx1301_reset_chip
 
 	local region_config=$(echo "$region" | awk '{print tolower($0)}')
 
@@ -74,6 +75,10 @@ conf_rule_sx1301() {
 		echo "sx1301_reset_pin=$sx1301_reset_pin" >> /var/etc/$config_name/concentratord.toml
 	fi
 
+	if [ "$sx1301_reset_chip" != "" ]; then
+		echo "sx1301_reset_chip=\"$sx1301_reset_chip\"" >> /var/etc/$config_name/concentratord.toml
+	fi
+
 	# Copy channel config
 	cp /etc/chirpstack-concentratord/sx1301/examples/channels_$channel_plan.toml /var/etc/$config_name/channels.toml
 	cp /etc/chirpstack-concentratord/sx1301/examples/region_$region_config.toml /var/etc/$config_name/region.toml
@@ -84,7 +89,7 @@ conf_rule_sx1302() {
 	local config_name="$2"
 	local model region channel_plan gnss usb gateway_id
 	local model_flags antenna_gain
-	local sx1302_reset_pin com_dev_path i2c_dev_path
+	local sx1302_reset_pin sx1302_reset_chip sx1302_power_en_chip sx1261_reset_chip com_dev_path i2c_dev_path
 	local event_bind command_bind
 	local gnss_dev_path
 
@@ -101,6 +106,9 @@ conf_rule_sx1302() {
 	config_get sx1302_reset_pin $cfg sx1302_reset_pin
 	config_get sx1302_power_en_pin $cfg sx1302_power_en_pin
 	config_get sx1261_reset_pin $cfg sx1261_reset_pin
+	config_get sx1302_reset_chip $cfg sx1302_reset_chip
+	config_get sx1302_power_en_chip $cfg sx1302_power_en_chip
+	config_get sx1261_reset_chip $cfg sx1261_reset_chip
 	config_get com_dev_path $cfg com_dev_path
 	config_get i2c_dev_path $cfg i2c_dev_path
 	config_get gnss_dev_path $cfg gnss_dev_path
@@ -157,6 +165,18 @@ conf_rule_sx1302() {
 
 	if [ "$sx1261_reset_pin" != "" ]; then
 		echo "sx1261_reset_pin=$sx1261_reset_pin" >> /var/etc/$config_name/concentratord.toml
+	fi
+
+	if [ "$sx1302_reset_chip" != "" ]; then
+		echo "sx1302_reset_chip=\"$sx1302_reset_chip\"" >> /var/etc/$config_name/concentratord.toml
+	fi
+
+	if [ "$sx1302_power_en_chip" != "" ]; then
+		echo "sx1302_power_en_chip=\"$sx1302_power_en_chip\"" >> /var/etc/$config_name/concentratord.toml
+	fi
+
+	if [ "$sx1261_reset_chip" != "" ]; then
+		echo "sx1261_reset_chip=\"$sx1261_reset_chip\"" >> /var/etc/$config_name/concentratord.toml
 	fi
 
 	if [ "$com_dev_path" != "" ]; then
