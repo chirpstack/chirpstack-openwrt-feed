@@ -1,33 +1,50 @@
-'use strict';
-'require baseclass';
-'require form';
-'require uci';
+"use strict";
+"require baseclass";
+"require form";
+"require uci";
 
 return baseclass.extend({
   /*
       This renders the ChirpStack MQTT Forwarder configuration form
       using the provided options.
   */
-  renderForm: function(mqttForwarderConfig) {
+  renderForm: function (mqttForwarderConfig) {
     var m, s, o, ro, as;
 
-    m = new form.Map(mqttForwarderConfig, _('ChirpStack MQTT Forwarder'), _('ChirpStack MQTT Forwarder forwards data received by the ChirpStack Concentratord to a MQTT broker.'));
+    m = new form.Map(
+      mqttForwarderConfig,
+      _("ChirpStack MQTT Forwarder"),
+      _(
+        "ChirpStack MQTT Forwarder forwards data received by the ChirpStack Concentratord to a MQTT broker.",
+      ),
+    );
     m.tabbed = true;
 
-    s = m.section(form.TypedSection, 'global', _('Global configuration'));
+    s = m.section(form.TypedSection, "global", _("Global configuration"));
     s.anonymous = true;
 
     // Is enabled
-    s.option(form.Flag, 'enabled', _('Enabled'), _('Enable ChirpStack MQTT Forwarder'));
+    s.option(
+      form.Flag,
+      "enabled",
+      _("Enabled"),
+      _("Enable ChirpStack MQTT Forwarder"),
+    );
 
-
-    s = m.section(form.TypedSection, 'mqtt', _('MQTT configuration'));
+    s = m.section(form.TypedSection, "mqtt", _("MQTT configuration"));
     s.anonymous = true;
 
     // topic prefix
-    o = s.option(form.Value, 'topic_prefix', _('Topic prefix'), _('Specify the topic you want to use (e.g. \'eu868\'), without trailing slash.'));
+    o = s.option(
+      form.Value,
+      "topic_prefix",
+      _("Topic prefix"),
+      _(
+        "Specify the topic you want to use (e.g. 'eu868'), without trailing slash.",
+      ),
+    );
     o.optional = true;
-    o.validate = function(section_id, value) {
+    o.validate = function (section_id, value) {
       if (value.match(/^[a-zA-Z0-9\_\-\/\$]*$/)) {
         return true;
       }
@@ -36,11 +53,25 @@ return baseclass.extend({
     };
 
     // json encoding
-    s.option(form.Flag, 'json', _('Use JSON'), _('Use JSON encoding instead of Protobuf (binary). Use this only for debugging purposes.'));
+    s.option(
+      form.Flag,
+      "json",
+      _("Use JSON"),
+      _(
+        "Use JSON encoding instead of Protobuf (binary). Use this only for debugging purposes.",
+      ),
+    );
 
     // server
-    o = s.option(form.Value, 'server', _('Server'), _('MQTT server (e.g. scheme://host:port where scheme is tcp, ssl, ws, wss).'));
-    o.validate = function(section_id, value) {
+    o = s.option(
+      form.Value,
+      "server",
+      _("Server"),
+      _(
+        "MQTT server (e.g. scheme://host:port where scheme is tcp, ssl, ws, wss).",
+      ),
+    );
+    o.validate = function (section_id, value) {
       if (value.match(/^(tcp|ssl|ws|wss):\/\/[\w\.\-]+:[\d]+$/)) {
         return true;
       }
@@ -49,41 +80,70 @@ return baseclass.extend({
     };
 
     // username
-    o = s.option(form.Value, 'username', _('Username'), _('Connect with the given username.'));
+    o = s.option(
+      form.Value,
+      "username",
+      _("Username"),
+      _("Connect with the given username."),
+    );
     o.optional = true;
 
     // password
-    o = s.option(form.Value, 'password', _('Password'), _('Connect with the given password.'))
+    o = s.option(
+      form.Value,
+      "password",
+      _("Password"),
+      _("Connect with the given password."),
+    );
     o.optional = true;
     o.password = true;
 
     // ca certificate
-    o = s.option(form.TextValue, 'ca_cert', _('CA certificate'));
+    o = s.option(form.TextValue, "ca_cert", _("CA certificate"));
     o.optional = true;
     o.cols = 80;
 
     // tls cert
-    o = s.option(form.TextValue, 'tls_cert', _('TLS certificate'));
+    o = s.option(form.TextValue, "tls_cert", _("TLS certificate"));
     o.optional = true;
     o.cols = 80;
 
-    o = s.option(form.TextValue, 'tls_key', _('TLS key-file'));
+    o = s.option(form.TextValue, "tls_key", _("TLS key-file"));
     o.optional = true;
     o.cols = 80;
 
     // QoS
-    o = s.option(form.ListValue, 'qos', _('QoS'), _('Note: an increase of this value will decrease the performance.'));
+    o = s.option(
+      form.ListValue,
+      "qos",
+      _("QoS"),
+      _("Note: an increase of this value will decrease the performance."),
+    );
     o.value(0, 0);
     o.value(1, 1);
     o.value(2, 2);
 
     // clean session
-    s.option(form.Flag, 'clean_session', _('Clean session'), _('By setting this flag you are indicating that no messages saved by the broker for this client should be delivered.'));
+    s.option(
+      form.Flag,
+      "clean_session",
+      _("Clean session"),
+      _(
+        "By setting this flag you are indicating that no messages saved by the broker for this client should be delivered.",
+      ),
+    );
 
     // client id
-    o = s.option(form.Value, 'client_id', _('Client ID'), _('A client id must be no longer than 23 characters. If left blank, a random id will be generated by ChirpStack.'));
+    o = s.option(
+      form.Value,
+      "client_id",
+      _("Client ID"),
+      _(
+        "A client id must be no longer than 23 characters. If left blank, a random id will be generated by ChirpStack.",
+      ),
+    );
     o.optional = true;
-    o.validate = function(section_id, value) {
+    o.validate = function (section_id, value) {
       if (value.match(/^[a-zA-Z0-9]{0,23}$/)) {
         return true;
       }
@@ -91,27 +151,70 @@ return baseclass.extend({
       return "Enter a valid Client ID";
     };
 
-    s = m.section(form.TypedSection, 'filters', _('Filter configuration'));
+    s = m.section(form.TypedSection, "filters", _("Filter configuration"));
     s.anonymous = true;
 
+    // LoRaWAN only
+    o = s.option(
+      form.Flag,
+      "lorawan_only",
+      _("LoRaWAN only"),
+      _(
+        "Filter on LoRaWAN payloads. This excluded proprietary payloads and payloads that are not LoRaWAN.",
+      ),
+    );
+
     // DevAddr prefixs
-    o = s.option(form.DynamicList, 'dev_addr_prefix', _('DevAddr prefixes'), _('Filter uplinks based on the configured DevAddr prefixes (e.g. \'0000ff00/24\'). If no filters have been configured, filtering is disabled.'));
+    o = s.option(
+      form.DynamicList,
+      "dev_addr_prefix",
+      _("DevAddr prefixes"),
+      _(
+        "Filter uplinks based on the configured DevAddr prefixes (e.g. '0000ff00/24'). If no filters have been configured, filtering is disabled.",
+      ),
+    );
 
     // DevEUI prefixes
-    o = s.option(form.DynamicList, 'join_eui_prefix', _('JoinEUI prefixes'), _('Filter join-requests based on the configured JoinEUI prefixes (e.g. \'0000ff0000000000/24\'). If no filters have been configured, filtering is disabled.'))
+    o = s.option(
+      form.DynamicList,
+      "join_eui_prefix",
+      _("JoinEUI prefixes"),
+      _(
+        "Filter join-requests based on the configured JoinEUI prefixes (e.g. '0000ff0000000000/24'). If no filters have been configured, filtering is disabled.",
+      ),
+    );
 
     // Commands
-    s = m.section(form.TypedSection, 'commands', _('Commands'));
+    s = m.section(form.TypedSection, "commands", _("Commands"));
     s.addremove = true;
 
-    s.option(form.DynamicList, 'command', _('Command + arguments'), _('The first item must contain the path to the binary, the other items must be used to pass arguments (one item per argument).'));
+    s.option(
+      form.DynamicList,
+      "command",
+      _("Command + arguments"),
+      _(
+        "The first item must contain the path to the binary, the other items must be used to pass arguments (one item per argument).",
+      ),
+    );
 
     // Metadata
-    s = m.section(form.TypedSection, 'metadata', _('Metadata'));
+    s = m.section(form.TypedSection, "metadata", _("Metadata"));
     s.addremove = true;
 
-    s.option(form.Value, 'static', _('Static value'), _('Enter a static value -OR- enter a command below.'));
-    s.option(form.DynamicList, 'command', _('Command + arguments'), _('Configure this if no static value is configured. The first item must contain the path to the binary, the other items must be used to pass arguments (one item per argument).'));
+    s.option(
+      form.Value,
+      "static",
+      _("Static value"),
+      _("Enter a static value -OR- enter a command below."),
+    );
+    s.option(
+      form.DynamicList,
+      "command",
+      _("Command + arguments"),
+      _(
+        "Configure this if no static value is configured. The first item must contain the path to the binary, the other items must be used to pass arguments (one item per argument).",
+      ),
+    );
 
     return m.render();
   },

@@ -108,8 +108,17 @@ conf_rule_filters() {
   local cfg="$1"
   local config_name="$2"
 
+  config_get lorawan_only $cfg lorawan_only
+
+  if [ "$lorawan_only" = "1" ]; then
+    lorawan_only="true"
+  else
+    lorawan_only="false"
+  fi
+
   cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
 		[backend.filters]
+			lorawan_only=$lorawan_only
 			dev_addr_prefixes=[
 	EOF
 
