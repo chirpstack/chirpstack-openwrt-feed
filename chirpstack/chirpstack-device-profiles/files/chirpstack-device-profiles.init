@@ -1,0 +1,19 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+
+start() {
+	OUT=$(cmp /opt/chirpstack-device-profiles/SRCREV /opt/chirpstack-device-profiles/SRCREV.lastimport)
+	RET=$?
+	if [ $RET -eq 0 ]; then
+		return 0;
+	fi
+
+  chirpstack -c /var/etc/chirpstack import-device-profiles -d /opt/chirpstack-device-profiles
+	RET=$?
+	if [ $RET -eq 0 ]; then
+		cp /opt/chirpstack-device-profiles/SRCREV /opt/chirpstack-device-profiles/SRCREV.lastimport
+	fi
+
+  return 0;
+}
