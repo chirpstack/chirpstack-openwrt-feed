@@ -9,10 +9,10 @@ PKG_MAINTAINER:=Alexis DEVLEESCHAUWER <alexis@devleeschauwer.fr>
 include $(INCLUDE_DIR)/package.mk
 
 define Package/rak-cellular-utilities
-	SECTION:=RAK
-	CATEGORY:=RAK
+	SECTION:=chirpstack
+	CATEGORY:=ChirpStack
 	TITLE:=RAK Cellular Utilities.
-	DEPENDS:=+socat
+	DEPENDS:=+socat +kmod-usb-serial +kmod-usb-serial-option +kmod-usb-serial-wwan
 endef
 
 define Package/rak-cellular-utilities/description

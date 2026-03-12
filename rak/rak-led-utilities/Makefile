@@ -9,8 +9,8 @@ PKG_MAINTAINER:=Alexis DEVLEESCHAUWER <alexis@devleeschauwer.fr>
 include $(INCLUDE_DIR)/package.mk
 
 define Package/rak-led-utilities
-	SECTION:=RAK
-	CATEGORY:=RAK
+	SECTION:=chirpstack
+	CATEGORY:=ChirpStack
 	TITLE:=RAK LED utilities.
 	DEPENDS:=+i2c-tools
 endef
