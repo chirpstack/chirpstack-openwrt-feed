@@ -1,0 +1,80 @@
+#!/bin/sh
+
+# Define your AT tool here or allow it to be passed via the environment
+AT_TOOL=${AT_TOOL:-atinyout}
+
+# Help function
+usage() {
+    echo "\
+Quectel Modem Info CLI
+Retrieve hardware, network, and SIM information from the cellular modem via AT commands.
+
+Usage: $0 [OPTIONS] <Variable>
+    Options:
+      -h, --help      Show this help message and exit
+
+    Variables:
+      model           Modem model (e.g., EG95)
+      imei            15-digit IMEI number
+      sim_status      SIM card status (READY, SIM PIN, ERROR)
+      iccid           SIM card serial number
+      imsi            IMSI identifier
+      csq             Basic signal quality (CSQ)
+      qspn            Network provider name
+      qnwinfo         Network technology & band
+      qsimstat        Physical SIM status (1 = inserted, 0 = empty)
+      qcsq            Detailed signal quality
+"
+    exit 1
+}
+
+# Check if an argument was provided
+if [ -z "$1" ]; then
+    usage
+fi
+
+# Process based on the provided argument
+case "$1" in
+    -h | --help | help)
+        usage
+        ;;
+    model)
+        $AT_TOOL "AT+CGMM" | grep -v "AT+"
+        ;;
+    imei)
+        $AT_TOOL "AT+CGSN" | grep -oE "[0-9]{15}"
+        ;;
+    sim_status)
+        $AT_TOOL "AT+CPIN?" | grep -oE "(READY|SIM PIN|ERROR)"
+        ;;
+    iccid)
+        # Try AT+QCCID first, then AT+CCID if empty
+        res=$($AT_TOOL "AT+QCCID" | grep -oE "[0-9A-F]{18,22}")
+        if [ -z "$res" ]; then
+            res=$($AT_TOOL "AT+CCID" | grep -oE "[0-9A-F]{18,22}")
+        fi
+        echo "$res"
+        ;;
+    imsi)
+        $AT_TOOL "AT+CIMI" | grep -oE "[0-9]{15}"
+        ;;
+    csq)
+        $AT_TOOL "AT+CSQ" | grep "+CSQ:" | awk -F':' '{print $2}' | awk -F',' '{print $1}' | tr -d ' '
+        ;;
+    qspn)
+        $AT_TOOL "AT+QSPN" | grep "+QSPN:" | cut -d':' -f2- | tr -d '"' | sed 's/^ *//'
+        ;;
+    qnwinfo)
+        $AT_TOOL "AT+QNWINFO" | grep "+QNWINFO:" | cut -d':' -f2- | tr -d '"' | sed 's/^ *//'
+        ;;
+    qsimstat)
+        $AT_TOOL "AT+QSIMSTAT?" | grep "+QSIMSTAT:" | awk -F',' '{print $2}' | tr -d ' '
+        ;;
+    qcsq)
+        $AT_TOOL "AT+QCSQ" | grep "+QCSQ:" | cut -d':' -f2- | tr -d '"' | sed 's/^ *//'
+        ;;
+    *)
+        echo "Error: Unrecognized variable '$1'." >&2
+        usage
+        ;;
+esac

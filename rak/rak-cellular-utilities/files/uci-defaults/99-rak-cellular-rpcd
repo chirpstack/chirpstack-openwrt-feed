@@ -1,4 +1,0 @@
-#!/bin/sh
-# Ce script redémarre rpcd puis s'auto-détruit (mécanique uci-defaults)
-/etc/init.d/rpcd restart
-exit 0
