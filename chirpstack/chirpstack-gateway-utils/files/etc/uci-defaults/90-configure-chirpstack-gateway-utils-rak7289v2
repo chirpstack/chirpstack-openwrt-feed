@@ -1,0 +1,6 @@
+mkdir -p /etc/crontabs
+touch /etc/crontabs/root
+grep -qF '/usr/bin/chirpstack-gateway-utils' /etc/crontabs/root
+if [ $? -eq 1 ]; then
+  echo '*/5 * * * * /usr/bin/chirpstack-gateway-utils rak feed-watchdog' >> /etc/crontabs/root
+fi
