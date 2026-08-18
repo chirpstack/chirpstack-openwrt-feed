@@ -33,6 +33,7 @@ define Package/libloragw-sx1302-utils
 	CATEGORY:=ChirpStack
 	TITLE:=libloragw-sx1302-utils
 	URL:=https://github.com/brocaar/sx1302_hal
+  DEPENDS:=+dfu-util
 endef
 
 define Package/libloragw-sx1302/description
