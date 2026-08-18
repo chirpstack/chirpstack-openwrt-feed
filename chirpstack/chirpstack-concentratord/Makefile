@@ -36,7 +36,7 @@ define Package/chirpstack-concentratord-2g4
 	CATEGORY:=ChirpStack
 	TITLE:=ChirpStack Concentratord (2g4)
 	URL:=https://github.com/chirpstack/chirpstack-concentratord
-	DEPENDS:=+libstdcpp +chirpstack-concentratord
+	DEPENDS:=+libstdcpp +chirpstack-concentratord +libloragw-2g4-utils
 endef
 
 define Package/chirpstack-concentratord-sx1301
@@ -52,7 +52,7 @@ define Package/chirpstack-concentratord-sx1302
 	CATEGORY:=ChirpStack
 	TITLE:=ChirpStack Concentratord (SX1302/3)
 	URL:=https://github.com/chirpstack/chirpstack-concentratord
-	DEPENDS:=+libstdcpp +chirpstack-concentratord
+	DEPENDS:=+libstdcpp +chirpstack-concentratord +libloragw-sx1302-utils
 endef
 
 define Package/chirpstack-concentratord/description
