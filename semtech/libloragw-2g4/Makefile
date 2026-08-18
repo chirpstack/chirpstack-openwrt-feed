@@ -30,6 +30,7 @@ define Package/libloragw-2g4-utils
 	CATEGORY:=ChirpStack
 	TITLE:=libloragw-2g4-utils
 	URL:=https://github.com/Lora-net/gateway_2g4_hal
+  DEPENDS:=+dfu-util
 endef
 
 define Package/libloragw-2g4/description
