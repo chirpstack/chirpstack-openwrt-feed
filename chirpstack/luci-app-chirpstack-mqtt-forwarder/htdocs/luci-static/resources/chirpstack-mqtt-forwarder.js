@@ -253,8 +253,30 @@ return baseclass.extend({
         "Filter uplinks based on the configured DevAddr prefixes (e.g. '0000ff00/24'). If no filters have been configured, filtering is disabled.",
       ),
     );
+    o.validate = function (section_id, value) {
+      if (value == null || value === "")
+        return true;
 
-    // DevEUI prefixes
+      var parts = value.split("/");
+
+      if (parts.length !== 2)
+        return _("Expected the format {hex}/{mask}, e.g. 0000ff00/24");
+
+      if (!/^[0-9a-fA-F]{8}$/.test(parts[0]))
+        return _("Invalid address '%s'/ must be exactly 8 hexadecimal digits").format(parts[0]);
+
+      if (!/^\d+$/.test(parts[1]))
+        return _("Invalid mask '/%s' must be a number").format(parts[1]);
+
+      // +parts[1] trick to convert str to number
+      if (+parts[1] > 32)
+        return _("Invalid mask '/%s' must be between 0 and 32").format(parts[1]);
+
+      return true;
+    };
+    o.rmempty = true;
+
+    // JoinEUI prefixes
     o = s.option(
       form.DynamicList,
       "join_eui_prefix",
@@ -263,6 +285,28 @@ return baseclass.extend({
         "Filter join-requests based on the configured JoinEUI prefixes (e.g. '0000ff0000000000/24'). If no filters have been configured, filtering is disabled.",
       ),
     );
+    o.validate = function (section_id, value) {
+      if (value == null || value === "")
+        return true;
+
+      var parts = value.split("/");
+
+      if (parts.length !== 2)
+        return _("Expected the format {hex}/{mask}, e.g. 0000ff0000000000/24");
+
+      if (!/^[0-9a-fA-F]{16}$/.test(parts[0]))
+        return _("Invalid address '%s'/ must be exactly 16 hexadecimal digits").format(parts[0]);
+
+      if (!/^\d+$/.test(parts[1]))
+        return _("Invalid mask '/%s' must be a number").format(parts[1]);
+
+      // +parts[1] trick to convert str to number
+      if (+parts[1] > 64)
+        return _("Invalid mask '/%s' must be between 0 and 64").format(parts[1]);
+
+      return true;
+    };
+    o.rmempty = true;
 
     // Commands
     s = m.section(form.TypedSection, "commands", _("Commands"));
