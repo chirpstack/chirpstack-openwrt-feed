@@ -21,6 +21,7 @@ configure() {
 
   conf_rule_commands "$config_name"
   conf_rule_metadata "$config_name"
+  conf_rule_callbacks "$config_name"
 }
 
 conf_rule_concentratord() {
@@ -47,7 +48,7 @@ conf_rule_concentratord() {
 conf_rule_mqtt() {
   local cfg="$1"
   local config_name="$2"
-  local topic_prefix json server username password qos clean_session client_id ca_cert tls_cert tls_key
+  local topic_prefix json server username password qos clean_session keep_alive_interval client_id ca_cert tls_cert tls_key reconnect_interval
 
   config_get topic_prefix $cfg topic_prefix
   config_get json $cfg json
@@ -57,9 +58,11 @@ conf_rule_mqtt() {
   config_get qos $cfg qos
   config_get_bool clean_session $cfg clean_session
   config_get client_id $cfg client_id
+  config_get keep_alive_interval $cfg keep_alive_interval
   config_get ca_cert $cfg ca_cert
   config_get tls_cert $cfg tls_cert
   config_get tls_key $cfg tls_key
+  config_get reconnect_interval $cfg reconnect_interval
 
   if [ "$json" = "1" ]; then
     json="true"
@@ -71,6 +74,10 @@ conf_rule_mqtt() {
     clean_session="true"
   else
     clean_session="false"
+  fi
+
+  if [ "$keep_alive_interval" = "" ]; then
+    keep_alive_interval="30s"
   fi
 
   if [ "$ca_cert" != "" ]; then
@@ -98,26 +105,39 @@ conf_rule_mqtt() {
 			qos=$qos
 			clean_session=$clean_session
 			client_id="$client_id"
+			keep_alive_interval="$keep_alive_interval"
 			ca_cert="$ca_cert"
 			tls_cert="$tls_cert"
 			tls_key="$tls_key"
 	EOF
+
+  if [ "$reconnect_interval" != "" ]; then
+    echo "reconnect_interval=\"$reconnect_interval\"" >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+  fi
+
 }
 
 conf_rule_filters() {
   local cfg="$1"
   local config_name="$2"
+  local forward_crc_ok forward_crc_invalid forward_crc_missing lorawan_only
 
-  config_get lorawan_only $cfg lorawan_only
+  config_get_bool forward_crc_ok $cfg forward_crc_ok true
+  config_get_bool forward_crc_invalid $cfg forward_crc_invalid false
+  config_get_bool forward_crc_missing $cfg forward_crc_missing false
+  config_get_bool lorawan_only $cfg lorawan_only
 
-  if [ "$lorawan_only" = "1" ]; then
-    lorawan_only="true"
-  else
-    lorawan_only="false"
-  fi
+  # convert uci bool (1 or 0) to toml bool (true or false)
+  [ "$forward_crc_invalid" = "1" ] && forward_crc_invalid="true" || forward_crc_invalid="false"
+  [ "$forward_crc_missing" = "1" ] && forward_crc_missing="true" || forward_crc_missing="false"
+  [ "$forward_crc_ok" = "1" ] && forward_crc_ok="true" || forward_crc_ok="false"
+  [ "$lorawan_only" = "1" ] && lorawan_only="true" || lorawan_only="false"
 
   cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
 		[backend.filters]
+			forward_crc_ok=$forward_crc_ok
+			forward_crc_invalid=$forward_crc_invalid
+			forward_crc_missing=$forward_crc_missing
 			lorawan_only=$lorawan_only
 			dev_addr_prefixes=[
 	EOF
@@ -173,7 +193,6 @@ conf_rule_metadata() {
 	EOF
 
   config_foreach conf_command "metadata" "$config_name"
-
 }
 
 # Foreach config 'type' 'key'
@@ -236,4 +255,41 @@ conf_command_arg() {
   local config_name="$2"
 
   echo -n "\"$1\"", >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml
+}
+
+conf_rule_callbacks() {
+  local config_name="$2"
+
+  cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
+		[callbacks]
+	EOF
+
+  # on_mqtt_connected
+  cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
+			on_mqtt_connected=[
+	EOF
+
+	config_list_foreach 'callbacks' 'on_mqtt_connected' conf_rule_callbacks_on_mqtt "$config_name"
+
+  cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
+			]
+	EOF
+
+	# on_mqtt_connection_error
+  cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
+			on_mqtt_connection_error=[
+	EOF
+
+  config_list_foreach 'callbacks' 'on_mqtt_connection_error' conf_rule_callbacks_on_mqtt "$config_name"
+
+  cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
+			]
+	EOF
+}
+
+conf_rule_callbacks_on_mqtt() {
+  local config_name="$2"
+  cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
+		"$1",
+	EOF
 }

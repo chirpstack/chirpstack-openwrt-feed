@@ -79,6 +79,50 @@ return baseclass.extend({
       return "Enter a valid MQTT server address.";
     };
 
+    // keep alive interval
+    o = s.option(
+      form.Value,
+      "keep_alive_interval",
+      _("Keep Alive Interval"),
+      _(
+        "Defines the maximum time that should pass without communication between the client and server",
+      ),
+    );
+    o.optional = true;
+    o.validate = function (section_id, value) {
+      if (!value) {
+        return true;
+      }
+
+      if (/^\d+[smhd]$/.test(value.trim())) {
+        return true;
+      }
+
+      return "Enter a valid duration (e.g. 30s, 5m, 1h, 1d)";
+    };
+
+    // reconnect_interval
+    o = s.option(
+      form.Value,
+      "reconnect_interval",
+      _("Reconnect Interval"),
+      _(
+        "defines the reconnection interval to the MQTT broker in case of network issues",
+      ),
+    );
+    o.optional = true;
+    o.validate = function (section_id, value) {
+      if (!value) {
+        return true;
+      }
+
+      if (/^\d+[smhd]$/.test(value.trim())) {
+        return true;
+      }
+
+      return "Enter a valid duration (e.g. 30s, 5m, 1h, 1d)";
+    };
+
     // username
     o = s.option(
       form.Value,
@@ -154,6 +198,42 @@ return baseclass.extend({
     s = m.section(form.TypedSection, "filters", _("Filter configuration"));
     s.anonymous = true;
 
+    // forward_crc_ok
+    o = s.option(
+      form.Flag,
+      "forward_crc_ok",
+      _("Forward CRC ok"),
+      _(
+        "Forward LoRaWAN frame when CRC is valid",
+      ),
+    );
+    o.default = o.enabled;
+    o.rmempty = false;
+
+    // forward_crc_invalid
+    o = s.option(
+      form.Flag,
+      "forward_crc_invalid",
+      _("Forward CRC invalid"),
+      _(
+        "Forward LoRaWAN frame when CRC is invalid",
+      ),
+    );
+    o.default = o.disabled;
+    o.rmempty = false;
+
+    // forward_crc_missing
+    o = s.option(
+      form.Flag,
+      "forward_crc_missing",
+      _("Forward CRC missing"),
+      _(
+        "Forward LoRaWAN frame when CRC is missing",
+      ),
+    );
+    o.default = o.disabled;
+    o.rmempty = false;
+
     // LoRaWAN only
     o = s.option(
       form.Flag,
@@ -164,7 +244,7 @@ return baseclass.extend({
       ),
     );
 
-    // DevAddr prefixs
+    // DevAddr prefixes
     o = s.option(
       form.DynamicList,
       "dev_addr_prefix",
@@ -173,8 +253,30 @@ return baseclass.extend({
         "Filter uplinks based on the configured DevAddr prefixes (e.g. '0000ff00/24'). If no filters have been configured, filtering is disabled.",
       ),
     );
+    o.validate = function (section_id, value) {
+      if (value == null || value === "")
+        return true;
 
-    // DevEUI prefixes
+      var parts = value.split("/");
+
+      if (parts.length !== 2)
+        return _("Expected the format {hex}/{mask}, e.g. 0000ff00/24");
+
+      if (!/^[0-9a-fA-F]{8}$/.test(parts[0]))
+        return _("Invalid address '%s'/ must be exactly 8 hexadecimal digits").format(parts[0]);
+
+      if (!/^\d+$/.test(parts[1]))
+        return _("Invalid mask '/%s' must be a number").format(parts[1]);
+
+      // +parts[1] trick to convert str to number
+      if (+parts[1] > 32)
+        return _("Invalid mask '/%s' must be between 0 and 32").format(parts[1]);
+
+      return true;
+    };
+    o.rmempty = true;
+
+    // JoinEUI prefixes
     o = s.option(
       form.DynamicList,
       "join_eui_prefix",
@@ -183,6 +285,28 @@ return baseclass.extend({
         "Filter join-requests based on the configured JoinEUI prefixes (e.g. '0000ff0000000000/24'). If no filters have been configured, filtering is disabled.",
       ),
     );
+    o.validate = function (section_id, value) {
+      if (value == null || value === "")
+        return true;
+
+      var parts = value.split("/");
+
+      if (parts.length !== 2)
+        return _("Expected the format {hex}/{mask}, e.g. 0000ff0000000000/24");
+
+      if (!/^[0-9a-fA-F]{16}$/.test(parts[0]))
+        return _("Invalid address '%s'/ must be exactly 16 hexadecimal digits").format(parts[0]);
+
+      if (!/^\d+$/.test(parts[1]))
+        return _("Invalid mask '/%s' must be a number").format(parts[1]);
+
+      // +parts[1] trick to convert str to number
+      if (+parts[1] > 64)
+        return _("Invalid mask '/%s' must be between 0 and 64").format(parts[1]);
+
+      return true;
+    };
+    o.rmempty = true;
 
     // Commands
     s = m.section(form.TypedSection, "commands", _("Commands"));
@@ -213,6 +337,30 @@ return baseclass.extend({
       _("Command + arguments"),
       _(
         "Configure this if no static value is configured. The first item must contain the path to the binary, the other items must be used to pass arguments (one item per argument).",
+      ),
+    );
+
+    // force create section callbacks if it's missing
+    if (!uci.get(mqttForwarderConfig, "callbacks"))
+      uci.add(mqttForwarderConfig, "callbacks", "callbacks");
+
+    s = m.section(form.NamedSection, "callbacks", "callbacks", _("Callbacks"));
+
+    s.option(
+      form.DynamicList,
+      "on_mqtt_connected",
+      _("On mqtt Connected"),
+      _(
+        "Commands triggered when MQTT connected",
+      ),
+    );
+
+    s.option(
+      form.DynamicList,
+      "on_mqtt_connection_error",
+      _("On mqtt Connection Error"),
+      _(
+        "Commands triggered when MQTT Connection is in Error",
       ),
     );
 
