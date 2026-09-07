@@ -340,8 +340,11 @@ return baseclass.extend({
       ),
     );
 
-    s = m.section(form.TypedSection, "callbacks", _("Callbacks"));
-    s.anonymous = true;
+    // force create section callbacks if it's missing
+    if (!uci.get(mqttForwarderConfig, "callbacks"))
+      uci.add(mqttForwarderConfig, "callbacks", "callbacks");
+
+    s = m.section(form.NamedSection, "callbacks", "callbacks", _("Callbacks"));
 
     s.option(
       form.DynamicList,

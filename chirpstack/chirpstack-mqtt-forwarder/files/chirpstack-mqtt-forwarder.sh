@@ -18,10 +18,10 @@ configure() {
   config_foreach conf_rule_concentratord "concentratord" "$config_name"
   config_foreach conf_rule_mqtt "mqtt" "$config_name"
   config_foreach conf_rule_filters "filters" "$config_name"
-  config_foreach conf_rule_callbacks "callbacks" "$config_name"
 
   conf_rule_commands "$config_name"
   conf_rule_metadata "$config_name"
+  conf_rule_callbacks "$config_name"
 }
 
 conf_rule_concentratord() {
@@ -258,7 +258,6 @@ conf_command_arg() {
 }
 
 conf_rule_callbacks() {
-  local cfg="$1"
   local config_name="$2"
 
   cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
@@ -270,7 +269,7 @@ conf_rule_callbacks() {
 			on_mqtt_connected=[
 	EOF
 
-	config_list_foreach $cfg on_mqtt_connected conf_rule_callbacks_on_mqtt "$config_name"
+	config_list_foreach 'callbacks' 'on_mqtt_connected' conf_rule_callbacks_on_mqtt "$config_name"
 
   cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
 			]
@@ -281,7 +280,7 @@ conf_rule_callbacks() {
 			on_mqtt_connection_error=[
 	EOF
 
-  config_list_foreach $cfg on_mqtt_connection_error conf_rule_callbacks_on_mqtt "$config_name"
+  config_list_foreach 'callbacks' 'on_mqtt_connection_error' conf_rule_callbacks_on_mqtt "$config_name"
 
   cat >>/var/etc/$config_name/chirpstack-mqtt-forwarder.toml <<-EOF
 			]
