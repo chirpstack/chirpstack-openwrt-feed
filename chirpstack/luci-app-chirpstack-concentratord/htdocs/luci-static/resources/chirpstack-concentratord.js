@@ -141,6 +141,21 @@ return baseclass.extend({
                 }
             }
 
+            // stats_interval
+            o = s.option(form.Value, 'stats_interval', _('Stats interval (default 30s)'), _('Defines the interval between transmissions of Stats messages to ChirpStack.'));
+            o.optional = true;
+            o.validate = function (section_id, value) {
+                if (!value) {
+                    return true;
+                }
+
+                if (/^\d+[smhd]$/.test(value.trim())) {
+                    return true;
+                }
+
+                return "Enter a valid duration (e.g. 30s, 5m, 1h, 1d)";
+            };
+
             // flags
             if (isVisible('gnss')) {
                 if (chipset.id === 'sx1301' || chipset.id === 'sx1302') {
