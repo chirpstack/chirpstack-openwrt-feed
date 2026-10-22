@@ -1,6 +1,13 @@
 #!/bin/sh
 
 # === CONFIGURATION ===
+# Quectel modems (EG95, EG915U) put the AT port on USB interface 2, but its
+# ttyUSB number differs per model, so look it up unless PORT is given.
+if [ -z "$PORT" ]; then
+    for tty in /sys/bus/usb/devices/*:1.2/ttyUSB*; do
+        [ -e "$tty" ] && PORT="/dev/${tty##*/}" && break
+    done
+fi
 PORT="${PORT:-/dev/ttyUSB2}"
 BAUD="${BAUD:-115200}"
 TIMEOUT="${TIMEOUT:-2}"
