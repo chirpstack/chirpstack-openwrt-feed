@@ -1,3 +1,17 @@
+libloragw: use half-duplex SPI transfers on MT7628
+
+The MT7628 SPI controller (spi-mt7621) only does half-duplex: it rejects any
+transfer that has both a TX and an RX buffer. Split every read into a TX
+transfer for the command and an RX transfer for the reply.
+
+Leave cs_change at 0 on the last transfer of each message. Since Linux 6.10
+the driver runs through the SPI core's message loop, which reads cs_change on
+a message's last transfer as "keep CS asserted after this message". The
+SX1302 then takes the next command as part of the current frame and drops it,
+so every register read-modify-write loses its write and the radios never come
+up ("Failed to set SX1250_0 in STANDBY_RC mode"). Older kernels ignored the
+flag on this controller.
+
 --- a/libloragw/src/loragw_spi.c
 +++ b/libloragw/src/loragw_spi.c
 @@ -205,7 +205,7 @@ int lgw_spi_r(void *com_target, uint8_t
@@ -32,7 +46,7 @@
 +    k[0].len = command_size;
 +    k[1].len = 2;
 +    k[0].cs_change = 0;
-+    k[1].cs_change = 1;
++    k[1].cs_change = 0;
 +    a = ioctl(spi_device, SPI_IOC_MESSAGE(2), &k);
  
      /* determine return code */
@@ -48,15 +62,6 @@
          return LGW_SPI_SUCCESS;
      }
  }
-@@ -296,7 +298,7 @@ int lgw_spi_wb(void *com_target, uint8_t
-     k[0].tx_buf = (unsigned long) &command[0];
-     k[0].len = command_size;
-     k[0].cs_change = 0;
--    k[1].cs_change = 0;
-+    k[1].cs_change = 1;
-     for (i=0; size_to_do > 0; ++i) {
-         chunk_size = (size_to_do < LGW_BURST_CHUNK) ? size_to_do : LGW_BURST_CHUNK;
-         offset = i * LGW_BURST_CHUNK;
 @@ -322,8 +324,9 @@ int lgw_spi_wb(void *com_target, uint8_t
  /* Burst (multiple-byte) read */
  int lgw_spi_rb(void *com_target, uint8_t spi_mux_target, uint16_t address, uint8_t *data, uint16_t size) {
@@ -79,12 +84,7 @@
      size_to_do = size;
  
      /* I/O transaction */
-@@ -352,15 +355,16 @@ int lgw_spi_rb(void *com_target, uint8_t
-     k[0].tx_buf = (unsigned long) &command[0];
-     k[0].len = command_size;
-     k[0].cs_change = 0;
--    k[1].cs_change = 0;
-+    k[1].cs_change = 1;
+@@ -356,11 +359,12 @@ int lgw_spi_rb(void *com_target, uint8_t
      for (i=0; size_to_do > 0; ++i) {
          chunk_size = (size_to_do < LGW_BURST_CHUNK) ? size_to_do : LGW_BURST_CHUNK;
          offset = i * LGW_BURST_CHUNK;
@@ -139,7 +139,7 @@
 +    k[0].len = command_size;
 +    k[1].len = size+1;
 +    k[0].cs_change = 0;
-+    k[1].cs_change = 1;
++    k[1].cs_change = 0;
 +    a = ioctl(com_device, SPI_IOC_MESSAGE(2), k);
 +
 +    /* determine return code */
